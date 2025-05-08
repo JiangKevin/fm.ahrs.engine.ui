@@ -58,6 +58,8 @@ public:
     void SetupViewport();
     void CreateLog();
     void CreateSocket();
+    void setup_style_of_imgui();
+    void RenderUi();
 public:
     void HandleMouseDown( StringHash eventType, VariantMap& eventData );
     void HandleKeyDown( StringHash /*eventType*/, VariantMap& eventData );

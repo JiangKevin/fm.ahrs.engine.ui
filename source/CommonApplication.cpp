@@ -1,6 +1,8 @@
 
 #include "CommonApplication.h"
 #include "component/FmFreeFlyController.h"
+#include "font/IconsFontAwesome6.h"
+#include "font/IconsMaterialDesignIcons.h"
 #include <Urho3D/Core/CoreEvents.h>
 #include <Urho3D/Core/ProcessUtils.h>
 #include <Urho3D/DebugNew.h>
@@ -68,6 +70,7 @@ void CommonApplication::Start()
     graphics->SetMode( winSizeX_, winSizeY_ );
     //
     FmRegisterOjbj();
+    setup_style_of_imgui();
     //
     CreateScene();
     //
@@ -286,3 +289,45 @@ void CommonApplication::CreateSocket()
     emscripten_websocket_set_onerror_callback( socket, ( void* )44, WebSocketError );
     emscripten_websocket_set_onmessage_callback( socket, ( void* )45, WebSocketMessage );
 };
+//
+/// @brief
+void CommonApplication::setup_style_of_imgui()
+{
+    URHO3D_LOGDEBUGF( "Setup Imgui style ...", "" );
+
+    ImGuiContext& g  = *GImGui;
+    auto&         io = ui::GetIO();
+    //
+    ImGui::FmStyleColorsClassic();
+    ///
+    bool  bStyleDark_ = true;
+    float alpha_      = 1.0f;
+    ///
+    io.ConfigViewportsNoAutoMerge = true;
+    io.IniFilename                = nullptr;
+    // io.ConfigFlags |= ImGuiConfigFlags_DockingEnable | ImGuiConfigFlags_NavEnableKeyboard;
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard | ImGuiConfigFlags_DockingEnable;
+    io.BackendFlags |= ImGuiBackendFlags_HasMouseCursors;
+    io.ConfigWindowsResizeFromEdges = true;
+    ///
+    static const ImWchar icons_ranges[]   = { ICON_MIN_FA, ICON_MAX_FA, 0 };
+    static const ImWchar icons_m_ranges[] = { ICON_MIN_MDI, ICON_MAX_MDI, 0 };
+    ImFontConfig         config;
+    config.MergeMode           = true;
+    config.OversampleH         = 3;
+    config.OversampleV         = 1;
+    config.GlyphExtraSpacing.x = 1.0f;
+    config.GlyphOffset         = ImVec2( 0, 2 );
+    io.Fonts->AddFontFromFileTTF( "/Data/Fonts/fa-solid-900.ttf", 13, &config, icons_ranges );
+    io.Fonts->AddFontFromFileTTF( "/Data/Fonts/fa-regular-400.ttf", 13, &config, icons_ranges );
+    io.Fonts->AddFontFromFileTTF( "/Data/Fonts/materialdesignicons-webfont.ttf", 13, &config, icons_m_ranges );
+    io.Fonts->AddFontFromFileTTF( "/Data/Fonts/unifont-15.1.05.otf", 13, &config, io.Fonts->GetGlyphRangesChineseFull() );
+
+    // io.Fonts->AddFontFromFileTTF( "/Data/Fonts/Symbola_hint.ttf", 13 );
+    io.Fonts->Build();
+}
+//
+void CommonApplication::RenderUi()
+{
+    ui::ShowDemoWindow();
+}
