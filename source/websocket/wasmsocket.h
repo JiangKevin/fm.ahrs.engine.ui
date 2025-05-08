@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 //
-static int passed = 0;
+static eastl::string websocket_staus = "Close";
 //
 static EM_BOOL WebSocketOpen( int eventType, const EmscriptenWebSocketOpenEvent* e, void* userData )
 {
@@ -15,6 +15,7 @@ static EM_BOOL WebSocketOpen( int eventType, const EmscriptenWebSocketOpenEvent*
     char data[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
     emscripten_websocket_send_binary( e->socket, data, sizeof( data ) );
 
+    emscripten_websocket_close( e->socket, 0, 0 );
     return 0;
 }
 //
@@ -34,23 +35,16 @@ static EM_BOOL WebSocketMessage( int eventType, const EmscriptenWebSocketMessage
 {
     printf( "message(eventType=%d, userData=%ld, data=%p, numBytes=%d, isText=%d)\n", eventType, ( long )userData, e->data, e->numBytes, e->isText );
     if ( e->isText )
-    {
         printf( "text data: \"%s\"\n", e->data );
-        assert( strcmp( ( const char* )e->data, "hello on the other side" ) == 0 );
-    }
     else
     {
         printf( "binary data:" );
         for ( int i = 0; i < e->numBytes; ++i )
-        {
             printf( " %02X", e->data[ i ] );
-            assert( e->data[ i ] == i );
-        }
         printf( "\n" );
 
-        emscripten_websocket_close( e->socket, 0, 0 );
         emscripten_websocket_delete( e->socket );
-        emscripten_force_exit( 0 );
+        exit( 0 );
     }
     return 0;
 }

@@ -270,14 +270,13 @@ void CommonApplication::CreateSocket( eastl::string url )
     {
         printf( "WebSockets are not supported, cannot continue!\n" );
     }
-
+    //
     EmscriptenWebSocketCreateAttributes attr;
     emscripten_websocket_init_create_attributes( &attr );
 
-    // const char* url = "ws://192.168.254.116:18080/";
-    attr.url       = url.c_str();
-    attr.protocols = "binary,base64";  // We don't really use a special protocol on the server backend in this test, but check that it can be passed.
-
+    // attr.url = "ws://localhost:8080";
+    attr.url = url.c_str();
+    //
     EMSCRIPTEN_WEBSOCKET_T socket = emscripten_websocket_new( &attr );
     if ( socket <= 0 )
     {
@@ -341,9 +340,6 @@ void CommonApplication::RenderUi()
         //
         ui::Spacing();
         //
-        ui::Text( websocket_staus.c_str() );
-        ui::Separator();
-        //
         ui::Text( "IP" );
         ui::SameLine( 50 );
         ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
@@ -357,6 +353,8 @@ void CommonApplication::RenderUi()
         ui::Separator();
 
         //
+        ui::Text( websocket_staus.c_str() );
+        ui::SameLine( 50 );
         if ( ui::Button( "Connect", ImVec2( ImGui::GetContentRegionAvail().x, 16 ) ) )
         {
             eastl::string url = "ws://" + ip_str + ":" + port_str + "/";

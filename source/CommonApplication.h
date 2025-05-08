@@ -54,7 +54,6 @@ public:
     Node*         axes_node_;
     int           winSizeX_;
     int           winSizeY_;
-    eastl::string websocket_staus = "Close";
     // EMSCRIPTEN_WEBSOCKET_T socket;
 public:
     void CreateScene();
