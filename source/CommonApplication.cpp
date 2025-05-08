@@ -65,8 +65,8 @@ void CommonApplication::Start()
     auto  graphics = GetSubsystem< Graphics >();
     auto* renderer = GetSubsystem< Renderer >();
     //
-    int winSizeX_ = get_canvas_w();
-    int winSizeY_ = get_canvas_h();
+    winSizeX_ = get_canvas_w();
+    winSizeY_ = get_canvas_h();
     graphics->SetMode( winSizeX_, winSizeY_ );
     //
     FmRegisterOjbj();
@@ -77,19 +77,19 @@ void CommonApplication::Start()
     SetupViewport();
     CreateLog();
     //
-    CreateSocket();
-    //
     auto* input = context_->GetSubsystem< Input >();
     // Subscribe key down event
     SubscribeToEvent( input, E_KEYDOWN, URHO3D_HANDLER( CommonApplication, HandleKeyDown ) );
+    SubscribeToEvent( E_UPDATE, URHO3D_HANDLER( CommonApplication, Update ) );
 }
 void CommonApplication::Stop()
 {
     //
 }
 
-void CommonApplication::Update( float timeStep )
+void CommonApplication::Update( StringHash eventType, VariantMap& eventData )
 {
+    RenderUi();
     // Do nothing for now, could be extended to eg. animate the display
 }
 void CommonApplication::HandleMouseDown( StringHash eventType, VariantMap& eventData ){
@@ -264,7 +264,7 @@ void CommonApplication::HandleKeyDown( StringHash /*eventType*/, VariantMap& eve
     }
 }
 //
-void CommonApplication::CreateSocket()
+void CommonApplication::CreateSocket( eastl::string url )
 {
     if ( ! emscripten_websocket_is_supported() )
     {
@@ -274,9 +274,9 @@ void CommonApplication::CreateSocket()
     EmscriptenWebSocketCreateAttributes attr;
     emscripten_websocket_init_create_attributes( &attr );
 
-    const char* url = "ws://192.168.254.116:18080/";
-    attr.url        = url;
-    attr.protocols  = "binary,base64";  // We don't really use a special protocol on the server backend in this test, but check that it can be passed.
+    // const char* url = "ws://192.168.254.116:18080/";
+    attr.url       = url.c_str();
+    attr.protocols = "binary,base64";  // We don't really use a special protocol on the server backend in this test, but check that it can be passed.
 
     EMSCRIPTEN_WEBSOCKET_T socket = emscripten_websocket_new( &attr );
     if ( socket <= 0 )
@@ -329,5 +329,40 @@ void CommonApplication::setup_style_of_imgui()
 //
 void CommonApplication::RenderUi()
 {
-    ui::ShowDemoWindow();
+
+    ui::SetNextWindowSize( ImVec2( 300, winSizeY_ ), ImGuiCond_FirstUseEver );
+    ui::SetNextWindowPos( ImVec2( winSizeX_ - 300, 0 ), ImGuiCond_FirstUseEver );
+    //
+    if ( ui::Begin( "WebSocket", NULL, ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoScrollbar ) )
+    {
+        static eastl::string ip_str   = "192.168.254.116";
+        static eastl::string port_str = "18080";
+        auto                 win_size = ImGui::GetContentRegionAvail();
+        //
+        ui::Spacing();
+        //
+        ui::Text( websocket_staus.c_str() );
+        ui::Separator();
+        //
+        ui::Text( "IP" );
+        ui::SameLine( 50 );
+        ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
+        ui::InputText( "##ip", &ip_str );
+        ui::Separator();
+        //
+        ui::Text( "Port" );
+        ui::SameLine( 50 );
+        ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
+        ui::InputText( "##Port", &port_str );
+        ui::Separator();
+
+        //
+        if ( ui::Button( "Connect", ImVec2( ImGui::GetContentRegionAvail().x, 16 ) ) )
+        {
+            eastl::string url = "ws://" + ip_str + ":" + port_str + "/";
+
+            CreateSocket( url );
+        };
+    }
+    ui::End();
 }

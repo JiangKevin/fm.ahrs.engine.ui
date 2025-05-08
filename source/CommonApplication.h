@@ -9,6 +9,7 @@
     #include <Urho3D/SystemUI/DebugHud.h>
 #endif
 
+#include "websocket/wasmsocket.h"
 #include <Urho3D/Core/Profiler.h>
 #include <Urho3D/Core/Timer.h>
 #include <Urho3D/Engine/Engine.h>
@@ -29,7 +30,6 @@
 #include <Urho3D/UI/Sprite.h>
 #include <Urho3D/UI/UI.h>
 #include <emscripten/websocket.h>
-#include "websocket/wasmsocket.h"
 //
 using namespace Urho3D;
 //
@@ -43,7 +43,7 @@ public:
     void Setup() override;
     void Start() override;
     void Stop() override;
-    void Update( float timestep );
+    void Update( StringHash eventType, VariantMap& eventData );
     void FmRegisterOjbj();
 public:
     /// Scene.
@@ -51,13 +51,16 @@ public:
     /// Camera scene node.
     SharedPtr< Node > mainCameraNode_;
     //
-    Node*                  axes_node_;
+    Node*         axes_node_;
+    int           winSizeX_;
+    int           winSizeY_;
+    eastl::string websocket_staus = "Close";
     // EMSCRIPTEN_WEBSOCKET_T socket;
 public:
     void CreateScene();
     void SetupViewport();
     void CreateLog();
-    void CreateSocket();
+    void CreateSocket(eastl::string url);
     void setup_style_of_imgui();
     void RenderUi();
 public:
