@@ -1,21 +1,21 @@
 #pragma once
 //
-#include "concurrentqueue/concurrentqueue.h"
-#include "concurrentqueue/sensor_db.h"
+#include "queue/lock_free_message_queue.h"
+#include "queue/sensor_db.h"
 #include <emscripten/websocket.h>
 #include <stdio.h>
 #include <stdlib.h>
 //
 struct WASM_SOCKET_DATA
 {
-    eastl::string                            websocket_staus           = "\xf3\xb1\x98\x96";
-    eastl::string                            websocket_receive_message = "";
-    moodycamel::ConcurrentQueue< SENSOR_DB > sensor_data_queue_;
+    eastl::string                     websocket_staus           = "\xf3\xb1\x98\x96";
+    eastl::string                     websocket_receive_message = "";
+    LockFreeMessageQueue< SENSOR_DB > sensor_data_queue;
 };
-//
-static eastl::string    websocket_staus           = "\xf3\xb1\x98\x96";
-static eastl::string    websocket_receive_message = "";
-// static WASM_SOCKET_DATA wasm_socket_data_;
+// 全局的变量
+static eastl::string websocket_staus           = "\xf3\xb1\x98\x96";
+static eastl::string websocket_receive_message = "";
+static WASM_SOCKET_DATA wasm_socket_data_;
 //
 
 static EM_BOOL WebSocketOpen( int eventType, const EmscriptenWebSocketOpenEvent* e, void* userData )
@@ -58,7 +58,6 @@ static EM_BOOL WebSocketMessage( int eventType, const EmscriptenWebSocketMessage
     if ( e->isText )
     {
         printf( "text data: \"%s\"\n", e->data );
-
         websocket_receive_message = ( char* )e->data;
     }
     else
