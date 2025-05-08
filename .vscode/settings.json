@@ -2,6 +2,7 @@
     "C_Cpp.errorSquiggles": "disabled",
     "files.associations": {
         "future": "cpp",
-        "regex": "cpp"
+        "regex": "cpp",
+        "complex": "cpp"
     }
 }

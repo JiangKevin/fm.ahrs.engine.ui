@@ -55,6 +55,7 @@ public:
     int                    winSizeX_;
     int                    winSizeY_;
     EMSCRIPTEN_WEBSOCKET_T socket;
+    WASM_SOCKET_DATA*      wasm_socket_data_;
 public:
     void CreateScene();
     void SetupViewport();
