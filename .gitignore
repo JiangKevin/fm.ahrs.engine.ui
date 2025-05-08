@@ -1,9 +1,6 @@
-# CMake generated build files
-/cmake-build-*/
-
-# Ignore generated projects
-build/
-.vscode/
-
-# Ignore temporary files
-/imgui.ini
+.github
+build
+bin
+Resource
+libs/core/lib/libSPIRV-Tools-opt.a
+libs/core/lib/libUrho3D.a

@@ -1,35 +1,106 @@
 cmake_minimum_required(VERSION 3.14)
-project (EmptyProject)
+set(app_name ahrs.web)
+project(${app_name})
 
 # C++17 is required for this project.
-set (CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 17)
 
 # Setup output directories.
-set (CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-set (CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
-set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY $ENV{FmDev}/lib)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY $ENV{FmDev}/bin)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY $ENV{FmDev}/bin)
 
-# It is possible to use pre-built SDK or build the Framework from source.
-# In your project, you can choose either option or keep both.
-set (REBELFORK_SDK "" CACHE STRING "Path to pre-built SDK")
-if ("${REBELFORK_SDK}" STREQUAL "")
-    # Include common build scripts.
-    include (${CMAKE_SOURCE_DIR}/../rbfx/CMake/Modules/UrhoCommon.cmake)
+#
+# link flag
+set(CMAKE_EXE_LINKER_FLAGS ${CMAKE_EXE_LINKER_FLAGS}
+    $ENV{fm_links_exe_flags}
+)
 
-    # Include the Framework to build.
-    add_subdirectory (../rbfx ${CMAKE_BINARY_DIR}/3rdParty/rbfx)
-else ()
-    # Include common build scripts.
-    include (${REBELFORK_SDK}/share/CMake/Modules/UrhoCommon.cmake)
+# 设置全局的 include 路径
+include_directories($ENV{FmDev}/libs/core/include)
+include_directories($ENV{FmDev}/libs/core/include/Urho3D/ThirdParty)
+include_directories($ENV{FmDev}/libs/core/include/Urho3D/ThirdParty/tracy)
+include_directories($ENV{FmDev}/libs/core/include/Urho3D/ThirdParty/SDL)
+include_directories($ENV{FmDev}/libs/core/include/Urho3D/ThirdParty/ImGui)
+include_directories($ENV{FmDev}/libs/core/include/Urho3D/ThirdParty/ImGui/misc/cpp)
 
-    # Include pre-built SDK
-    set (CMAKE_PREFIX_PATH ${REBELFORK_SDK}/share)
-    find_package(Urho3D REQUIRED)
-endif ()
+# 设置链接路径
+link_directories($ENV{FmDev}/libs/core/lib)
 
-# Add plugins (optional).
-include_directories (${CMAKE_SOURCE_DIR}/Plugins)
-add_subdirectory (${CMAKE_SOURCE_DIR}/Plugins/Core.SamplePlugin)
+#
+add_definitions(-DIMGUI_DEFINE_MATH_OPERATORS)
+add_definitions(-DIMGUI_USE_WCHAR32)
+add_definitions(-DURHO3D_SYSTEMUI)
+add_definitions(-DURHO3D_RMLUI)
+add_definitions(-DURHO3D_THREADING)
+add_definitions(-DEASTL_DEBUG)
+add_definitions(-DURHO3D_DEBUG)
 
-# Add project source files.
-add_subdirectory (${CMAKE_SOURCE_DIR}/Source)
+#
+# set(CMAKE_EXECUTABLE_SUFFIX ".html")
+
+#
+# include($ENV{FmDev}/libs/core/share/CMake/Urho3D.cmake)
+file(GLOB app_src
+    source/*.cpp
+    source/*.cxx
+    source/component/*.cpp
+)
+
+# 生成
+add_executable(${app_name}
+
+    ${app_src}
+)
+
+#
+# Link the engine and plugins.
+target_link_libraries(${app_name}
+    libBox2D.a
+    libBullet.a
+    libdatachannel-wasm.a
+    libDetour.a
+    libDetourCrowd.a
+    libDetourTileCache.a
+    libDiligent-BasicPlatform.a
+    libDiligent-Common.a
+    libDiligent-EmscriptenPlatform.a
+    libDiligent-GraphicsAccessories.a
+    libDiligent-GraphicsEngine.a
+    libDiligent-GraphicsEngineOpenGL-static.a
+    libDiligent-HLSL2GLSLConverterLib.a
+    libDiligent-Primitives.a
+    libDiligent-ShaderTools.a
+    libEASTL.a
+    libenkiTS.a
+    libETCPACK.a
+    libfmt.a
+    libFreeType.a
+    libGenericCodeGen.a
+    libGLEW.a
+    libglslang-default-resource-limits.a
+    libglslang.a
+    libImGui.a
+    libLZ4.a
+    libMachineIndependent.a
+    libnativefiledialog.a
+    libOGLCompiler.a
+    libOSDependent.a
+    libPugiXml.a
+    libRecast.a
+    libRmlUi.a
+    libSDL2.a
+    libspirv-cross-core.a
+    libspirv-cross-glsl.a
+    libspirv-cross-hlsl.a
+    libspirv-cross-msl.a
+    libSPIRV-Tools-opt.a
+    libSPIRV-Tools.a
+    libSPIRV.a
+    libStanHull.a
+    libSTB.a
+    libtinygltf.a
+    libUrho3D.a
+    libWebP.a
+    libzlibstatic.a
+)
