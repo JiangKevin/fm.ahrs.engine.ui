@@ -90,7 +90,6 @@ void CommonApplication::Stop()
 void CommonApplication::Update( StringHash eventType, VariantMap& eventData )
 {
     RenderUi();
-    // Do nothing for now, could be extended to eg. animate the display
 }
 void CommonApplication::HandleMouseDown( StringHash eventType, VariantMap& eventData ){
     //
@@ -277,7 +276,7 @@ void CommonApplication::CreateSocket( eastl::string url )
     // attr.url = "ws://localhost:8080";
     attr.url = url.c_str();
     //
-    EMSCRIPTEN_WEBSOCKET_T socket = emscripten_websocket_new( &attr );
+    socket = emscripten_websocket_new( &attr );
     if ( socket <= 0 )
     {
         printf( "WebSocket creation failed, error code %d!\n", ( EMSCRIPTEN_RESULT )socket );

@@ -51,15 +51,15 @@ public:
     /// Camera scene node.
     SharedPtr< Node > mainCameraNode_;
     //
-    Node*         axes_node_;
-    int           winSizeX_;
-    int           winSizeY_;
-    // EMSCRIPTEN_WEBSOCKET_T socket;
+    Node*                  axes_node_;
+    int                    winSizeX_;
+    int                    winSizeY_;
+    EMSCRIPTEN_WEBSOCKET_T socket;
 public:
     void CreateScene();
     void SetupViewport();
     void CreateLog();
-    void CreateSocket(eastl::string url);
+    void CreateSocket( eastl::string url );
     void setup_style_of_imgui();
     void RenderUi();
 public:
