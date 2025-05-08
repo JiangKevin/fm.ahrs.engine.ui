@@ -328,13 +328,15 @@ void CommonApplication::setup_style_of_imgui()
 void CommonApplication::RenderUi()
 {
 
-    ui::SetNextWindowSize( ImVec2( 300, winSizeY_ ), ImGuiCond_FirstUseEver );
+    ui::SetNextWindowSize( ImVec2( 300, 240 ), ImGuiCond_FirstUseEver );
     ui::SetNextWindowPos( ImVec2( winSizeX_ - 300, 0 ), ImGuiCond_FirstUseEver );
     //
     if ( ui::Begin( "WebSocket", NULL, ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoScrollbar ) )
     {
         static eastl::string ip_str   = "192.168.254.116";
         static eastl::string port_str = "18080";
+        static eastl::string smsg_str = "hello on the other side";
+        // static eastl::string rmsg_str = "receive on the server";
         auto                 win_size = ImGui::GetContentRegionAvail();
         //
         ui::Spacing();
@@ -359,6 +361,21 @@ void CommonApplication::RenderUi()
             eastl::string url = "ws://" + ip_str + ":" + port_str + "/";
 
             CreateSocket( url );
+        };
+        ui::Separator();
+        //
+        ui::InputTextMultiline( "##RMSG", &websocket_receive_message, ImVec2( ImGui::GetContentRegionAvail().x, 100 ) );
+        ui::Separator();
+        //
+        ui::Text( "SMsg" );
+        ui::SameLine( 50 );
+        ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
+        ui::InputText( "##SMSG", &smsg_str );
+        ui::Separator();
+        //
+        if ( ui::Button( "Send Message", ImVec2( ImGui::GetContentRegionAvail().x, 16 ) ) )
+        {
+            emscripten_websocket_send_utf8_text( socket, smsg_str.c_str() );
         };
     }
     ui::End();
