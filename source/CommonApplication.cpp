@@ -328,7 +328,7 @@ void CommonApplication::setup_style_of_imgui()
 void CommonApplication::RenderUi()
 {
 
-    ui::SetNextWindowSize( ImVec2( 300, 240 ), ImGuiCond_FirstUseEver );
+    ui::SetNextWindowSize( ImVec2( 300, 230 ), ImGuiCond_FirstUseEver );
     ui::SetNextWindowPos( ImVec2( winSizeX_ - 300, 0 ), ImGuiCond_FirstUseEver );
     //
     if ( ui::Begin( "WebSocket", NULL, ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoScrollbar ) )
