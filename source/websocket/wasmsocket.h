@@ -3,13 +3,17 @@
 #include <emscripten/websocket.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include "concurrentqueue/concurrentqueue.h"
+#include "concurrentqueue/sensor_db.h"
 //
 static eastl::string websocket_staus           = "\xf3\xb1\x98\x96";
 static eastl::string websocket_receive_message = "";
 //
 struct wasmsocket
 {
-    eastl::string websocket_staus = "\xf3\xb1\x98\x96";
+    eastl::string                            websocket_staus           = "\xf3\xb1\x98\x96";
+    eastl::string                            websocket_receive_message = "";
+    moodycamel::ConcurrentQueue< SENSOR_DB > sensor_data_queue_;
 };
 
 //
@@ -48,7 +52,7 @@ static EM_BOOL WebSocketMessage( int eventType, const EmscriptenWebSocketMessage
     {
         printf( "text data: \"%s\"\n", e->data );
 
-        websocket_receive_message = (char*) e->data;
+        websocket_receive_message = ( char* )e->data;
     }
     else
     {

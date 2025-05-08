@@ -17,6 +17,7 @@ set(CMAKE_EXE_LINKER_FLAGS ${CMAKE_EXE_LINKER_FLAGS}
 )
 
 # 设置全局的 include 路径
+include_directories($ENV{FmDev}/source)
 include_directories($ENV{FmDev}/libs/core/include)
 include_directories($ENV{FmDev}/libs/core/include/Urho3D/ThirdParty)
 include_directories($ENV{FmDev}/libs/core/include/Urho3D/ThirdParty/tracy)
