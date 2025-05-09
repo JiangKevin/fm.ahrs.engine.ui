@@ -474,34 +474,28 @@ void CommonApplication::AxesNodeAttributeUi()
         }
         if ( ImPlot::BeginPlot( "X Plot", ImVec2( -1, 0 ), ImPlotAxisFlags_AutoFit ) )
         {
-            ImPlot::SetupAxes( "Index", "X" );
-            // ImPlot::SetupAxisLimits(ImAxis_X1, IMPLOT_AUTO, IMPLOT_AUTO);
-            // ImPlot::SetupAxisLimits(ImAxis_Y1, IMPLOT_AUTO, IMPLOT_AUTO);
+            ImPlot::SetupAxes( "Index", "X", ImPlotAxisFlags_AutoFit );
             ImPlot::SetNextMarkerStyle( ImPlotMarker_Cross );
             ImPlot::SetNextFillStyle( IMPLOT_AUTO_COL, 0.25f );
-            ImPlot::PlotStairs( "Position X", x, count, 0.05f, 0 );
+            ImPlot::PlotStairs( "Position X", x, count, 0.05f, 0, ImPlotAxisFlags_AutoFit );
 
             ImPlot::EndPlot();
         }
         if ( ImPlot::BeginPlot( "Y Plot", ImVec2( -1, 0 ), ImPlotAxisFlags_AutoFit ) )
         {
-            ImPlot::SetupAxes( "Index", "Y" );
-            // ImPlot::SetupAxisLimits(ImAxis_X1, IMPLOT_AUTO, IMPLOT_AUTO);
-            // ImPlot::SetupAxisLimits(ImAxis_Y1, IMPLOT_AUTO, IMPLOT_AUTO);
+            ImPlot::SetupAxes( "Index", "Y", ImPlotAxisFlags_AutoFit );
             ImPlot::SetNextMarkerStyle( ImPlotMarker_Cross );
             ImPlot::SetNextFillStyle( IMPLOT_AUTO_COL, 0.25f );
-            ImPlot::PlotStairs( "Position Y", y, count, 0.05f, 0 );
+            ImPlot::PlotStairs( "Position Y", y, count, 0.05f, 0, ImPlotAxisFlags_AutoFit );
 
             ImPlot::EndPlot();
         }
         if ( ImPlot::BeginPlot( "Z Plot", ImVec2( -1, 0 ), ImPlotAxisFlags_AutoFit ) )
         {
-            ImPlot::SetupAxes( "Index", "Z" );
-            // ImPlot::SetupAxisLimits(ImAxis_X1, IMPLOT_AUTO, IMPLOT_AUTO);
-            // ImPlot::SetupAxisLimits(ImAxis_Y1, IMPLOT_AUTO, IMPLOT_AUTO);
+            ImPlot::SetupAxes( "Index", "Z", ImPlotAxisFlags_AutoFit );
             ImPlot::SetNextMarkerStyle( ImPlotMarker_Cross );
             ImPlot::SetNextFillStyle( IMPLOT_AUTO_COL, 0.25f );
-            ImPlot::PlotStairs( "Position Z", z, count, 0.05f, 0 );
+            ImPlot::PlotStairs( "Position Z", z, count, 0.05f, 0, ImPlotAxisFlags_AutoFit );
 
             ImPlot::EndPlot();
         }
