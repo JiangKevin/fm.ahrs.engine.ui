@@ -143,19 +143,6 @@ void CommonApplication::CreateScene()
 
     // Create randomly sized boxes. If boxes are big enough, make them occluders
     Node* boxGroup = scene_->CreateChild( "Boxes" );
-    for ( unsigned i = 0; i < 20; ++i )
-    {
-        Node* boxNode = boxGroup->CreateChild( "Box" );
-        float size    = 1.0f + Random( 10.0f );
-        boxNode->SetPosition( Vector3( Random( 80.0f ) - 40.0f, size * 0.5f, Random( 80.0f ) - 40.0f ) );
-        boxNode->SetScale( size );
-        auto* boxObject = boxNode->CreateComponent< StaticModel >();
-        boxObject->SetModel( cache->GetResource< Model >( "Models/Box.mdl" ) );
-        boxObject->SetMaterial( cache->GetResource< Material >( "Materials/Stone.xml" ) );
-        boxObject->SetCastShadows( true );
-        if ( size >= 3.0f )
-            boxObject->SetOccluder( true );
-    }
     //
     axes_node_ = scene_->CreateChild( "Axes" );
     axes_node_->SetPosition( Vector3( 0.0f, 10.0f, 0.0f ) );
@@ -469,8 +456,8 @@ void CommonApplication::AxesNodeAttributeUi()
 //
 void CommonApplication::ChartUi()
 {
-    ui::SetNextWindowSize( ImVec2( 930, 950 ), ImGuiCond_FirstUseEver );
-    ui::SetNextWindowPos( ImVec2( 0, winSizeY_ - 950 ), ImGuiCond_FirstUseEver );
+    ui::SetNextWindowSize( ImVec2( 910, 926 ), ImGuiCond_FirstUseEver );
+    ui::SetNextWindowPos( ImVec2( 0, winSizeY_ - 926 ), ImGuiCond_FirstUseEver );
     //
     if ( ui::Begin( "IMU Chart", NULL, ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoScrollbar ) )
     {
