@@ -6,6 +6,14 @@
 #include <string>
 #include <vector>
 //
+// 以微秒级精度获取当前时间戳
+static int64_t getMicrosecondTimestamp()
+{
+    auto now      = std::chrono::system_clock::now();
+    auto duration = now.time_since_epoch();
+    return std::chrono::duration_cast< std::chrono::microseconds >( duration ).count();
+}
+//
 static std::vector< std::string > splitString( const std::string& str, char delimiter )
 {
     std::vector< std::string > result;

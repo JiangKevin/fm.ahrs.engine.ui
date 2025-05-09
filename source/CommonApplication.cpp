@@ -3,6 +3,7 @@
 #include "component/FmFreeFlyController.h"
 #include "font/IconsFontAwesome6.h"
 #include "font/IconsMaterialDesignIcons.h"
+#include "implot/implot.h"
 #include <Urho3D/Core/CoreEvents.h>
 #include <Urho3D/Core/ProcessUtils.h>
 #include <Urho3D/DebugNew.h>
@@ -31,7 +32,6 @@
 #include <Urho3D/UI/Text.h>
 #include <Urho3D/UI/UI.h>
 #include <emscripten.h>
-#include "implot/implot.h"
 //
 //
 EM_JS( int, get_canvas_w, (), { return document.getElementById( "canvas" ).offsetWidth; } );
@@ -333,6 +333,7 @@ void CommonApplication::RenderUi()
 {
     WebsocketUi();
     AxesNodeAttributeUi();
+    //
     ImPlot::ShowDemoWindow();
 }
 //
@@ -396,11 +397,13 @@ void CommonApplication::WebsocketUi()
         if ( ui::Button( "Send Start", ImVec2( btn_w, 16 ) ) )
         {
             emscripten_websocket_send_utf8_text( socket, "Start" );
+            start_time = getMicrosecondTimestamp();
         };
         ui::SameLine();
         if ( ui::Button( "Send Pause", ImVec2( btn_w, 16 ) ) )
         {
             emscripten_websocket_send_utf8_text( socket, "Pause" );
+            start_time = getMicrosecondTimestamp();
         };
         ui::SameLine();
         if ( ui::Button( "Send Clear", ImVec2( btn_w, 16 ) ) )
@@ -411,6 +414,7 @@ void CommonApplication::WebsocketUi()
         if ( ui::Button( "Send Reset", ImVec2( btn_w, 16 ) ) )
         {
             emscripten_websocket_send_utf8_text( socket, "Reset" );
+            start_time = getMicrosecondTimestamp();
         };
         ui::SameLine();
         if ( ui::Button( "Send Stop", ImVec2( btn_w, 16 ) ) )
@@ -424,7 +428,7 @@ void CommonApplication::WebsocketUi()
 //
 void CommonApplication::AxesNodeAttributeUi()
 {
-    ui::SetNextWindowSize( ImVec2( 450, 100 ), ImGuiCond_FirstUseEver );
+    ui::SetNextWindowSize( ImVec2( 450, 500 ), ImGuiCond_FirstUseEver );
     ui::SetNextWindowPos( ImVec2( winSizeX_ - 450, 332 ), ImGuiCond_FirstUseEver );
     //
     if ( ui::Begin( "AxesNode", NULL, ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoResize ) )
@@ -457,6 +461,41 @@ void CommonApplication::AxesNodeAttributeUi()
         ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
         ui::Text( "%f,%f,%f", axes_node_->GetDirection().x_, axes_node_->GetDirection().y_, axes_node_->GetDirection().z_ );
         ui::Separator();
+        //
+        static float time[ 1024 ], x[ 1024 ], y[ 1024 ], z[ 1024 ];
+        //
+        int count = sensor_data_vector.size();
+        for ( int i = 0; i < count; i++ )
+        {
+            time[ i ] = i;
+            x[ i ]    = sensor_data_vector[ i ].pos_x;
+            y[ i ]    = sensor_data_vector[ i ].pos_y;
+            z[ i ]    = sensor_data_vector[ i ].pos_z;
+        }
+        if ( ImPlot::BeginPlot( "X Plot" ) )
+        {
+            ImPlot::PushStyleVar( ImPlotStyleVar_FillAlpha, 0.25f );
+            ImPlot::SetNextMarkerStyle( ImPlotMarker_Square, 6, ImPlot::GetColormapColor( 1 ), IMPLOT_AUTO, ImPlot::GetColormapColor( 1 ) );
+            ImPlot::PlotScatter( "X", time, x, count );
+            ImPlot::PopStyleVar();
+            ImPlot::EndPlot();
+        }
+        if ( ImPlot::BeginPlot( "Y Plot" ) )
+        {
+            ImPlot::PushStyleVar( ImPlotStyleVar_FillAlpha, 0.25f );
+            ImPlot::SetNextMarkerStyle( ImPlotMarker_Square, 6, ImPlot::GetColormapColor( 1 ), IMPLOT_AUTO, ImPlot::GetColormapColor( 1 ) );
+            ImPlot::PlotScatter( "Y", time, y, count );
+            ImPlot::PopStyleVar();
+            ImPlot::EndPlot();
+        }
+        if ( ImPlot::BeginPlot( "Z Plot" ) )
+        {
+            ImPlot::PushStyleVar( ImPlotStyleVar_FillAlpha, 0.25f );
+            ImPlot::SetNextMarkerStyle( ImPlotMarker_Square, 6, ImPlot::GetColormapColor( 1 ), IMPLOT_AUTO, ImPlot::GetColormapColor( 1 ) );
+            ImPlot::PlotScatter( "Z", time, z, count );
+            ImPlot::PopStyleVar();
+            ImPlot::EndPlot();
+        }
     }
     ui::End();
 }
