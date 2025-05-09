@@ -31,6 +31,7 @@
 #include <Urho3D/UI/Text.h>
 #include <Urho3D/UI/UI.h>
 #include <emscripten.h>
+#include "implot/implot.h"
 //
 //
 EM_JS( int, get_canvas_w, (), { return document.getElementById( "canvas" ).offsetWidth; } );
@@ -71,6 +72,7 @@ void CommonApplication::Start()
     //
     FmRegisterOjbj();
     setup_style_of_imgui();
+    ImPlot::CreateContext();
     //
     CreateScene();
     //
@@ -84,7 +86,7 @@ void CommonApplication::Start()
 }
 void CommonApplication::Stop()
 {
-    //
+    ImPlot::DestroyContext();
 }
 
 void CommonApplication::Update( StringHash eventType, VariantMap& eventData )
@@ -331,6 +333,7 @@ void CommonApplication::RenderUi()
 {
     WebsocketUi();
     AxesNodeAttributeUi();
+    ImPlot::ShowDemoWindow();
 }
 //
 void CommonApplication::WebsocketUi()

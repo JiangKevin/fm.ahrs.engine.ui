@@ -46,7 +46,9 @@ file(GLOB app_src
     source/*.cpp
     source/*.cxx
     source/component/*.cpp
+    source/imguiDemo/*.cpp
     source/implot/*.cpp
+
     source/implot3d/*.cpp
 )
 
