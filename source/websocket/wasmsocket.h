@@ -6,16 +6,18 @@
 #include <stdio.h>
 #include <stdlib.h>
 //
-struct WASM_SOCKET_DATA
-{
-    eastl::string                     websocket_staus           = "\xf3\xb1\x98\x96";
-    eastl::string                     websocket_receive_message = "";
-    LockFreeMessageQueue< SENSOR_DB > sensor_data_queue;
-};
+// struct WASM_SOCKET_DATA
+// {
+//     eastl::string                     websocket_staus           = "\xf3\xb1\x98\x96";
+//     eastl::string                     websocket_receive_message = "";
+//     LockFreeMessageQueue< SENSOR_DB > sensor_data_queue;
+// };
 // 全局的变量
-static eastl::string websocket_staus           = "\xf3\xb1\x98\x96";
-static eastl::string websocket_receive_message = "";
-static WASM_SOCKET_DATA wasm_socket_data_;
+static eastl::string websocket_staus                    = "\xf3\xb1\x98\x96";
+static eastl::string websocket_receive_message          = "";
+static eastl::string websocket_receive_message_original = "";
+
+static LockFreeMessageQueue< SENSOR_DB > sensor_data_queue;
 //
 
 static EM_BOOL WebSocketOpen( int eventType, const EmscriptenWebSocketOpenEvent* e, void* userData )
@@ -58,7 +60,22 @@ static EM_BOOL WebSocketMessage( int eventType, const EmscriptenWebSocketMessage
     if ( e->isText )
     {
         // printf( "text data: \"%s\"\n", e->data );
-        websocket_receive_message = ( char* )e->data;
+        websocket_receive_message_original = ( char* )e->data;
+        //
+        if ( ( websocket_receive_message_original != "Stoped" ) && ( websocket_receive_message_original != "Connected" ) )
+        {
+            //
+            SENSOR_DB new_sensor_db;
+            new_sensor_db.getValueFromString( websocket_receive_message_original.c_str() );
+            //
+            // sensor_data_queue.enqueue( new_sensor_db );
+            //
+            websocket_receive_message = new_sensor_db.to_info().c_str();
+        }
+        else
+        {
+            websocket_receive_message = websocket_receive_message_original;
+        }
     }
     else
     {

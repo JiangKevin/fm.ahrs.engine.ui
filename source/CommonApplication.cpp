@@ -328,10 +328,10 @@ void CommonApplication::setup_style_of_imgui()
 void CommonApplication::RenderUi()
 {
 
-    ui::SetNextWindowSize( ImVec2( 300, 230 ), ImGuiCond_FirstUseEver );
-    ui::SetNextWindowPos( ImVec2( winSizeX_ - 300, 0 ), ImGuiCond_FirstUseEver );
+    ui::SetNextWindowSize( ImVec2( 450, 330 ), ImGuiCond_FirstUseEver );
+    ui::SetNextWindowPos( ImVec2( winSizeX_ - 450, 0 ), ImGuiCond_FirstUseEver );
     //
-    if ( ui::Begin( "WebSocket", NULL, ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoScrollbar ) )
+    if ( ui::Begin( "WebSocket", NULL, ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoResize ) )
     {
         static eastl::string ip_str   = "192.168.254.115";
         static eastl::string port_str = "18080";
@@ -364,10 +364,10 @@ void CommonApplication::RenderUi()
         };
         ui::Separator();
         //
-        ui::InputTextMultiline( "##RMSG", &websocket_receive_message, ImVec2( ImGui::GetContentRegionAvail().x, 100 ) );
+        ui::InputTextMultiline( "##RMSG", &websocket_receive_message, ImVec2( ImGui::GetContentRegionAvail().x, 200 ) );
         ui::Separator();
         //
-        int btn_w = 80;
+        int btn_w = 90;
         ui::Text( "SMsg" );
         ui::SameLine( 50 );
         ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x - btn_w );
@@ -384,9 +384,9 @@ void CommonApplication::RenderUi()
             emscripten_websocket_send_utf8_text( socket, "Start" );
         };
         ui::SameLine();
-        if ( ui::Button( "Send Stop", ImVec2( btn_w, 16 ) ) )
+        if ( ui::Button( "Send Pause", ImVec2( btn_w, 16 ) ) )
         {
-            emscripten_websocket_send_utf8_text( socket, "Stop" );
+            emscripten_websocket_send_utf8_text( socket, "Pause" );
         };
         ui::SameLine();
         if ( ui::Button( "Send Clear", ImVec2( btn_w, 16 ) ) )
@@ -397,6 +397,11 @@ void CommonApplication::RenderUi()
         if ( ui::Button( "Send Reset", ImVec2( btn_w, 16 ) ) )
         {
             emscripten_websocket_send_utf8_text( socket, "Reset" );
+        };
+        ui::SameLine();
+        if ( ui::Button( "Send Stop", ImVec2( btn_w, 16 ) ) )
+        {
+            emscripten_websocket_send_utf8_text( socket, "Stop" );
         };
         ui::Separator();
     }
