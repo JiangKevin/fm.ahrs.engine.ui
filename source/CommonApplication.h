@@ -64,6 +64,7 @@ public:
     void RenderUi();
     void WebsocketUi();
     void AxesNodeAttributeUi();
+    void ChartUi();
 
     //
     void ToCtrlAxesNode();
