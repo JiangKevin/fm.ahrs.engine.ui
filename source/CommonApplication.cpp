@@ -342,7 +342,7 @@ void CommonApplication::WebsocketUi()
     ui::SetNextWindowSize( ImVec2( 450, 330 ), ImGuiCond_FirstUseEver );
     ui::SetNextWindowPos( ImVec2( winSizeX_ - 450, 0 ), ImGuiCond_FirstUseEver );
     //
-    if ( ui::Begin( "WebSocket", NULL, ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoResize ) )
+    if ( ui::Begin( "WebSocket", NULL, ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoScrollbar ) )
     {
         static eastl::string ip_str   = "192.168.254.115";
         static eastl::string port_str = "18080";
@@ -431,7 +431,7 @@ void CommonApplication::AxesNodeAttributeUi()
     ui::SetNextWindowSize( ImVec2( 450, winSizeY_ - 332 ), ImGuiCond_FirstUseEver );
     ui::SetNextWindowPos( ImVec2( winSizeX_ - 450, 332 ), ImGuiCond_FirstUseEver );
     //
-    if ( ui::Begin( "AxesNode", NULL, ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoResize ) )
+    if ( ui::Begin( "AxesNode", NULL, ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoScrollbar ) )
     {
         auto win_size       = ImGui::GetContentRegionAvail();
         int  segmentation_w = 100;
@@ -472,34 +472,33 @@ void CommonApplication::AxesNodeAttributeUi()
             y[ i ]    = sensor_data_vector[ i ].pos_y;
             z[ i ]    = sensor_data_vector[ i ].pos_z;
         }
-        if ( ImPlot::BeginPlot( "X Plot" ) )
+        if ( ImPlot::BeginPlot( "X Plot", ImVec2( -1, 0 ), ImPlotAxisFlags_AutoFit ) )
         {
             ImPlot::SetupAxes( "Index", "X" );
-            ImPlot::SetupAxisLimits(ImAxis_X1, IMPLOT_AUTO, IMPLOT_AUTO);
-            ImPlot::SetupAxisLimits(ImAxis_Y1, IMPLOT_AUTO, IMPLOT_AUTO);
+            // ImPlot::SetupAxisLimits(ImAxis_X1, IMPLOT_AUTO, IMPLOT_AUTO);
+            // ImPlot::SetupAxisLimits(ImAxis_Y1, IMPLOT_AUTO, IMPLOT_AUTO);
             ImPlot::SetNextMarkerStyle( ImPlotMarker_Cross );
             ImPlot::SetNextFillStyle( IMPLOT_AUTO_COL, 0.25f );
             ImPlot::PlotStairs( "Position X", x, count, 0.05f, 0 );
 
             ImPlot::EndPlot();
         }
-        if ( ImPlot::BeginPlot( "Y Plot" ) )
+        if ( ImPlot::BeginPlot( "Y Plot", ImVec2( -1, 0 ), ImPlotAxisFlags_AutoFit ) )
         {
             ImPlot::SetupAxes( "Index", "Y" );
-            ImPlot::SetupAxisLimits(ImAxis_X1, IMPLOT_AUTO, IMPLOT_AUTO);
-            ImPlot::SetupAxisLimits(ImAxis_Y1, IMPLOT_AUTO, IMPLOT_AUTO);
+            // ImPlot::SetupAxisLimits(ImAxis_X1, IMPLOT_AUTO, IMPLOT_AUTO);
+            // ImPlot::SetupAxisLimits(ImAxis_Y1, IMPLOT_AUTO, IMPLOT_AUTO);
             ImPlot::SetNextMarkerStyle( ImPlotMarker_Cross );
             ImPlot::SetNextFillStyle( IMPLOT_AUTO_COL, 0.25f );
             ImPlot::PlotStairs( "Position Y", y, count, 0.05f, 0 );
 
             ImPlot::EndPlot();
         }
-        if ( ImPlot::BeginPlot( "Z Plot" ) )
+        if ( ImPlot::BeginPlot( "Z Plot", ImVec2( -1, 0 ), ImPlotAxisFlags_AutoFit ) )
         {
             ImPlot::SetupAxes( "Index", "Z" );
-            ImPlot::SetupAxisLimits(ImAxis_X1, IMPLOT_AUTO, IMPLOT_AUTO);
-            ImPlot::SetupAxisLimits(ImAxis_Y1, IMPLOT_AUTO, IMPLOT_AUTO);
-
+            // ImPlot::SetupAxisLimits(ImAxis_X1, IMPLOT_AUTO, IMPLOT_AUTO);
+            // ImPlot::SetupAxisLimits(ImAxis_Y1, IMPLOT_AUTO, IMPLOT_AUTO);
             ImPlot::SetNextMarkerStyle( ImPlotMarker_Cross );
             ImPlot::SetNextFillStyle( IMPLOT_AUTO_COL, 0.25f );
             ImPlot::PlotStairs( "Position Z", z, count, 0.05f, 0 );
