@@ -333,7 +333,7 @@ void CommonApplication::RenderUi()
     //
     if ( ui::Begin( "WebSocket", NULL, ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoScrollbar ) )
     {
-        static eastl::string ip_str   = "192.168.254.116";
+        static eastl::string ip_str   = "192.168.254.115";
         static eastl::string port_str = "18080";
         static eastl::string smsg_str = "hello on the other side";
         // static eastl::string rmsg_str = "receive on the server";

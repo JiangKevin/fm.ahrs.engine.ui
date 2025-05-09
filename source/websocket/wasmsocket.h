@@ -57,7 +57,7 @@ static EM_BOOL WebSocketMessage( int eventType, const EmscriptenWebSocketMessage
     //
     if ( e->isText )
     {
-        printf( "text data: \"%s\"\n", e->data );
+        // printf( "text data: \"%s\"\n", e->data );
         websocket_receive_message = ( char* )e->data;
     }
     else
