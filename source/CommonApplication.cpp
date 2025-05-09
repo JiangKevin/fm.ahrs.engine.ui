@@ -337,7 +337,7 @@ void CommonApplication::RenderUi()
         static eastl::string port_str = "18080";
         static eastl::string smsg_str = "hello on the other side";
         // static eastl::string rmsg_str = "receive on the server";
-        auto                 win_size = ImGui::GetContentRegionAvail();
+        auto win_size = ImGui::GetContentRegionAvail();
         //
         ui::Spacing();
         //
@@ -367,16 +367,38 @@ void CommonApplication::RenderUi()
         ui::InputTextMultiline( "##RMSG", &websocket_receive_message, ImVec2( ImGui::GetContentRegionAvail().x, 100 ) );
         ui::Separator();
         //
+        int btn_w = 80;
         ui::Text( "SMsg" );
         ui::SameLine( 50 );
-        ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
+        ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x - btn_w );
         ui::InputText( "##SMSG", &smsg_str );
-        ui::Separator();
-        //
-        if ( ui::Button( "Send Message", ImVec2( ImGui::GetContentRegionAvail().x, 16 ) ) )
+        ui::SameLine();
+        if ( ui::Button( "Send Message", ImVec2( btn_w, 16 ) ) )
         {
             emscripten_websocket_send_utf8_text( socket, smsg_str.c_str() );
         };
+        ui::Separator();
+        //
+        if ( ui::Button( "Send Start", ImVec2( btn_w, 16 ) ) )
+        {
+            emscripten_websocket_send_utf8_text( socket, "Start" );
+        };
+        ui::SameLine();
+        if ( ui::Button( "Send Stop", ImVec2( btn_w, 16 ) ) )
+        {
+            emscripten_websocket_send_utf8_text( socket, "Stop" );
+        };
+        ui::SameLine();
+        if ( ui::Button( "Send Clear", ImVec2( btn_w, 16 ) ) )
+        {
+            emscripten_websocket_send_utf8_text( socket, "Clear" );
+        };
+        ui::SameLine();
+        if ( ui::Button( "Send Reset", ImVec2( btn_w, 16 ) ) )
+        {
+            emscripten_websocket_send_utf8_text( socket, "Reset" );
+        };
+        ui::Separator();
     }
     ui::End();
 }
