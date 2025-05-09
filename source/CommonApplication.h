@@ -64,9 +64,12 @@ public:
     void RenderUi();
     void WebsocketUi();
     void AxesNodeAttributeUi();
+
     //
     void ToCtrlAxesNode();
+    void DrawPoints();
 public:
     void HandleMouseDown( StringHash eventType, VariantMap& eventData );
     void HandleKeyDown( StringHash /*eventType*/, VariantMap& eventData );
+    void HandlePostRenderUpdate( StringHash eventType, VariantMap& eventData );
 };

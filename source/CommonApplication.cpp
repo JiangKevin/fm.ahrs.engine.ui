@@ -83,6 +83,7 @@ void CommonApplication::Start()
     // Subscribe key down event
     SubscribeToEvent( input, E_KEYDOWN, URHO3D_HANDLER( CommonApplication, HandleKeyDown ) );
     SubscribeToEvent( E_UPDATE, URHO3D_HANDLER( CommonApplication, Update ) );
+    SubscribeToEvent( E_POSTRENDERUPDATE, URHO3D_HANDLER( CommonApplication, HandlePostRenderUpdate ) );
 }
 void CommonApplication::Stop()
 {
@@ -472,7 +473,7 @@ void CommonApplication::AxesNodeAttributeUi()
             y[ i ]    = sensor_data_vector[ i ].pos_y;
             z[ i ]    = sensor_data_vector[ i ].pos_z;
         }
-        if ( ImPlot::BeginPlot( "X Plot", ImVec2( -1, 0 ), ImPlotAxisFlags_AutoFit ) )
+        if ( ImPlot::BeginPlot( "X Plot", ImVec2( -1, 0 ) ) )
         {
             ImPlot::SetupAxes( "Index", "X", ImPlotAxisFlags_AutoFit );
             ImPlot::SetNextMarkerStyle( ImPlotMarker_Cross );
@@ -481,7 +482,7 @@ void CommonApplication::AxesNodeAttributeUi()
 
             ImPlot::EndPlot();
         }
-        if ( ImPlot::BeginPlot( "Y Plot", ImVec2( -1, 0 ), ImPlotAxisFlags_AutoFit ) )
+        if ( ImPlot::BeginPlot( "Y Plot", ImVec2( -1, 0 ) ) )
         {
             ImPlot::SetupAxes( "Index", "Y", ImPlotAxisFlags_AutoFit );
             ImPlot::SetNextMarkerStyle( ImPlotMarker_Cross );
@@ -490,7 +491,7 @@ void CommonApplication::AxesNodeAttributeUi()
 
             ImPlot::EndPlot();
         }
-        if ( ImPlot::BeginPlot( "Z Plot", ImVec2( -1, 0 ), ImPlotAxisFlags_AutoFit ) )
+        if ( ImPlot::BeginPlot( "Z Plot", ImVec2( -1, 0 ) ) )
         {
             ImPlot::SetupAxes( "Index", "Z", ImPlotAxisFlags_AutoFit );
             ImPlot::SetNextMarkerStyle( ImPlotMarker_Cross );
@@ -515,4 +516,18 @@ void CommonApplication::ToCtrlAxesNode()
         //
         sensor_data_queue.pop();
     }
+}
+//
+void CommonApplication::DrawPoints()
+{
+    auto* debug = scene_->GetComponent< DebugRenderer >();
+    int   count = sensor_data_vector.size();
+    for ( int i = 0; i < count; i++ )
+    {
+        debug->AddSphere( Sphere( Vector3( sensor_data_vector[ i ].pos_x, sensor_data_vector[ i ].pos_y, sensor_data_vector[ i ].pos_z ), 0.1f ), Color( 1.0f, 1.0f, 1.0f ) );
+    }
+}
+void CommonApplication::HandlePostRenderUpdate( StringHash eventType, VariantMap& eventData )
+{
+    DrawPoints();
 }
