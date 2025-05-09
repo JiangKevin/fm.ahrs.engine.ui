@@ -1,10 +1,15 @@
 #pragma once
 //
-#include "queue/lock_free_message_queue.h"
 #include "queue/sensor_db.h"
+#include <boost/lockfree/queue.hpp>
 #include <emscripten/websocket.h>
+#include <iostream>
+#include <mutex>
+#include <queue>
 #include <stdio.h>
 #include <stdlib.h>
+#include <thread>
+#include <vector>
 //
 // struct WASM_SOCKET_DATA
 // {
@@ -17,7 +22,9 @@ static eastl::string websocket_staus                    = "\xf3\xb1\x98\x96";
 static eastl::string websocket_receive_message          = "";
 static eastl::string websocket_receive_message_original = "";
 
-static LockFreeMessageQueue< SENSOR_DB > sensor_data_queue;
+//
+static std::queue< SENSOR_DB > sensor_data_queue;
+static std::mutex              queue_mutex;
 //
 
 static EM_BOOL WebSocketOpen( int eventType, const EmscriptenWebSocketOpenEvent* e, void* userData )
@@ -68,7 +75,8 @@ static EM_BOOL WebSocketMessage( int eventType, const EmscriptenWebSocketMessage
             SENSOR_DB new_sensor_db;
             new_sensor_db.getValueFromString( websocket_receive_message_original.c_str() );
             //
-            // sensor_data_queue.enqueue( new_sensor_db );
+            std::lock_guard< std::mutex > lock( queue_mutex );
+            sensor_data_queue.push( new_sensor_db );
             //
             websocket_receive_message = new_sensor_db.to_info().c_str();
         }

@@ -62,6 +62,10 @@ public:
     void CreateSocket( eastl::string url );
     void setup_style_of_imgui();
     void RenderUi();
+    void WebsocketUi();
+    void AxesNodeAttributeUi();
+    //
+    void ToCtrlAxesNode();
 public:
     void HandleMouseDown( StringHash eventType, VariantMap& eventData );
     void HandleKeyDown( StringHash /*eventType*/, VariantMap& eventData );

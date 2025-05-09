@@ -90,6 +90,8 @@ void CommonApplication::Stop()
 void CommonApplication::Update( StringHash eventType, VariantMap& eventData )
 {
     RenderUi();
+    //
+    ToCtrlAxesNode();
 }
 void CommonApplication::HandleMouseDown( StringHash eventType, VariantMap& eventData ){
     //
@@ -327,7 +329,12 @@ void CommonApplication::setup_style_of_imgui()
 //
 void CommonApplication::RenderUi()
 {
-
+    WebsocketUi();
+    AxesNodeAttributeUi();
+}
+//
+void CommonApplication::WebsocketUi()
+{
     ui::SetNextWindowSize( ImVec2( 450, 330 ), ImGuiCond_FirstUseEver );
     ui::SetNextWindowPos( ImVec2( winSizeX_ - 450, 0 ), ImGuiCond_FirstUseEver );
     //
@@ -337,25 +344,26 @@ void CommonApplication::RenderUi()
         static eastl::string port_str = "18080";
         static eastl::string smsg_str = "hello on the other side";
         // static eastl::string rmsg_str = "receive on the server";
-        auto win_size = ImGui::GetContentRegionAvail();
+        auto win_size       = ImGui::GetContentRegionAvail();
+        int  segmentation_w = 80;
         //
         ui::Spacing();
         //
         ui::Text( "IP" );
-        ui::SameLine( 50 );
+        ui::SameLine( segmentation_w );
         ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
         ui::InputText( "##ip", &ip_str );
         ui::Separator();
         //
         ui::Text( "Port" );
-        ui::SameLine( 50 );
+        ui::SameLine( segmentation_w );
         ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
         ui::InputText( "##Port", &port_str );
         ui::Separator();
 
         //
         ui::Text( websocket_staus.c_str() );
-        ui::SameLine( 50 );
+        ui::SameLine( segmentation_w );
         if ( ui::Button( "Connect", ImVec2( ImGui::GetContentRegionAvail().x, 16 ) ) )
         {
             eastl::string url = "ws://" + ip_str + ":" + port_str + "/";
@@ -369,7 +377,7 @@ void CommonApplication::RenderUi()
         //
         int btn_w = 90;
         ui::Text( "SMsg" );
-        ui::SameLine( 50 );
+        ui::SameLine( segmentation_w );
         ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x - btn_w );
         ui::InputText( "##SMSG", &smsg_str );
         ui::SameLine();
@@ -406,4 +414,51 @@ void CommonApplication::RenderUi()
         ui::Separator();
     }
     ui::End();
+}
+//
+void CommonApplication::AxesNodeAttributeUi()
+{
+    ui::SetNextWindowSize( ImVec2( 450, 100 ), ImGuiCond_FirstUseEver );
+    ui::SetNextWindowPos( ImVec2( winSizeX_ - 450, 452 ), ImGuiCond_FirstUseEver );
+    //
+    if ( ui::Begin( "AxesNode", NULL, ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoResize ) )
+    {
+        auto win_size       = ImGui::GetContentRegionAvail();
+        int  segmentation_w = 80;
+        //
+        ui::Spacing();
+        //
+        ui::Text( "Queue Size" );
+        ui::SameLine( segmentation_w );
+        ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
+        ui::Text( "%d", sensor_data_queue.size() );
+        ui::Separator();
+        //
+        ui::Text( "Position" );
+        ui::SameLine( segmentation_w );
+        ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
+        ui::Text( "%f,%f,%f", axes_node_->GetPosition().x_, axes_node_->GetPosition().y_, axes_node_->GetPosition().z_ );
+        ui::Separator();
+        //
+        ui::Text( "Direction" );
+        ui::SameLine( segmentation_w );
+        ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
+        ui::Text( "%f,%f,%f", axes_node_->GetDirection().x_, axes_node_->GetDirection().y_, axes_node_->GetDirection().z_ );
+        ui::Separator();
+    }
+    ui::End();
+}
+//
+void CommonApplication::ToCtrlAxesNode()
+{
+    std::lock_guard< std::mutex > lock( queue_mutex );
+    if ( ! sensor_data_queue.empty() )
+    {
+        SENSOR_DB new_sensor_db = sensor_data_queue.front();
+        //
+        axes_node_->SetRotation( Quaternion( new_sensor_db.roll, new_sensor_db.yaw, new_sensor_db.pitch ) );
+        axes_node_->SetPosition( Vector3( new_sensor_db.pos_x, new_sensor_db.pos_y + 10.0f, new_sensor_db.pos_z ) );
+        //
+        sensor_data_queue.pop();
+    }
 }

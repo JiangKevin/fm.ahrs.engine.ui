@@ -26,7 +26,7 @@ export fm_links_exe_flags="\
  -s ASYNCIFY \
  -s FULL_ES2=1 \
  -s FULL_ES3=1 \
- -shared-memory,--no-check-features \
+ --no-check-features \
  -s MIN_WEBGL_VERSION=2 \
  -s MAX_WEBGL_VERSION=2 \
  -s DISABLE_DEPRECATED_FIND_EVENT_TARGET_BEHAVIOR=0 \
@@ -59,6 +59,7 @@ export fm_links_exe_flags="\
  -s USE_PTHREADS=1 \
  -s WASM_BIGINT \
  -Wpthreads-mem-growth \
+ --shared-memory=1 \
  --preload-file ${FmDev}/Resource@/ \
   "
 #
