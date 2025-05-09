@@ -23,8 +23,9 @@ static eastl::string websocket_receive_message          = "";
 static eastl::string websocket_receive_message_original = "";
 
 //
-static std::queue< SENSOR_DB > sensor_data_queue;
-static std::mutex              queue_mutex;
+static std::queue< SENSOR_DB >  sensor_data_queue;
+static std::vector< SENSOR_DB > sensor_data_vector;
+static std::mutex               queue_mutex;
 //
 
 static EM_BOOL WebSocketOpen( int eventType, const EmscriptenWebSocketOpenEvent* e, void* userData )
@@ -77,6 +78,15 @@ static EM_BOOL WebSocketMessage( int eventType, const EmscriptenWebSocketMessage
             new_sensor_db.getValueFromString( websocket_receive_message_original.c_str() );
             //
             sensor_data_queue.push( new_sensor_db );
+            if ( sensor_data_vector.size() < 1024 )
+            {
+                sensor_data_vector.push_back( new_sensor_db );
+            }
+            else
+            {
+                sensor_data_vector.erase( sensor_data_vector.begin() );
+                sensor_data_vector.push_back( new_sensor_db );
+            }
             //
             websocket_receive_message = new_sensor_db.to_info().c_str();
         }

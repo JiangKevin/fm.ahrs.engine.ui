@@ -345,7 +345,7 @@ void CommonApplication::WebsocketUi()
         static eastl::string smsg_str = "hello on the other side";
         // static eastl::string rmsg_str = "receive on the server";
         auto win_size       = ImGui::GetContentRegionAvail();
-        int  segmentation_w = 80;
+        int  segmentation_w = 100;
         //
         ui::Spacing();
         //
@@ -427,7 +427,7 @@ void CommonApplication::AxesNodeAttributeUi()
     if ( ui::Begin( "AxesNode", NULL, ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoResize ) )
     {
         auto win_size       = ImGui::GetContentRegionAvail();
-        int  segmentation_w = 80;
+        int  segmentation_w = 100;
         //
         ui::Spacing();
         //
@@ -435,6 +435,12 @@ void CommonApplication::AxesNodeAttributeUi()
         ui::SameLine( segmentation_w );
         ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
         ui::Text( "%d", sensor_data_queue.size() );
+        ui::Separator();
+        //
+        ui::Text( "Vector Size" );
+        ui::SameLine( segmentation_w );
+        ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
+        ui::Text( "%d", sensor_data_vector.size() );
         ui::Separator();
         //
         ui::Text( "Position" );
