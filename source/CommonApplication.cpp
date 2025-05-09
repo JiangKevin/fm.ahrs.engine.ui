@@ -430,7 +430,7 @@ void CommonApplication::WebsocketUi()
 //
 void CommonApplication::AxesNodeAttributeUi()
 {
-    ui::SetNextWindowSize( ImVec2( 450, 240 ), ImGuiCond_FirstUseEver );
+    ui::SetNextWindowSize( ImVec2( 450, 90 ), ImGuiCond_FirstUseEver );
     ui::SetNextWindowPos( ImVec2( winSizeX_ - 450, 332 ), ImGuiCond_FirstUseEver );
     //
     if ( ui::Begin( "AxesNode", NULL, ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoScrollbar ) )
@@ -469,10 +469,10 @@ void CommonApplication::AxesNodeAttributeUi()
 //
 void CommonApplication::ChartUi()
 {
-    ui::SetNextWindowSize( ImVec2( 1350, 900 ), ImGuiCond_FirstUseEver );
-    ui::SetNextWindowPos( ImVec2( 0, winSizeY_ - 900 ), ImGuiCond_FirstUseEver );
+    ui::SetNextWindowSize( ImVec2( 930, 950 ), ImGuiCond_FirstUseEver );
+    ui::SetNextWindowPos( ImVec2( 0, winSizeY_ - 950 ), ImGuiCond_FirstUseEver );
     //
-    if ( ui::Begin( "AxesNode", NULL, ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoScrollbar ) )
+    if ( ui::Begin( "IMU Chart", NULL, ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoScrollbar ) )
     {
         //
         static float time[ 1024 ], eax[ 1024 ], eay[ 1024 ], eaz[ 1024 ], evx[ 1024 ], evy[ 1024 ], evz[ 1024 ], px[ 1024 ], py[ 1024 ], pz[ 1024 ];
@@ -481,7 +481,7 @@ void CommonApplication::ChartUi()
         for ( int i = 0; i < count; i++ )
         {
             time[ i ] = i;
-
+            //
             eax[ i ] = sensor_data_vector[ i ].eacc_x;
             eay[ i ] = sensor_data_vector[ i ].eacc_y;
             eaz[ i ] = sensor_data_vector[ i ].eacc_z;
@@ -494,93 +494,94 @@ void CommonApplication::ChartUi()
             py[ i ] = sensor_data_vector[ i ].pos_y;
             pz[ i ] = sensor_data_vector[ i ].pos_z;
         }
-        // --------- pos
-        if ( ImPlot::BeginPlot( "X Position", ImVec2( -1, 0 ) ) )
-        {
-            ImPlot::SetupAxes( "Index", "X", ImPlotAxisFlags_AutoFit );
-            ImPlot::SetNextMarkerStyle( ImPlotMarker_Cross );
-            ImPlot::SetNextFillStyle( IMPLOT_AUTO_COL, 0.25f );
-            ImPlot::PlotStairs( "Position X", px, count, 0.05f, 0, ImPlotAxisFlags_AutoFit );
 
-            ImPlot::EndPlot();
-        }
-        ui::SameLine();
-        if ( ImPlot::BeginPlot( "Y Position", ImVec2( -1, 0 ) ) )
-        {
-            ImPlot::SetupAxes( "Index", "Y", ImPlotAxisFlags_AutoFit );
-            ImPlot::SetNextMarkerStyle( ImPlotMarker_Cross );
-            ImPlot::SetNextFillStyle( IMPLOT_AUTO_COL, 0.25f );
-            ImPlot::PlotStairs( "Position Y", py, count, 0.05f, 0, ImPlotAxisFlags_AutoFit );
-
-            ImPlot::EndPlot();
-        }
-        ui::SameLine();
-        if ( ImPlot::BeginPlot( "Z Position", ImVec2( -1, 0 ) ) )
-        {
-            ImPlot::SetupAxes( "Index", "Z", ImPlotAxisFlags_AutoFit );
-            ImPlot::SetNextMarkerStyle( ImPlotMarker_Cross );
-            ImPlot::SetNextFillStyle( IMPLOT_AUTO_COL, 0.25f );
-            ImPlot::PlotStairs( "Position Z", pz, count, 0.05f, 0, ImPlotAxisFlags_AutoFit );
-
-            ImPlot::EndPlot();
-        }
         //  ------------------ ea
-        if ( ImPlot::BeginPlot( "X Acceleration", ImVec2( -1, 0 ) ) )
+        if ( ImPlot::BeginPlot( "X Acceleration", ImVec2( 300, 300 ) ) )
         {
-            ImPlot::SetupAxes( "Index", "X", ImPlotAxisFlags_AutoFit );
+            ImPlot::SetupAxes( "Index", "X", ImPlotAxisFlags_AutoFit,ImPlotAxisFlags_AutoFit );
             ImPlot::SetNextMarkerStyle( ImPlotMarker_Cross );
             ImPlot::SetNextFillStyle( IMPLOT_AUTO_COL, 0.25f );
-            ImPlot::PlotStairs( "Acceleration X", eax, count, 0.05f, 0, ImPlotAxisFlags_AutoFit );
+            ImPlot::PlotStairs( "Acceleration X", eax, count, 0.05f, 0 );
 
             ImPlot::EndPlot();
         }
         ui::SameLine();
-        if ( ImPlot::BeginPlot( "Y Acceleration", ImVec2( -1, 0 ) ) )
+        if ( ImPlot::BeginPlot( "Y Acceleration", ImVec2( 300, 300 ) ) )
         {
-            ImPlot::SetupAxes( "Index", "Y", ImPlotAxisFlags_AutoFit );
+            ImPlot::SetupAxes( "Index", "Y", ImPlotAxisFlags_AutoFit,ImPlotAxisFlags_AutoFit );
             ImPlot::SetNextMarkerStyle( ImPlotMarker_Cross );
             ImPlot::SetNextFillStyle( IMPLOT_AUTO_COL, 0.25f );
-            ImPlot::PlotStairs( "Acceleration Y", eay, count, 0.05f, 0, ImPlotAxisFlags_AutoFit );
+            ImPlot::PlotStairs( "Acceleration Y", eay, count, 0.05f, 0 );
 
             ImPlot::EndPlot();
         }
         ui::SameLine();
-        if ( ImPlot::BeginPlot( "Z Acceleration", ImVec2( -1, 0 ) ) )
+        if ( ImPlot::BeginPlot( "Z Acceleration", ImVec2( 300, 300 ) ) )
         {
-            ImPlot::SetupAxes( "Index", "Z", ImPlotAxisFlags_AutoFit );
+            ImPlot::SetupAxes( "Index", "Z", ImPlotAxisFlags_AutoFit,ImPlotAxisFlags_AutoFit );
             ImPlot::SetNextMarkerStyle( ImPlotMarker_Cross );
             ImPlot::SetNextFillStyle( IMPLOT_AUTO_COL, 0.25f );
-            ImPlot::PlotStairs( "Acceleration Z", eaz, count, 0.05f, 0, ImPlotAxisFlags_AutoFit );
+            ImPlot::PlotStairs( "Acceleration Z", eaz, count, 0.05f, 0 );
 
             ImPlot::EndPlot();
         }
         //  ------------------ ev
-        if ( ImPlot::BeginPlot( "X Speed", ImVec2( -1, 0 ) ) )
+        if ( ImPlot::BeginPlot( "X Speed", ImVec2( 300, 300 ) ) )
         {
-            ImPlot::SetupAxes( "Index", "X", ImPlotAxisFlags_AutoFit );
+            ImPlot::SetupAxes( "Index", "X", ImPlotAxisFlags_AutoFit,ImPlotAxisFlags_AutoFit );
             ImPlot::SetNextMarkerStyle( ImPlotMarker_Cross );
             ImPlot::SetNextFillStyle( IMPLOT_AUTO_COL, 0.25f );
-            ImPlot::PlotStairs( "Speed X", evx, count, 0.05f, 0, ImPlotAxisFlags_AutoFit );
+            ImPlot::PlotStairs( "Speed X", evx, count, 0.05f, 0 );
 
             ImPlot::EndPlot();
         }
         ui::SameLine();
-        if ( ImPlot::BeginPlot( "Y Speed", ImVec2( -1, 0 ) ) )
+        if ( ImPlot::BeginPlot( "Y Speed", ImVec2( 300, 300 ) ) )
         {
-            ImPlot::SetupAxes( "Index", "Y", ImPlotAxisFlags_AutoFit );
+            ImPlot::SetupAxes( "Index", "Y", ImPlotAxisFlags_AutoFit,ImPlotAxisFlags_AutoFit );
             ImPlot::SetNextMarkerStyle( ImPlotMarker_Cross );
             ImPlot::SetNextFillStyle( IMPLOT_AUTO_COL, 0.25f );
-            ImPlot::PlotStairs( "Speed Y", evy, count, 0.05f, 0, ImPlotAxisFlags_AutoFit );
+            ImPlot::PlotStairs( "Speed Y", evy, count, 0.05f, 0 );
 
             ImPlot::EndPlot();
         }
         ui::SameLine();
-        if ( ImPlot::BeginPlot( "Z Speed", ImVec2( -1, 0 ) ) )
+        if ( ImPlot::BeginPlot( "Z Speed", ImVec2( 300, 300 ) ) )
         {
-            ImPlot::SetupAxes( "Index", "Z", ImPlotAxisFlags_AutoFit );
+            ImPlot::SetupAxes( "Index", "Z", ImPlotAxisFlags_AutoFit,ImPlotAxisFlags_AutoFit );
             ImPlot::SetNextMarkerStyle( ImPlotMarker_Cross );
             ImPlot::SetNextFillStyle( IMPLOT_AUTO_COL, 0.25f );
-            ImPlot::PlotStairs( "Speed Z", evz, count, 0.05f, 0, ImPlotAxisFlags_AutoFit );
+            ImPlot::PlotStairs( "Speed Z", evz, count, 0.05f, 0 );
+
+            ImPlot::EndPlot();
+        }
+        // --------- pos
+        if ( ImPlot::BeginPlot( "X Position", ImVec2( 300, 300 ) ) )
+        {
+            ImPlot::SetupAxes( "Index", "X", ImPlotAxisFlags_AutoFit,ImPlotAxisFlags_AutoFit );
+            ImPlot::SetNextMarkerStyle( ImPlotMarker_Cross );
+            ImPlot::SetNextFillStyle( IMPLOT_AUTO_COL, 0.25f );
+            ImPlot::PlotStairs( "Position X", px, count, 0.05f, 0 );
+
+            ImPlot::EndPlot();
+        }
+        ui::SameLine();
+        if ( ImPlot::BeginPlot( "Y Position", ImVec2( 300, 300 ) ) )
+        {
+            ImPlot::SetupAxes( "Index", "Y", ImPlotAxisFlags_AutoFit,ImPlotAxisFlags_AutoFit );
+            ImPlot::SetNextMarkerStyle( ImPlotMarker_Cross );
+            ImPlot::SetNextFillStyle( IMPLOT_AUTO_COL, 0.25f );
+            ImPlot::PlotStairs( "Position Y", py, count, 0.05f, 0 );
+
+            ImPlot::EndPlot();
+        }
+        ui::SameLine();
+        if ( ImPlot::BeginPlot( "Z Position", ImVec2( 300, 300 ) ) )
+        {
+            ImPlot::SetupAxes( "Index", "Z", ImPlotAxisFlags_AutoFit,ImPlotAxisFlags_AutoFit );
+            ImPlot::SetNextMarkerStyle( ImPlotMarker_Cross );
+            ImPlot::SetNextFillStyle( IMPLOT_AUTO_COL, 0.25f );
+            ImPlot::PlotStairs( "Position Z", pz, count, 0.05f, 0 );
 
             ImPlot::EndPlot();
         }
