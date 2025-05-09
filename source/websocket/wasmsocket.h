@@ -27,6 +27,7 @@ static std::queue< SENSOR_DB >  sensor_data_queue;
 static std::vector< SENSOR_DB > sensor_data_vector;
 static std::mutex               queue_mutex;
 static int64_t                  start_time;
+static int                      Microsecond = 1000000;
 //
 
 static EM_BOOL WebSocketOpen( int eventType, const EmscriptenWebSocketOpenEvent* e, void* userData )
@@ -81,7 +82,7 @@ static EM_BOOL WebSocketMessage( int eventType, const EmscriptenWebSocketMessage
             sensor_data_queue.push( new_sensor_db );
             // 1s存一个
             int64_t cur_time = getMicrosecondTimestamp();
-            if ( ( cur_time - start_time ) > 1000000 )
+            if ( ( cur_time - start_time ) > Microsecond * 5 )
             {
                 if ( sensor_data_vector.size() < 1024 )
                 {

@@ -334,7 +334,7 @@ void CommonApplication::RenderUi()
     WebsocketUi();
     AxesNodeAttributeUi();
     //
-    ImPlot::ShowDemoWindow();
+    // ImPlot::ShowDemoWindow();
 }
 //
 void CommonApplication::WebsocketUi()
@@ -428,7 +428,7 @@ void CommonApplication::WebsocketUi()
 //
 void CommonApplication::AxesNodeAttributeUi()
 {
-    ui::SetNextWindowSize( ImVec2( 450, 500 ), ImGuiCond_FirstUseEver );
+    ui::SetNextWindowSize( ImVec2( 450, winSizeY_ - 332 ), ImGuiCond_FirstUseEver );
     ui::SetNextWindowPos( ImVec2( winSizeX_ - 450, 332 ), ImGuiCond_FirstUseEver );
     //
     if ( ui::Begin( "AxesNode", NULL, ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoResize ) )
@@ -474,26 +474,36 @@ void CommonApplication::AxesNodeAttributeUi()
         }
         if ( ImPlot::BeginPlot( "X Plot" ) )
         {
-            ImPlot::PushStyleVar( ImPlotStyleVar_FillAlpha, 0.25f );
-            ImPlot::SetNextMarkerStyle( ImPlotMarker_Square, 6, ImPlot::GetColormapColor( 1 ), IMPLOT_AUTO, ImPlot::GetColormapColor( 1 ) );
-            ImPlot::PlotScatter( "X", time, x, count );
-            ImPlot::PopStyleVar();
+            ImPlot::SetupAxes( "Index", "X" );
+            ImPlot::SetupAxisLimits(ImAxis_X1, IMPLOT_AUTO, IMPLOT_AUTO);
+            ImPlot::SetupAxisLimits(ImAxis_Y1, IMPLOT_AUTO, IMPLOT_AUTO);
+            ImPlot::SetNextMarkerStyle( ImPlotMarker_Cross );
+            ImPlot::SetNextFillStyle( IMPLOT_AUTO_COL, 0.25f );
+            ImPlot::PlotStairs( "Position X", x, count, 0.05f, 0 );
+
             ImPlot::EndPlot();
         }
         if ( ImPlot::BeginPlot( "Y Plot" ) )
         {
-            ImPlot::PushStyleVar( ImPlotStyleVar_FillAlpha, 0.25f );
-            ImPlot::SetNextMarkerStyle( ImPlotMarker_Square, 6, ImPlot::GetColormapColor( 1 ), IMPLOT_AUTO, ImPlot::GetColormapColor( 1 ) );
-            ImPlot::PlotScatter( "Y", time, y, count );
-            ImPlot::PopStyleVar();
+            ImPlot::SetupAxes( "Index", "Y" );
+            ImPlot::SetupAxisLimits(ImAxis_X1, IMPLOT_AUTO, IMPLOT_AUTO);
+            ImPlot::SetupAxisLimits(ImAxis_Y1, IMPLOT_AUTO, IMPLOT_AUTO);
+            ImPlot::SetNextMarkerStyle( ImPlotMarker_Cross );
+            ImPlot::SetNextFillStyle( IMPLOT_AUTO_COL, 0.25f );
+            ImPlot::PlotStairs( "Position Y", y, count, 0.05f, 0 );
+
             ImPlot::EndPlot();
         }
         if ( ImPlot::BeginPlot( "Z Plot" ) )
         {
-            ImPlot::PushStyleVar( ImPlotStyleVar_FillAlpha, 0.25f );
-            ImPlot::SetNextMarkerStyle( ImPlotMarker_Square, 6, ImPlot::GetColormapColor( 1 ), IMPLOT_AUTO, ImPlot::GetColormapColor( 1 ) );
-            ImPlot::PlotScatter( "Z", time, z, count );
-            ImPlot::PopStyleVar();
+            ImPlot::SetupAxes( "Index", "Z" );
+            ImPlot::SetupAxisLimits(ImAxis_X1, IMPLOT_AUTO, IMPLOT_AUTO);
+            ImPlot::SetupAxisLimits(ImAxis_Y1, IMPLOT_AUTO, IMPLOT_AUTO);
+
+            ImPlot::SetNextMarkerStyle( ImPlotMarker_Cross );
+            ImPlot::SetNextFillStyle( IMPLOT_AUTO_COL, 0.25f );
+            ImPlot::PlotStairs( "Position Z", z, count, 0.05f, 0 );
+
             ImPlot::EndPlot();
         }
     }
