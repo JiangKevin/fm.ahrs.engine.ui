@@ -372,7 +372,10 @@ void CommonApplication::WebsocketUi()
         };
         ui::Separator();
         //
-        ui::InputTextMultiline( "##RMSG", &websocket_receive_message, ImVec2( ImGui::GetContentRegionAvail().x, 200 ) );
+        ImGui::BeginChild( "ChildL", ImVec2( ImGui::GetContentRegionAvail().x, 200 ) );
+        ui::TextWrapped( websocket_receive_message.c_str() );
+        ImGui::EndChild();
+        // ui::InputTextMultiline( "##RMSG", &websocket_receive_message, ImVec2( ImGui::GetContentRegionAvail().x, 200 ) );
         ui::Separator();
         //
         int btn_w = 90;
@@ -419,7 +422,7 @@ void CommonApplication::WebsocketUi()
 void CommonApplication::AxesNodeAttributeUi()
 {
     ui::SetNextWindowSize( ImVec2( 450, 100 ), ImGuiCond_FirstUseEver );
-    ui::SetNextWindowPos( ImVec2( winSizeX_ - 450, 452 ), ImGuiCond_FirstUseEver );
+    ui::SetNextWindowPos( ImVec2( winSizeX_ - 450, 332 ), ImGuiCond_FirstUseEver );
     //
     if ( ui::Begin( "AxesNode", NULL, ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoResize ) )
     {

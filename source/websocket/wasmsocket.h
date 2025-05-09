@@ -71,11 +71,11 @@ static EM_BOOL WebSocketMessage( int eventType, const EmscriptenWebSocketMessage
         //
         if ( ( websocket_receive_message_original != "Stoped" ) && ( websocket_receive_message_original != "Connected" ) )
         {
+            std::lock_guard< std::mutex > lock( queue_mutex );
             //
             SENSOR_DB new_sensor_db;
             new_sensor_db.getValueFromString( websocket_receive_message_original.c_str() );
             //
-            std::lock_guard< std::mutex > lock( queue_mutex );
             sensor_data_queue.push( new_sensor_db );
             //
             websocket_receive_message = new_sensor_db.to_info().c_str();
