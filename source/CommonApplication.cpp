@@ -328,8 +328,8 @@ void CommonApplication::RenderUi()
 //
 void CommonApplication::WebsocketUi()
 {
-    ui::SetNextWindowSize( ImVec2( 600, 466 ), ImGuiCond_FirstUseEver );
-    ui::SetNextWindowPos( ImVec2( 0, winSizeY_ - 568 ), ImGuiCond_FirstUseEver );
+    ui::SetNextWindowSize( ImVec2( 600, 566 ), ImGuiCond_FirstUseEver );
+    ui::SetNextWindowPos( ImVec2( 0, winSizeY_ - 668 ), ImGuiCond_FirstUseEver );
     //
     if ( ui::Begin( "WebSocket", NULL, ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoResize ) )
     {
@@ -338,7 +338,7 @@ void CommonApplication::WebsocketUi()
         static eastl::string smsg_str = "hello on the other side";
         // static eastl::string rmsg_str = "receive on the server";
         auto win_size       = ImGui::GetContentRegionAvail();
-        int  segmentation_w = 200;
+        int  segmentation_w = 220;
         //
         ui::Spacing();
         //
@@ -371,16 +371,7 @@ void CommonApplication::WebsocketUi()
         // ui::InputTextMultiline( "##RMSG", &websocket_receive_message, ImVec2( ImGui::GetContentRegionAvail().x, 200 ) );
         ui::Separator();
         //
-        float btn_w = ( ImGui::GetContentRegionAvail().x - 5 * 2 ) / 5;
-        // ui::Text( "SMsg" );
-        // ui::SameLine( segmentation_w );
-        // ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x - btn_w );
-        // ui::InputText( "##SMSG", &smsg_str );
-        // ui::SameLine();
-        // if ( ui::Button( "Send Message", ImVec2( btn_w, 16 ) ) )
-        // {
-        //     emscripten_websocket_send_utf8_text( socket, smsg_str.c_str() );
-        // };
+        float btn_w = ( ImGui::GetContentRegionAvail().x - 6 * 2 ) / 6;
         //
         ui::Text( "Gyroscope Misalignment 1" );
         ui::SameLine( segmentation_w );
@@ -463,6 +454,12 @@ void CommonApplication::WebsocketUi()
         //
         ui::Separator();
         //
+        if ( ui::Button( "Send Setup", ImVec2( btn_w, 16 ) ) )
+        {
+            emscripten_websocket_send_utf8_text( socket, "Setup" );
+            start_time = getMicrosecondTimestamp();
+        };
+        ui::SameLine();
         if ( ui::Button( "Send Start", ImVec2( btn_w, 16 ) ) )
         {
             emscripten_websocket_send_utf8_text( socket, "Start" );
@@ -502,7 +499,7 @@ void CommonApplication::AxesNodeAttributeUi()
     if ( ui::Begin( "AxesNode", NULL, ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoResize ) )
     {
         auto win_size       = ImGui::GetContentRegionAvail();
-        int  segmentation_w = 200;
+        int  segmentation_w = 220;
         //
         ui::Spacing();
         //
