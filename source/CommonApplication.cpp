@@ -444,7 +444,6 @@ void CommonApplication::WebsocketUi()
         ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
         ui::InputFloat3( "##SoftIronMatrix_3", SoftIronMatrix_3 );
         ui::Separator();
-
         //
         ui::Text( "Hard Iron Offset" );
         ui::SameLine( segmentation_w );
@@ -456,7 +455,53 @@ void CommonApplication::WebsocketUi()
         //
         if ( ui::Button( "Send Setup", ImVec2( btn_w, 16 ) ) )
         {
-            emscripten_websocket_send_utf8_text( socket, "Setup" );
+            std::string content_str = "Setup";
+            content_str += "," + transaction_to_string( GyrMisalignment_1[ 0 ] );
+            content_str += "," + transaction_to_string( GyrMisalignment_1[ 1 ] );
+            content_str += "," + transaction_to_string( GyrMisalignment_1[ 2 ] );
+            content_str += "," + transaction_to_string( GyrMisalignment_2[ 0 ] );
+            content_str += "," + transaction_to_string( GyrMisalignment_2[ 1 ] );
+            content_str += "," + transaction_to_string( GyrMisalignment_2[ 2 ] );
+            content_str += "," + transaction_to_string( GyrMisalignment_3[ 0 ] );
+            content_str += "," + transaction_to_string( GyrMisalignment_3[ 1 ] );
+            content_str += "," + transaction_to_string( GyrMisalignment_3[ 2 ] );
+            content_str += "," + transaction_to_string( GyroscopeSensitivity[ 0 ] );
+            content_str += "," + transaction_to_string( GyroscopeSensitivity[ 1 ] );
+            content_str += "," + transaction_to_string( GyroscopeSensitivity[ 2 ] );
+            content_str += "," + transaction_to_string( GyroscopeOffset[ 0 ] );
+            content_str += "," + transaction_to_string( GyroscopeOffset[ 1 ] );
+            content_str += "," + transaction_to_string( GyroscopeOffset[ 2 ] );
+            //
+            content_str += "," + transaction_to_string( AccelerometerMisalignment_1[ 0 ] );
+            content_str += "," + transaction_to_string( AccelerometerMisalignment_1[ 1 ] );
+            content_str += "," + transaction_to_string( AccelerometerMisalignment_1[ 2 ] );
+            content_str += "," + transaction_to_string( AccelerometerMisalignment_2[ 0 ] );
+            content_str += "," + transaction_to_string( AccelerometerMisalignment_2[ 1 ] );
+            content_str += "," + transaction_to_string( AccelerometerMisalignment_2[ 2 ] );
+            content_str += "," + transaction_to_string( AccelerometerMisalignment_3[ 0 ] );
+            content_str += "," + transaction_to_string( AccelerometerMisalignment_3[ 1 ] );
+            content_str += "," + transaction_to_string( AccelerometerMisalignment_3[ 2 ] );
+            content_str += "," + transaction_to_string( AccelerometerSensitivity[ 0 ] );
+            content_str += "," + transaction_to_string( AccelerometerSensitivity[ 1 ] );
+            content_str += "," + transaction_to_string( AccelerometerSensitivity[ 2 ] );
+            content_str += "," + transaction_to_string( AccelerometerOffset[ 0 ] );
+            content_str += "," + transaction_to_string( AccelerometerOffset[ 1 ] );
+            content_str += "," + transaction_to_string( AccelerometerOffset[ 2 ] );
+            //
+            content_str += "," + transaction_to_string( SoftIronMatrix_1[ 0 ] );
+            content_str += "," + transaction_to_string( SoftIronMatrix_1[ 1 ] );
+            content_str += "," + transaction_to_string( SoftIronMatrix_1[ 2 ] );
+            content_str += "," + transaction_to_string( SoftIronMatrix_2[ 0 ] );
+            content_str += "," + transaction_to_string( SoftIronMatrix_2[ 1 ] );
+            content_str += "," + transaction_to_string( SoftIronMatrix_2[ 2 ] );
+            content_str += "," + transaction_to_string( SoftIronMatrix_3[ 0 ] );
+            content_str += "," + transaction_to_string( SoftIronMatrix_3[ 1 ] );
+            content_str += "," + transaction_to_string( SoftIronMatrix_3[ 2 ] );
+            content_str += "," + transaction_to_string( HardIronOffset[ 0 ] );
+            content_str += "," + transaction_to_string( HardIronOffset[ 1 ] );
+            content_str += "," + transaction_to_string( HardIronOffset[ 2 ] );
+            //
+            emscripten_websocket_send_utf8_text( socket, content_str.c_str() );
             start_time = getMicrosecondTimestamp();
         };
         ui::SameLine();

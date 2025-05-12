@@ -46,22 +46,29 @@ public:
     void Update( StringHash eventType, VariantMap& eventData );
     void FmRegisterOjbj();
 private:
-    float GyrMisalignment_1[ 3 ];
-    float GyrMisalignment_2[ 3 ];
-    float GyrMisalignment_3[ 3 ];
-    float GyroscopeSensitivity[ 3 ];
-    float GyroscopeOffset[ 3 ];
+    float GyrMisalignment_1[ 3 ]    = { 1.0f, 0.0f, 0.0f };
+    float GyrMisalignment_2[ 3 ]    = { 0.0f, 1.0f, 0.0f };
+    float GyrMisalignment_3[ 3 ]    = { 0.0f, 0.0f, 1.0f };
+    float GyroscopeSensitivity[ 3 ] = { 1.0f, 1.0f, 1.0f };
+    float GyroscopeOffset[ 3 ]      = { 0.0f, 0.0f, 0.0f };
     //
-    float AccelerometerMisalignment_1[ 3 ];
-    float AccelerometerMisalignment_2[ 3 ];
-    float AccelerometerMisalignment_3[ 3 ];
-    float AccelerometerSensitivity[ 3 ];
-    float AccelerometerOffset[ 3 ];
+    float AccelerometerMisalignment_1[ 3 ] = { 1.0f, 0.0f, 0.0f };
+    float AccelerometerMisalignment_2[ 3 ] = { 0.0f, 1.0f, 0.0f };
+    float AccelerometerMisalignment_3[ 3 ] = { 0.0f, 0.0f, 1.0f };
+    float AccelerometerSensitivity[ 3 ]    = { 1.0f, 1.0f, 1.0f };
+    float AccelerometerOffset[ 3 ]         = { 0.0f, 0.0f, 0.025f };
     //
-    float SoftIronMatrix_1[ 3 ];
-    float SoftIronMatrix_2[ 3 ];
-    float SoftIronMatrix_3[ 3 ];
-    float HardIronOffset[ 3 ];
+    float SoftIronMatrix_1[ 3 ] = { 1.0f, 0.0f, 0.0f };
+    float SoftIronMatrix_2[ 3 ] = { 0.0f, 1.0f, 0.0f };
+    float SoftIronMatrix_3[ 3 ] = { 0.0f, 0.0f, 1.0f };
+    float HardIronOffset[ 3 ]   = { 0.0f, 0.0f, 0.0f };
+    //
+    int   ahrs_convention            = 0;
+    float ahrs_gain                  = 0.5f;
+    float ahrs_gyroscopeRange        = 2000.0f;
+    float ahrs_accelerationRejection = 10.0f;
+    float ahrs_magneticRejection     = 10.0f;
+    float ahrs_recoveryTriggerPeriod = 500.0f;
 public:
     /// Scene.
     SharedPtr< Scene > scene_;
