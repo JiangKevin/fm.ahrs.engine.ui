@@ -41,6 +41,21 @@ static std::string transaction_to_string( float value )
     return out;
 }
 //
+static std::string int_transaction_to_string( int value )
+{
+    std::string out;
+    if ( std::isnan( value ) )
+    {
+        out = "0";
+    }
+    else
+    {
+        out = std::to_string( value );
+    }
+    //
+    return out;
+}
+//
 struct SENSOR_DB
 {
     float time    = 0.0f;

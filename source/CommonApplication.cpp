@@ -537,12 +537,12 @@ void CommonApplication::WebsocketUi()
             content_str += "," + transaction_to_string( HardIronOffset[ 1 ] );
             content_str += "," + transaction_to_string( HardIronOffset[ 2 ] );
             //
-            content_str += "," + transaction_to_string( ahrs_convention );
+            content_str += "," + int_transaction_to_string( ahrs_convention );
             content_str += "," + transaction_to_string( ahrs_gain );
             content_str += "," + transaction_to_string( ahrs_gyroscopeRange );
             content_str += "," + transaction_to_string( ahrs_accelerationRejection );
             content_str += "," + transaction_to_string( ahrs_magneticRejection );
-            content_str += "," + transaction_to_string( ahrs_recoveryTriggerPeriod );
+            content_str += "," + int_transaction_to_string( ahrs_recoveryTriggerPeriod );
 
             //
             emscripten_websocket_send_utf8_text( socket, content_str.c_str() );
