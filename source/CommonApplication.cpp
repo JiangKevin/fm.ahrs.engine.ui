@@ -328,8 +328,8 @@ void CommonApplication::RenderUi()
 //
 void CommonApplication::WebsocketUi()
 {
-    ui::SetNextWindowSize( ImVec2( 600, 706 ), ImGuiCond_FirstUseEver );
-    ui::SetNextWindowPos( ImVec2( 0, winSizeY_ - 818 ), ImGuiCond_FirstUseEver );
+    ui::SetNextWindowSize( ImVec2( 600, 690 ), ImGuiCond_FirstUseEver );
+    ui::SetNextWindowPos( ImVec2( 0, winSizeY_ - 802 ), ImGuiCond_FirstUseEver );
     //
     if ( ui::Begin( "WebSocket", NULL, ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoResize ) )
     {

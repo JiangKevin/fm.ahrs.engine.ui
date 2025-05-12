@@ -68,7 +68,7 @@ private:
     float ahrs_gyroscopeRange        = 2000.0f;
     float ahrs_accelerationRejection = 10.0f;
     float ahrs_magneticRejection     = 10.0f;
-    int ahrs_recoveryTriggerPeriod = 500;
+    int   ahrs_recoveryTriggerPeriod = 500;
 public:
     /// Scene.
     SharedPtr< Scene > scene_;
