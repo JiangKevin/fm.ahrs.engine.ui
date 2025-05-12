@@ -328,8 +328,8 @@ void CommonApplication::RenderUi()
 //
 void CommonApplication::WebsocketUi()
 {
-    ui::SetNextWindowSize( ImVec2( 600, 566 ), ImGuiCond_FirstUseEver );
-    ui::SetNextWindowPos( ImVec2( 0, winSizeY_ - 668 ), ImGuiCond_FirstUseEver );
+    ui::SetNextWindowSize( ImVec2( 600, 706 ), ImGuiCond_FirstUseEver );
+    ui::SetNextWindowPos( ImVec2( 0, winSizeY_ - 818 ), ImGuiCond_FirstUseEver );
     //
     if ( ui::Begin( "WebSocket", NULL, ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoResize ) )
     {
@@ -451,6 +451,42 @@ void CommonApplication::WebsocketUi()
         ui::InputFloat3( "##HardIronOffset", HardIronOffset );
         ui::Separator();
         //
+        ui::Text( "Convention" );
+        ui::SameLine( segmentation_w );
+        ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
+        ui::InputInt( "##ahrs_convention", &ahrs_convention );
+        ui::Separator();
+        //
+        ui::Text( "Gain" );
+        ui::SameLine( segmentation_w );
+        ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
+        ui::InputFloat( "##ahrs_gain", &ahrs_gain );
+        ui::Separator();
+        //
+        ui::Text( "GyroscopeRange" );
+        ui::SameLine( segmentation_w );
+        ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
+        ui::InputFloat( "##ahrs_gyroscopeRange", &ahrs_gyroscopeRange );
+        ui::Separator();
+        //
+        ui::Text( "AccelerationRejection" );
+        ui::SameLine( segmentation_w );
+        ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
+        ui::InputFloat( "##ahrs_accelerationRejection", &ahrs_accelerationRejection );
+        ui::Separator();
+        //
+        ui::Text( "MagneticRejection" );
+        ui::SameLine( segmentation_w );
+        ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
+        ui::InputFloat( "##ahrs_magneticRejection", &ahrs_magneticRejection );
+        ui::Separator();
+        //
+        ui::Text( "RecoveryTriggerPeriod" );
+        ui::SameLine( segmentation_w );
+        ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
+        ui::InputInt( "##ahrs_recoveryTriggerPeriod", &ahrs_recoveryTriggerPeriod );
+        ui::Separator();
+        //
         ui::Separator();
         //
         if ( ui::Button( "Send Setup", ImVec2( btn_w, 16 ) ) )
@@ -500,6 +536,14 @@ void CommonApplication::WebsocketUi()
             content_str += "," + transaction_to_string( HardIronOffset[ 0 ] );
             content_str += "," + transaction_to_string( HardIronOffset[ 1 ] );
             content_str += "," + transaction_to_string( HardIronOffset[ 2 ] );
+            //
+            content_str += "," + transaction_to_string( ahrs_convention );
+            content_str += "," + transaction_to_string( ahrs_gain );
+            content_str += "," + transaction_to_string( ahrs_gyroscopeRange );
+            content_str += "," + transaction_to_string( ahrs_accelerationRejection );
+            content_str += "," + transaction_to_string( ahrs_magneticRejection );
+            content_str += "," + transaction_to_string( ahrs_recoveryTriggerPeriod );
+
             //
             emscripten_websocket_send_utf8_text( socket, content_str.c_str() );
             start_time = getMicrosecondTimestamp();
