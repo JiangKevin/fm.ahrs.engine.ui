@@ -45,6 +45,23 @@ public:
     void Stop() override;
     void Update( StringHash eventType, VariantMap& eventData );
     void FmRegisterOjbj();
+private:
+    float GyrMisalignment_1[ 3 ];
+    float GyrMisalignment_2[ 3 ];
+    float GyrMisalignment_3[ 3 ];
+    float GyroscopeSensitivity[ 3 ];
+    float GyroscopeOffset[ 3 ];
+    //
+    float AccelerometerMisalignment_1[ 3 ];
+    float AccelerometerMisalignment_2[ 3 ];
+    float AccelerometerMisalignment_3[ 3 ];
+    float AccelerometerSensitivity[ 3 ];
+    float AccelerometerOffset[ 3 ];
+    //
+    float SoftIronMatrix_1[ 3 ];
+    float SoftIronMatrix_2[ 3 ];
+    float SoftIronMatrix_3[ 3 ];
+    float HardIronOffset[ 3 ];
 public:
     /// Scene.
     SharedPtr< Scene > scene_;

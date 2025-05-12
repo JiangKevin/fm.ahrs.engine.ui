@@ -328,8 +328,8 @@ void CommonApplication::RenderUi()
 //
 void CommonApplication::WebsocketUi()
 {
-    ui::SetNextWindowSize( ImVec2( 600, 266 ), ImGuiCond_FirstUseEver );
-    ui::SetNextWindowPos( ImVec2( 0, winSizeY_ - 368 ), ImGuiCond_FirstUseEver );
+    ui::SetNextWindowSize( ImVec2( 600, 466 ), ImGuiCond_FirstUseEver );
+    ui::SetNextWindowPos( ImVec2( 0, winSizeY_ - 568 ), ImGuiCond_FirstUseEver );
     //
     if ( ui::Begin( "WebSocket", NULL, ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoResize ) )
     {
@@ -338,7 +338,7 @@ void CommonApplication::WebsocketUi()
         static eastl::string smsg_str = "hello on the other side";
         // static eastl::string rmsg_str = "receive on the server";
         auto win_size       = ImGui::GetContentRegionAvail();
-        int  segmentation_w = 100;
+        int  segmentation_w = 200;
         //
         ui::Spacing();
         //
@@ -381,7 +381,87 @@ void CommonApplication::WebsocketUi()
         // {
         //     emscripten_websocket_send_utf8_text( socket, smsg_str.c_str() );
         // };
-        // ui::Separator();
+        //
+        ui::Text( "Gyroscope Misalignment 1" );
+        ui::SameLine( segmentation_w );
+        ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
+        ui::InputFloat3( "##GyrMisalignment_1", GyrMisalignment_1 );
+        ui::Separator();
+        ui::Text( "Gyroscope Misalignment 2" );
+        ui::SameLine( segmentation_w );
+        ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
+        ui::InputFloat3( "##GyrMisalignment_2", GyrMisalignment_2 );
+        ui::Separator();
+        ui::Text( "Gyroscope Misalignment 3" );
+        ui::SameLine( segmentation_w );
+        ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
+        ui::InputFloat3( "##GyrMisalignment_3", GyrMisalignment_3 );
+        ui::Separator();
+        //
+        ui::Text( "Gyroscope Sensitivity" );
+        ui::SameLine( segmentation_w );
+        ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
+        ui::InputFloat3( "##GyroscopeSensitivity", GyroscopeSensitivity );
+        ui::Separator();
+        //
+        ui::Text( "Gyroscope Offset" );
+        ui::SameLine( segmentation_w );
+        ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
+        ui::InputFloat3( "##GyroscopeOffset", GyroscopeOffset );
+        ui::Separator();
+        //
+        ui::Text( "Accelerometer Misalignment 1" );
+        ui::SameLine( segmentation_w );
+        ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
+        ui::InputFloat3( "##AccelerometerMisalignment_1", AccelerometerMisalignment_1 );
+        ui::Separator();
+        ui::Text( "Accelerometer Misalignment 2" );
+        ui::SameLine( segmentation_w );
+        ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
+        ui::InputFloat3( "##AccelerometerMisalignment_2", AccelerometerMisalignment_2 );
+        ui::Separator();
+        ui::Text( "Accelerometer Misalignment 3" );
+        ui::SameLine( segmentation_w );
+        ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
+        ui::InputFloat3( "##AccelerometerMisalignment_3", AccelerometerMisalignment_3 );
+        ui::Separator();
+        //
+        ui::Text( "Accelerometer Sensitivity" );
+        ui::SameLine( segmentation_w );
+        ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
+        ui::InputFloat3( "##AccelerometerSensitivity", AccelerometerSensitivity );
+        ui::Separator();
+        //
+        ui::Text( "Accelerometer Offset" );
+        ui::SameLine( segmentation_w );
+        ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
+        ui::InputFloat3( "##AccelerometerOffset", AccelerometerOffset );
+        ui::Separator();
+        //
+        ui::Text( "Soft Iron Matrix 1" );
+        ui::SameLine( segmentation_w );
+        ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
+        ui::InputFloat3( "##SoftIronMatrix_1", SoftIronMatrix_1 );
+        ui::Separator();
+        ui::Text( "Soft Iron Matrix 2" );
+        ui::SameLine( segmentation_w );
+        ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
+        ui::InputFloat3( "##SoftIronMatrix_2", SoftIronMatrix_2 );
+        ui::Separator();
+        ui::Text( "Soft Iron Matrix 3" );
+        ui::SameLine( segmentation_w );
+        ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
+        ui::InputFloat3( "##SoftIronMatrix_3", SoftIronMatrix_3 );
+        ui::Separator();
+
+        //
+        ui::Text( "Hard Iron Offset" );
+        ui::SameLine( segmentation_w );
+        ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
+        ui::InputFloat3( "##HardIronOffset", HardIronOffset );
+        ui::Separator();
+        //
+        ui::Separator();
         //
         if ( ui::Button( "Send Start", ImVec2( btn_w, 16 ) ) )
         {
@@ -422,7 +502,7 @@ void CommonApplication::AxesNodeAttributeUi()
     if ( ui::Begin( "AxesNode", NULL, ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoResize ) )
     {
         auto win_size       = ImGui::GetContentRegionAvail();
-        int  segmentation_w = 100;
+        int  segmentation_w = 200;
         //
         ui::Spacing();
         //
