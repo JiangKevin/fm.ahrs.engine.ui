@@ -329,7 +329,7 @@ void CommonApplication::RenderUi()
 void CommonApplication::WebsocketUi()
 {
     ui::SetNextWindowSize( ImVec2( 600, 266 ), ImGuiCond_FirstUseEver );
-    ui::SetNextWindowPos( ImVec2( winSizeX_ - 600, 0 ), ImGuiCond_FirstUseEver );
+    ui::SetNextWindowPos( ImVec2( 0, winSizeY_ - 368 ), ImGuiCond_FirstUseEver );
     //
     if ( ui::Begin( "WebSocket", NULL, ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoResize ) )
     {
@@ -417,7 +417,7 @@ void CommonApplication::WebsocketUi()
 void CommonApplication::AxesNodeAttributeUi()
 {
     ui::SetNextWindowSize( ImVec2( 600, 100 ), ImGuiCond_FirstUseEver );
-    ui::SetNextWindowPos( ImVec2( winSizeX_ - 600, 268 ), ImGuiCond_FirstUseEver );
+    ui::SetNextWindowPos( ImVec2( 0, winSizeY_ - 100 ), ImGuiCond_FirstUseEver );
     //
     if ( ui::Begin( "AxesNode", NULL, ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoResize ) )
     {
@@ -461,10 +461,10 @@ void CommonApplication::AxesNodeAttributeUi()
 void CommonApplication::ChartUi()
 {
 
-    float h = winSizeY_ / 7;
+    float h = ( winSizeY_ - 20 - 7 * 2 ) / 7;
 
     ui::SetNextWindowSize( ImVec2( 600, winSizeY_ ), ImGuiCond_FirstUseEver );
-    ui::SetNextWindowPos( ImVec2( 0, 0 ), ImGuiCond_FirstUseEver );
+    ui::SetNextWindowPos( ImVec2( winSizeX_ - 600, 0 ), ImGuiCond_FirstUseEver );
     //
     if ( ui::Begin( "IMU Chart", NULL, ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoScrollbar ) )
     {
