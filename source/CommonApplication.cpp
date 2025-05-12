@@ -328,8 +328,8 @@ void CommonApplication::RenderUi()
 //
 void CommonApplication::WebsocketUi()
 {
-    ui::SetNextWindowSize( ImVec2( 600, 690 ), ImGuiCond_FirstUseEver );
-    ui::SetNextWindowPos( ImVec2( 0, winSizeY_ - 802 ), ImGuiCond_FirstUseEver );
+    ui::SetNextWindowSize( ImVec2( 450, 690 ), ImGuiCond_FirstUseEver );
+    ui::SetNextWindowPos( ImVec2( 2, winSizeY_ - 850 ), ImGuiCond_FirstUseEver );
     //
     if ( ui::Begin( "WebSocket", NULL, ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoResize ) )
     {
@@ -582,10 +582,10 @@ void CommonApplication::WebsocketUi()
 //
 void CommonApplication::AxesNodeAttributeUi()
 {
-    ui::SetNextWindowSize( ImVec2( 600, 100 ), ImGuiCond_FirstUseEver );
-    ui::SetNextWindowPos( ImVec2( 0, winSizeY_ - 100 ), ImGuiCond_FirstUseEver );
+    ui::SetNextWindowSize( ImVec2( 450, 136 ), ImGuiCond_FirstUseEver );
+    ui::SetNextWindowPos( ImVec2( 2, winSizeY_ - 158 ), ImGuiCond_FirstUseEver );
     //
-    if ( ui::Begin( "AxesNode", NULL, ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoResize ) )
+    if ( ui::Begin( "Key Nodes", NULL, ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoResize ) )
     {
         auto win_size       = ImGui::GetContentRegionAvail();
         int  segmentation_w = 220;
@@ -609,16 +609,43 @@ void CommonApplication::AxesNodeAttributeUi()
         }
         ui::Separator();
         //
-        ui::Text( "Position" );
+        ui::Text( "AxesNode Position" );
         ui::SameLine( segmentation_w );
         ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
         ui::Text( "%f,%f,%f", axes_node_->GetPosition().x_, axes_node_->GetPosition().y_, axes_node_->GetPosition().z_ );
         ui::Separator();
         //
-        ui::Text( "Direction" );
+        ui::Text( "AxesNode Direction" );
         ui::SameLine( segmentation_w );
         ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
         ui::Text( "%f,%f,%f", axes_node_->GetDirection().x_, axes_node_->GetDirection().y_, axes_node_->GetDirection().z_ );
+        ui::Separator();
+        //
+        static float camera_pos[ 3 ] = { 0.0f, 0.0f, 0.0f };
+        static float camera_dir[ 3 ] = { 0.0f, 0.0f, 0.0f };
+        camera_pos[ 0 ]              = mainCameraNode_->GetPosition().x_;
+        camera_pos[ 1 ]              = mainCameraNode_->GetPosition().y_;
+        camera_pos[ 2 ]              = mainCameraNode_->GetPosition().z_;
+        camera_dir[ 0 ]              = mainCameraNode_->GetDirection().x_;
+        camera_dir[ 1 ]              = mainCameraNode_->GetDirection().y_;
+        camera_dir[ 2 ]              = mainCameraNode_->GetDirection().z_;
+        //
+        ui::Text( "Camera Position" );
+        ui::SameLine( segmentation_w );
+        ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
+        if ( ui::InputFloat3( "##Camera Position", camera_pos ) )
+        {
+            mainCameraNode_->SetPosition( Vector3( camera_pos[ 0 ], camera_pos[ 1 ], camera_pos[ 2 ] ) );
+        }
+        ui::Separator();
+        //
+        ui::Text( "Camera Direction" );
+        ui::SameLine( segmentation_w );
+        ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
+        if ( ui::InputFloat3( "##Camera Direction", camera_dir ) )
+        {
+            mainCameraNode_->SetDirection( Vector3( camera_dir[ 0 ], camera_dir[ 1 ], camera_dir[ 2 ] ) );
+        }
         ui::Separator();
     }
     ui::End();
