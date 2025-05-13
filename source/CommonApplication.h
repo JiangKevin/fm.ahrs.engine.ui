@@ -80,16 +80,17 @@ public:
     int                    winSizeY_;
     EMSCRIPTEN_WEBSOCKET_T socket;
 public:
-    void CreateScene();
-    void SetupViewport();
-    void CreateLog();
-    void CreateSocket( eastl::string url );
-    void setup_style_of_imgui();
-    void RenderUi();
-    void WebsocketUi();
-    void AxesNodeAttributeUi();
-    void ChartUi();
-
+    void        CreateScene();
+    void        SetupViewport();
+    void        CreateLog();
+    void        CreateSocket( eastl::string url );
+    void        setup_style_of_imgui();
+    void        RenderUi();
+    void        WebsocketUi();
+    void        AxesNodeAttributeUi();
+    void        ChartUi();
+    std::string GetConfigString();
+    void        interpretConfig( std::string content_str );
     //
     void ToCtrlAxesNode();
     void DrawPoints();
