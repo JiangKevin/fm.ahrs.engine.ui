@@ -30,7 +30,152 @@ static int64_t                  start_time;
 static int                      Microsecond = 1000000;
 static int                      item_count  = 1024;
 //
-
+static float GyrMisalignment_1[ 3 ]    = { 1.0f, 0.0f, 0.0f };
+static float GyrMisalignment_2[ 3 ]    = { 0.0f, 1.0f, 0.0f };
+static float GyrMisalignment_3[ 3 ]    = { 0.0f, 0.0f, 1.0f };
+static float GyroscopeSensitivity[ 3 ] = { 1.0f, 1.0f, 1.0f };
+static float GyroscopeOffset[ 3 ]      = { 0.0f, 0.0f, 0.0f };
+//
+static float AccelerometerMisalignment_1[ 3 ] = { 1.0f, 0.0f, 0.0f };
+static float AccelerometerMisalignment_2[ 3 ] = { 0.0f, 1.0f, 0.0f };
+static float AccelerometerMisalignment_3[ 3 ] = { 0.0f, 0.0f, 1.0f };
+static float AccelerometerSensitivity[ 3 ]    = { 1.0f, 1.0f, 1.0f };
+static float AccelerometerOffset[ 3 ]         = { 0.0f, 0.0f, 0.025f };
+//
+static float SoftIronMatrix_1[ 3 ] = { 1.0f, 0.0f, 0.0f };
+static float SoftIronMatrix_2[ 3 ] = { 0.0f, 1.0f, 0.0f };
+static float SoftIronMatrix_3[ 3 ] = { 0.0f, 0.0f, 1.0f };
+static float HardIronOffset[ 3 ]   = { 0.0f, 0.0f, 0.0f };
+//
+static int   ahrs_convention            = 0;
+static float ahrs_gain                  = 0.5f;
+static float ahrs_gyroscopeRange        = 2000.0f;
+static float ahrs_accelerationRejection = 10.0f;
+static float ahrs_magneticRejection     = 10.0f;
+static int   ahrs_recoveryTriggerPeriod = 500;
+//
+//
+static std::string GetConfigString()
+{
+    std::string content_str = "Setup";
+    content_str += "," + transaction_to_string( GyrMisalignment_1[ 0 ] );
+    content_str += "," + transaction_to_string( GyrMisalignment_1[ 1 ] );
+    content_str += "," + transaction_to_string( GyrMisalignment_1[ 2 ] );
+    content_str += "," + transaction_to_string( GyrMisalignment_2[ 0 ] );
+    content_str += "," + transaction_to_string( GyrMisalignment_2[ 1 ] );
+    content_str += "," + transaction_to_string( GyrMisalignment_2[ 2 ] );
+    content_str += "," + transaction_to_string( GyrMisalignment_3[ 0 ] );
+    content_str += "," + transaction_to_string( GyrMisalignment_3[ 1 ] );
+    content_str += "," + transaction_to_string( GyrMisalignment_3[ 2 ] );
+    content_str += "," + transaction_to_string( GyroscopeSensitivity[ 0 ] );
+    content_str += "," + transaction_to_string( GyroscopeSensitivity[ 1 ] );
+    content_str += "," + transaction_to_string( GyroscopeSensitivity[ 2 ] );
+    content_str += "," + transaction_to_string( GyroscopeOffset[ 0 ] );
+    content_str += "," + transaction_to_string( GyroscopeOffset[ 1 ] );
+    content_str += "," + transaction_to_string( GyroscopeOffset[ 2 ] );
+    //
+    content_str += "," + transaction_to_string( AccelerometerMisalignment_1[ 0 ] );
+    content_str += "," + transaction_to_string( AccelerometerMisalignment_1[ 1 ] );
+    content_str += "," + transaction_to_string( AccelerometerMisalignment_1[ 2 ] );
+    content_str += "," + transaction_to_string( AccelerometerMisalignment_2[ 0 ] );
+    content_str += "," + transaction_to_string( AccelerometerMisalignment_2[ 1 ] );
+    content_str += "," + transaction_to_string( AccelerometerMisalignment_2[ 2 ] );
+    content_str += "," + transaction_to_string( AccelerometerMisalignment_3[ 0 ] );
+    content_str += "," + transaction_to_string( AccelerometerMisalignment_3[ 1 ] );
+    content_str += "," + transaction_to_string( AccelerometerMisalignment_3[ 2 ] );
+    content_str += "," + transaction_to_string( AccelerometerSensitivity[ 0 ] );
+    content_str += "," + transaction_to_string( AccelerometerSensitivity[ 1 ] );
+    content_str += "," + transaction_to_string( AccelerometerSensitivity[ 2 ] );
+    content_str += "," + transaction_to_string( AccelerometerOffset[ 0 ] );
+    content_str += "," + transaction_to_string( AccelerometerOffset[ 1 ] );
+    content_str += "," + transaction_to_string( AccelerometerOffset[ 2 ] );
+    //
+    content_str += "," + transaction_to_string( SoftIronMatrix_1[ 0 ] );
+    content_str += "," + transaction_to_string( SoftIronMatrix_1[ 1 ] );
+    content_str += "," + transaction_to_string( SoftIronMatrix_1[ 2 ] );
+    content_str += "," + transaction_to_string( SoftIronMatrix_2[ 0 ] );
+    content_str += "," + transaction_to_string( SoftIronMatrix_2[ 1 ] );
+    content_str += "," + transaction_to_string( SoftIronMatrix_2[ 2 ] );
+    content_str += "," + transaction_to_string( SoftIronMatrix_3[ 0 ] );
+    content_str += "," + transaction_to_string( SoftIronMatrix_3[ 1 ] );
+    content_str += "," + transaction_to_string( SoftIronMatrix_3[ 2 ] );
+    content_str += "," + transaction_to_string( HardIronOffset[ 0 ] );
+    content_str += "," + transaction_to_string( HardIronOffset[ 1 ] );
+    content_str += "," + transaction_to_string( HardIronOffset[ 2 ] );
+    //
+    content_str += "," + int_transaction_to_string( ahrs_convention );
+    content_str += "," + transaction_to_string( ahrs_gain );
+    content_str += "," + transaction_to_string( ahrs_gyroscopeRange );
+    content_str += "," + transaction_to_string( ahrs_accelerationRejection );
+    content_str += "," + transaction_to_string( ahrs_magneticRejection );
+    content_str += "," + int_transaction_to_string( ahrs_recoveryTriggerPeriod );
+    //
+    return content_str;
+}
+//
+static void interpretConfig( std::string content_str )
+{
+    //
+    char delimiter = ',';
+    auto values    = splitString( content_str, delimiter );
+    //
+    if ( values.size() == 49 )
+    {
+        //
+        GyrMisalignment_1[ 0 ]    = std::stof( values[ 1 ] );
+        GyrMisalignment_1[ 1 ]    = std::stof( values[ 2 ] );
+        GyrMisalignment_1[ 2 ]    = std::stof( values[ 3 ] );
+        GyrMisalignment_2[ 0 ]    = std::stof( values[ 4 ] );
+        GyrMisalignment_2[ 1 ]    = std::stof( values[ 5 ] );
+        GyrMisalignment_2[ 2 ]    = std::stof( values[ 6 ] );
+        GyrMisalignment_3[ 0 ]    = std::stof( values[ 7 ] );
+        GyrMisalignment_3[ 1 ]    = std::stof( values[ 8 ] );
+        GyrMisalignment_3[ 2 ]    = std::stof( values[ 9 ] );
+        GyroscopeSensitivity[ 0 ] = std::stof( values[ 10 ] );
+        GyroscopeSensitivity[ 1 ] = std::stof( values[ 11 ] );
+        GyroscopeSensitivity[ 2 ] = std::stof( values[ 12 ] );
+        GyroscopeOffset[ 0 ]      = std::stof( values[ 13 ] );
+        GyroscopeOffset[ 1 ]      = std::stof( values[ 14 ] );
+        GyroscopeOffset[ 2 ]      = std::stof( values[ 15 ] );
+        //
+        AccelerometerMisalignment_1[ 0 ] = std::stof( values[ 16 ] );
+        AccelerometerMisalignment_1[ 1 ] = std::stof( values[ 17 ] );
+        AccelerometerMisalignment_1[ 2 ] = std::stof( values[ 18 ] );
+        AccelerometerMisalignment_2[ 0 ] = std::stof( values[ 19 ] );
+        AccelerometerMisalignment_2[ 1 ] = std::stof( values[ 20 ] );
+        AccelerometerMisalignment_2[ 2 ] = std::stof( values[ 21 ] );
+        AccelerometerMisalignment_3[ 0 ] = std::stof( values[ 22 ] );
+        AccelerometerMisalignment_3[ 1 ] = std::stof( values[ 23 ] );
+        AccelerometerMisalignment_3[ 2 ] = std::stof( values[ 24 ] );
+        AccelerometerSensitivity[ 0 ]    = std::stof( values[ 25 ] );
+        AccelerometerSensitivity[ 1 ]    = std::stof( values[ 26 ] );
+        AccelerometerSensitivity[ 2 ]    = std::stof( values[ 27 ] );
+        AccelerometerOffset[ 0 ]         = std::stof( values[ 28 ] );
+        AccelerometerOffset[ 1 ]         = std::stof( values[ 29 ] );
+        AccelerometerOffset[ 2 ]         = std::stof( values[ 30 ] );
+        //
+        SoftIronMatrix_1[ 0 ] = std::stof( values[ 31 ] );
+        SoftIronMatrix_1[ 1 ] = std::stof( values[ 32 ] );
+        SoftIronMatrix_1[ 2 ] = std::stof( values[ 33 ] );
+        SoftIronMatrix_2[ 0 ] = std::stof( values[ 34 ] );
+        SoftIronMatrix_2[ 1 ] = std::stof( values[ 35 ] );
+        SoftIronMatrix_2[ 2 ] = std::stof( values[ 36 ] );
+        SoftIronMatrix_3[ 0 ] = std::stof( values[ 37 ] );
+        SoftIronMatrix_3[ 1 ] = std::stof( values[ 38 ] );
+        SoftIronMatrix_3[ 2 ] = std::stof( values[ 39 ] );
+        HardIronOffset[ 0 ]   = std::stof( values[ 40 ] );
+        HardIronOffset[ 1 ]   = std::stof( values[ 41 ] );
+        HardIronOffset[ 2 ]   = std::stof( values[ 42 ] );
+        //
+        ahrs_convention            = std::stoi( values[ 43 ] );
+        ahrs_gain                  = std::stof( values[ 44 ] );
+        ahrs_gyroscopeRange        = std::stof( values[ 45 ] );
+        ahrs_accelerationRejection = std::stof( values[ 46 ] );
+        ahrs_magneticRejection     = std::stof( values[ 47 ] );
+        ahrs_recoveryTriggerPeriod = std::stoul( values[ 48 ] );
+    }
+};
+//
 static EM_BOOL WebSocketOpen( int eventType, const EmscriptenWebSocketOpenEvent* e, void* userData )
 {
     // printf( "open(eventType=%d, userData=%ld)\n", eventType, ( long )userData );
@@ -72,8 +217,22 @@ static EM_BOOL WebSocketMessage( int eventType, const EmscriptenWebSocketMessage
     {
         // printf( "text data: \"%s\"\n", e->data );
         websocket_receive_message_original = ( char* )e->data;
-        //
-        if ( ( websocket_receive_message_original != "Stoped" ) && ( websocket_receive_message_original != "Connected" ) )
+
+        if ( startsWith( websocket_receive_message_original.c_str(), "Setup" ) )
+        {
+            websocket_receive_message = websocket_receive_message_original;
+            //
+            interpretConfig( websocket_receive_message_original.c_str() );
+        }
+        else if ( startsWith( websocket_receive_message_original.c_str(), "Stoped" ) )
+        {
+            websocket_receive_message = websocket_receive_message_original;
+        }
+        else if ( startsWith( websocket_receive_message_original.c_str(), "Connected" ) )
+        {
+            websocket_receive_message = websocket_receive_message_original;
+        }
+        else
         {
             std::lock_guard< std::mutex > lock( queue_mutex );
             //
@@ -97,10 +256,6 @@ static EM_BOOL WebSocketMessage( int eventType, const EmscriptenWebSocketMessage
             // }
             //
             websocket_receive_message = new_sensor_db.to_info().c_str();
-        }
-        else
-        {
-            websocket_receive_message = websocket_receive_message_original;
         }
     }
     else
