@@ -4,6 +4,7 @@
 #include "font/IconsFontAwesome6.h"
 #include "font/IconsMaterialDesignIcons.h"
 #include "implot/implot.h"
+#include "implot3d/implot3d.h"
 #include <Urho3D/Core/CoreEvents.h>
 #include <Urho3D/Core/ProcessUtils.h>
 #include <Urho3D/DebugNew.h>
@@ -73,6 +74,7 @@ void CommonApplication::Start()
     FmRegisterOjbj();
     setup_style_of_imgui();
     ImPlot::CreateContext();
+    ImPlot3D::CreateContext();
     //
     CreateScene();
     //
@@ -87,6 +89,7 @@ void CommonApplication::Start()
 }
 void CommonApplication::Stop()
 {
+    ImPlot3D::DestroyContext();
     ImPlot::DestroyContext();
 }
 
@@ -603,50 +606,51 @@ void CommonApplication::ChartUi()
 {
 
     float h = ( winSizeY_ - 20 - 7 * 2 ) / 7;
-
+    //
+    //
+    static float time[ 1024 ], roll[ 1024 ], pitch[ 1024 ], yaw[ 1024 ], magx[ 1024 ], magy[ 1024 ], magz[ 1024 ], gyrx[ 1024 ], gyry[ 1024 ], gyrz[ 1024 ], accx[ 1024 ], accy[ 1024 ], accz[ 1024 ], eax[ 1024 ], eay[ 1024 ], eaz[ 1024 ], evx[ 1024 ], evy[ 1024 ], evz[ 1024 ], px[ 1024 ], py[ 1024 ],
+        pz[ 1024 ];
+    //
+    int count = sensor_data_vector.size();
+    for ( int i = 0; i < count; i++ )
+    {
+        time[ i ] = i;
+        //
+        roll[ i ]  = sensor_data_vector[ i ].roll;
+        pitch[ i ] = sensor_data_vector[ i ].pitch;
+        yaw[ i ]   = sensor_data_vector[ i ].yaw;
+        //
+        magx[ i ] = sensor_data_vector[ i ].mag_x;
+        magy[ i ] = sensor_data_vector[ i ].mag_y;
+        magz[ i ] = sensor_data_vector[ i ].mag_z;
+        //
+        gyrx[ i ] = sensor_data_vector[ i ].gyro_x;
+        gyry[ i ] = sensor_data_vector[ i ].gyro_y;
+        gyrz[ i ] = sensor_data_vector[ i ].gyro_z;
+        //
+        accx[ i ] = sensor_data_vector[ i ].acc_x;
+        accy[ i ] = sensor_data_vector[ i ].acc_y;
+        accz[ i ] = sensor_data_vector[ i ].acc_z;
+        //
+        eax[ i ] = sensor_data_vector[ i ].eacc_x;
+        eay[ i ] = sensor_data_vector[ i ].eacc_y;
+        eaz[ i ] = sensor_data_vector[ i ].eacc_z;
+        //
+        evx[ i ] = sensor_data_vector[ i ].vel_x;
+        evy[ i ] = sensor_data_vector[ i ].vel_y;
+        evz[ i ] = sensor_data_vector[ i ].vel_z;
+        //
+        px[ i ] = sensor_data_vector[ i ].pos_x;
+        py[ i ] = sensor_data_vector[ i ].pos_y;
+        pz[ i ] = sensor_data_vector[ i ].pos_z;
+    }
     ui::SetNextWindowSize( ImVec2( 600, winSizeY_ ), ImGuiCond_FirstUseEver );
     ui::SetNextWindowPos( ImVec2( winSizeX_ - 600, 0 ), ImGuiCond_FirstUseEver );
-    //
+    // 平面
     if ( ui::Begin( "IMU Chart", NULL, ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoScrollbar ) )
     {
         float w = ui::GetContentRegionAvail().x;
-        //
-        static float time[ 1024 ], roll[ 1024 ], pitch[ 1024 ], yaw[ 1024 ], magx[ 1024 ], magy[ 1024 ], magz[ 1024 ], gyrx[ 1024 ], gyry[ 1024 ], gyrz[ 1024 ], accx[ 1024 ], accy[ 1024 ], accz[ 1024 ], eax[ 1024 ], eay[ 1024 ], eaz[ 1024 ], evx[ 1024 ], evy[ 1024 ], evz[ 1024 ], px[ 1024 ],
-            py[ 1024 ], pz[ 1024 ];
-        //
-        int count = sensor_data_vector.size();
-        for ( int i = 0; i < count; i++ )
-        {
-            time[ i ] = i;
-            //
-            roll[ i ]  = sensor_data_vector[ i ].roll;
-            pitch[ i ] = sensor_data_vector[ i ].pitch;
-            yaw[ i ]   = sensor_data_vector[ i ].yaw;
-            //
-            magx[ i ] = sensor_data_vector[ i ].mag_x;
-            magy[ i ] = sensor_data_vector[ i ].mag_y;
-            magz[ i ] = sensor_data_vector[ i ].mag_z;
-            //
-            gyrx[ i ] = sensor_data_vector[ i ].gyro_x;
-            gyry[ i ] = sensor_data_vector[ i ].gyro_y;
-            gyrz[ i ] = sensor_data_vector[ i ].gyro_z;
-            //
-            accx[ i ] = sensor_data_vector[ i ].acc_x;
-            accy[ i ] = sensor_data_vector[ i ].acc_y;
-            accz[ i ] = sensor_data_vector[ i ].acc_z;
-            //
-            eax[ i ] = sensor_data_vector[ i ].eacc_x;
-            eay[ i ] = sensor_data_vector[ i ].eacc_y;
-            eaz[ i ] = sensor_data_vector[ i ].eacc_z;
-            //
-            evx[ i ] = sensor_data_vector[ i ].vel_x;
-            evy[ i ] = sensor_data_vector[ i ].vel_y;
-            evz[ i ] = sensor_data_vector[ i ].vel_z;
-            //
-            px[ i ] = sensor_data_vector[ i ].pos_x;
-            py[ i ] = sensor_data_vector[ i ].pos_y;
-            pz[ i ] = sensor_data_vector[ i ].pos_z;
-        }
+
         //  ------------------ Accelerometer
         if ( ImPlot::BeginPlot( "Accelerometer", ImVec2( w, h ) ) )
         {
@@ -761,6 +765,26 @@ void CommonApplication::ChartUi()
         }
     }
     ui::End();
+    // 3d
+    ui::SetNextWindowSize( ImVec2( 450, 450 ), ImGuiCond_FirstUseEver );
+    ui::SetNextWindowPos( ImVec2( 2, winSizeY_ - 1304 ), ImGuiCond_FirstUseEver );
+    //
+    if ( ImGui::Begin( "IMU Trajectory" ) )
+    {
+        float w_t = ui::GetContentRegionAvail().x;
+        float h_t = ui::GetContentRegionAvail().y;
+        if ( ImPlot3D::BeginPlot( "Trajectory", ImVec2( w_t, h_t ) ) )
+        {
+            ImPlot3D::SetupAxes( "X", "Y", "Z", ImPlot3DAxisFlags_AutoFit, ImPlot3DAxisFlags_AutoFit, ImPlot3DAxisFlags_AutoFit );
+            ImPlot3D::SetNextMarkerStyle( ImPlotMarker_Cross, 0.1f, ImVec4( 255.0, 0.0, 0.0, 1.0 ), IMPLOT_AUTO, ImVec4( 255.0, 0.0, 0.0, 1.0 ) );
+            ImPlot3D::SetNextLineStyle( ImVec4( 255.0, 0.0, 0.0, 1.0 ) );
+            //
+            ImPlot3D::PlotLine( "Line", px, py, pz, count );
+            ImPlot3D::PlotScatter( "Scatter", px, py, pz, count );
+            ImPlot3D::EndPlot();
+        }
+    }
+    ImGui::End();
 };
 
 //
