@@ -776,11 +776,9 @@ void CommonApplication::ChartUi()
         if ( ImPlot3D::BeginPlot( "Trajectory", ImVec2( w_t, h_t ) ) )
         {
             ImPlot3D::SetupAxes( "X", "Y", "Z", ImPlot3DAxisFlags_AutoFit, ImPlot3DAxisFlags_AutoFit, ImPlot3DAxisFlags_AutoFit );
-            ImPlot3D::SetNextMarkerStyle( ImPlotMarker_Cross, 0.05f, ImVec4( 255.0, 0.0, 0.0, 1.0 ), IMPLOT_AUTO, ImVec4( 255.0, 0.0, 0.0, 1.0 ) );
+            ImPlot3D::SetNextMarkerStyle( ImPlotMarker_Cross, 1.5f, ImVec4( 255.0, 0.0, 0.0, 1.0 ), IMPLOT_AUTO, ImVec4( 255.0, 0.0, 0.0, 1.0 ) );
             ImPlot3D::SetNextLineStyle( ImVec4( 255.0, 255.0, 0.0, 0.5 ) );
-            //
             ImPlot3D::PlotLine( "Line", px, py, pz, count );
-            ImPlot3D::PlotScatter( "Scatter", px, py, pz, count );
             ImPlot3D::EndPlot();
         }
     }
