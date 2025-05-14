@@ -795,7 +795,26 @@ void CommonApplication::BigCharUiChange()
     //
     if ( ui::Begin( "Big IMU Chart", NULL, ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoTitleBar ) )
     {
-        // BigCharUi();
+        static const char* items[]      = { "Estimated Accelerometer", "Estimated Velocity", "Position" };
+        static int         item_current = 0;
+        ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
+        ImGui::Combo( "combo", &item_current, items, IM_ARRAYSIZE( items ) );
+        //
+        int count          = sensor_data_vector.size();
+        int original_count = original_sensor_data_vector.size();
+        //
+        if ( item_current == 0 )
+        {
+            BigCharUi( "Estimated Accelerometer##Char", eax, eay, eaz, count, original_eax, original_eay, original_eaz, original_count );
+        }
+        else if ( item_current == 1 )
+        {
+            BigCharUi( "Estimated Velocity##Char", evx, evy, evz, count, original_evx, original_evy, original_evz, original_count );
+        }
+        else if ( item_current == 2 )
+        {
+            BigCharUi( "Position##Char", px, py, pz, count, original_px, original_py, original_pz, original_count );
+        }
     }
     ui::End();
 };
@@ -805,19 +824,19 @@ void CommonApplication::BigCharUi( std::string str_title, float* befor_x, float*
     float w_t = ui::GetContentRegionAvail().x;
     float h_t = ui::GetContentRegionAvail().y;
     //
-    if ( ImPlot::BeginPlot( str_title.c_str(), ImVec2( w_t, h_t ) ) )
+    if ( ImPlot::BeginPlot( "Big Char UI##BigChar", ImVec2( w_t, h_t ), ImPlotFlags_NoTitle ) )
     {
-        ImPlot::SetupAxes( "Index", "X/Y/Z", ImPlotAxisFlags_AutoFit | ImPlotAxisFlags_NoLabel | ImPlotAxisFlags_NoTickLabels, ImPlotAxisFlags_AutoFit | ImPlotAxisFlags_NoLabel | ImPlotAxisFlags_Opposite | ImPlotAxisFlags_NoTickLabels );
+        ImPlot::SetupAxes( "Index##Calculate", "X/Y/Z##Calculate", ImPlotAxisFlags_AutoFit | ImPlotAxisFlags_NoLabel | ImPlotAxisFlags_NoTickLabels, ImPlotAxisFlags_AutoFit | ImPlotAxisFlags_NoLabel | ImPlotAxisFlags_Opposite | ImPlotAxisFlags_NoTickLabels );
         //
         ImPlot::SetNextMarkerStyle( ImPlotMarker_Cross, 1, ImVec4( 255.0, 0.0, 0.0, 1.0 ), IMPLOT_AUTO, ImVec4( 255.0, 0.0, 0.0, 1.0 ) );
         ImPlot::SetNextLineStyle( ImVec4( 255.0, 0.0, 0.0, 1.0 ) );
-        ImPlot::PlotStairs( "X", befor_x, befor_count, 1.0, 0 );
+        ImPlot::PlotStairs( "Calculate X", befor_x, befor_count, 1.0, 0 );
         ImPlot::SetNextLineStyle( ImVec4( 0.0, 255.0, 0.0, 1.0 ) );
         ImPlot::SetNextMarkerStyle( ImPlotMarker_Cross, 1, ImVec4( 0.0, 255.0, 0.0, 1.0 ), IMPLOT_AUTO, ImVec4( 0.0, 255.0, 0.0, 1.0 ) );
-        ImPlot::PlotStairs( "Y", befor_y, befor_count, 1.0, 0 );
+        ImPlot::PlotStairs( "Calculate Y", befor_y, befor_count, 1.0, 0 );
         ImPlot::SetNextLineStyle( ImVec4( 0.0, 0.0, 255.0, 1.0 ) );
         ImPlot::SetNextMarkerStyle( ImPlotMarker_Cross, 1, ImVec4( 0.0, 0.0, 255.0, 1.0 ), IMPLOT_AUTO, ImVec4( 0.0, 0.0, 255.0, 1.0 ) );
-        ImPlot::PlotStairs( "Z", befor_z, befor_count, 1.0, 0 );
+        ImPlot::PlotStairs( "Calculate Z", befor_z, befor_count, 1.0, 0 );
         //
         ImPlot::SetNextMarkerStyle( ImPlotMarker_Cross, 1, ImVec4( 255.0, 125.0, 0.0, 0.6 ), IMPLOT_AUTO, ImVec4( 255.0, 125.0, 0.0, 0.6 ) );
         ImPlot::SetNextLineStyle( ImVec4( 255.0, 125.0, 0.0, 0.6 ) );
