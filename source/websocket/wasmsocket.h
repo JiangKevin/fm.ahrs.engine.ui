@@ -56,6 +56,10 @@ static float ahrs_magneticRejection     = 10.0f;
 static int   ahrs_recoveryTriggerPeriod = 500;
 //
 //
+static float roll[ 1024 ], pitch[ 1024 ], yaw[ 1024 ], magx[ 1024 ], magy[ 1024 ], magz[ 1024 ], gyrx[ 1024 ], gyry[ 1024 ], gyrz[ 1024 ], accx[ 1024 ], accy[ 1024 ], accz[ 1024 ], eax[ 1024 ], eay[ 1024 ], eaz[ 1024 ], evx[ 1024 ], evy[ 1024 ], evz[ 1024 ], px[ 1024 ], py[ 1024 ], pz[ 1024 ];
+static float original_eax[ 1024 ], original_eay[ 1024 ], original_eaz[ 1024 ], original_evx[ 1024 ], original_evy[ 1024 ], original_evz[ 1024 ], original_px[ 1024 ], original_py[ 1024 ], original_pz[ 1024 ];
+//
+//
 static std::string GetConfigString()
 {
     std::string content_str = "Setup";
@@ -177,6 +181,58 @@ static void interpretConfig( std::string content_str )
     }
 };
 //
+static void v2a()
+{
+    int count = sensor_data_vector.size();
+    for ( int i = 0; i < count; i++ )
+    {
+        roll[ i ]  = sensor_data_vector[ i ].roll;
+        pitch[ i ] = sensor_data_vector[ i ].pitch;
+        yaw[ i ]   = sensor_data_vector[ i ].yaw;
+        //
+        magx[ i ] = sensor_data_vector[ i ].mag_x;
+        magy[ i ] = sensor_data_vector[ i ].mag_y;
+        magz[ i ] = sensor_data_vector[ i ].mag_z;
+        //
+        gyrx[ i ] = sensor_data_vector[ i ].gyro_x;
+        gyry[ i ] = sensor_data_vector[ i ].gyro_y;
+        gyrz[ i ] = sensor_data_vector[ i ].gyro_z;
+        //
+        accx[ i ] = sensor_data_vector[ i ].acc_x;
+        accy[ i ] = sensor_data_vector[ i ].acc_y;
+        accz[ i ] = sensor_data_vector[ i ].acc_z;
+        //
+        eax[ i ] = sensor_data_vector[ i ].eacc_x;
+        eay[ i ] = sensor_data_vector[ i ].eacc_y;
+        eaz[ i ] = sensor_data_vector[ i ].eacc_z;
+        //
+        evx[ i ] = sensor_data_vector[ i ].vel_x;
+        evy[ i ] = sensor_data_vector[ i ].vel_y;
+        evz[ i ] = sensor_data_vector[ i ].vel_z;
+        //
+        px[ i ] = sensor_data_vector[ i ].pos_x;
+        py[ i ] = sensor_data_vector[ i ].pos_y;
+        pz[ i ] = sensor_data_vector[ i ].pos_z;
+    }
+    //
+    int original_count = original_sensor_data_vector.size();
+    //
+    for ( int i = 0; i < original_count; i++ )
+    {
+        original_eax[ i ] = original_sensor_data_vector[ i ].eacc_x;
+        original_eay[ i ] = original_sensor_data_vector[ i ].eacc_y;
+        original_eaz[ i ] = original_sensor_data_vector[ i ].eacc_z;
+        //
+        original_evx[ i ] = original_sensor_data_vector[ i ].vel_x;
+        original_evy[ i ] = original_sensor_data_vector[ i ].vel_y;
+        original_evz[ i ] = original_sensor_data_vector[ i ].vel_z;
+        //
+        original_px[ i ] = original_sensor_data_vector[ i ].pos_x;
+        original_py[ i ] = original_sensor_data_vector[ i ].pos_y;
+        original_pz[ i ] = original_sensor_data_vector[ i ].pos_z;
+    }
+}
+//
 static EM_BOOL WebSocketOpen( int eventType, const EmscriptenWebSocketOpenEvent* e, void* userData )
 {
     // printf( "open(eventType=%d, userData=%ld)\n", eventType, ( long )userData );
@@ -257,6 +313,8 @@ static EM_BOOL WebSocketMessage( int eventType, const EmscriptenWebSocketMessage
                 sensor_data_vector.push_back( new_sensor_db );
             }
             //
+            v2a();
+            //
             websocket_receive_message = ( "After Calculation:" + new_sensor_db.to_info() ).c_str();
         }
         else if ( startsWith( websocket_receive_message_original.c_str(), "BeforCalculation:" ) )
@@ -280,6 +338,8 @@ static EM_BOOL WebSocketMessage( int eventType, const EmscriptenWebSocketMessage
                 original_sensor_data_vector.erase( original_sensor_data_vector.begin() );
                 original_sensor_data_vector.push_back( new_sensor_db );
             }
+            //
+            v2a();
             //
             // websocket_receive_message = ( "Befor Calculation:" + new_sensor_db.to_info() ).c_str();
         }

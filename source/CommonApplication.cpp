@@ -325,8 +325,6 @@ void CommonApplication::RenderUi()
     WebsocketUi();
     AxesNodeAttributeUi();
     //
-    v2a();
-    //
     ChartUi();
     BigCharUiChange();
     //
@@ -805,21 +803,21 @@ void CommonApplication::BigCharUiChange()
         //
         if ( item_current == 0 )
         {
-            BigCharUi(  eax, eay, eaz, count, original_eax, original_eay, original_eaz, original_count );
+            BigCharUi( eax, eay, eaz, count, original_eax, original_eay, original_eaz, original_count );
         }
         else if ( item_current == 1 )
         {
-            BigCharUi(  evx, evy, evz, count, original_evx, original_evy, original_evz, original_count );
+            BigCharUi( evx, evy, evz, count, original_evx, original_evy, original_evz, original_count );
         }
         else if ( item_current == 2 )
         {
-            BigCharUi(  px, py, pz, count, original_px, original_py, original_pz, original_count );
+            BigCharUi( px, py, pz, count, original_px, original_py, original_pz, original_count );
         }
     }
     ui::End();
 };
 //
-void CommonApplication::BigCharUi(  float* befor_x, float* befor_y, float* befor_z, int befor_count, float* after_x, float* after_y, float* after_z, int after_count )
+void CommonApplication::BigCharUi( float* befor_x, float* befor_y, float* befor_z, int befor_count, float* after_x, float* after_y, float* after_z, int after_count )
 {
     float w_t = ui::GetContentRegionAvail().x;
     float h_t = ui::GetContentRegionAvail().y;
@@ -847,54 +845,54 @@ void CommonApplication::BigCharUi(  float* befor_x, float* befor_y, float* befor
     }
 };
 //
-void CommonApplication::v2a()
-{
-    int count = sensor_data_vector.size();
-    for ( int i = 0; i < count; i++ )
-    {
-        roll[ i ]  = sensor_data_vector[ i ].roll;
-        pitch[ i ] = sensor_data_vector[ i ].pitch;
-        yaw[ i ]   = sensor_data_vector[ i ].yaw;
-        //
-        magx[ i ] = sensor_data_vector[ i ].mag_x;
-        magy[ i ] = sensor_data_vector[ i ].mag_y;
-        magz[ i ] = sensor_data_vector[ i ].mag_z;
-        //
-        gyrx[ i ] = sensor_data_vector[ i ].gyro_x;
-        gyry[ i ] = sensor_data_vector[ i ].gyro_y;
-        gyrz[ i ] = sensor_data_vector[ i ].gyro_z;
-        //
-        accx[ i ] = sensor_data_vector[ i ].acc_x;
-        accy[ i ] = sensor_data_vector[ i ].acc_y;
-        accz[ i ] = sensor_data_vector[ i ].acc_z;
-        //
-        eax[ i ] = sensor_data_vector[ i ].eacc_x;
-        eay[ i ] = sensor_data_vector[ i ].eacc_y;
-        eaz[ i ] = sensor_data_vector[ i ].eacc_z;
-        //
-        evx[ i ] = sensor_data_vector[ i ].vel_x;
-        evy[ i ] = sensor_data_vector[ i ].vel_y;
-        evz[ i ] = sensor_data_vector[ i ].vel_z;
-        //
-        px[ i ] = sensor_data_vector[ i ].pos_x;
-        py[ i ] = sensor_data_vector[ i ].pos_y;
-        pz[ i ] = sensor_data_vector[ i ].pos_z;
-    }
-    //
-    int original_count = original_sensor_data_vector.size();
-    //
-    for ( int i = 0; i < original_count; i++ )
-    {
-        original_eax[ i ] = original_sensor_data_vector[ i ].eacc_x;
-        original_eay[ i ] = original_sensor_data_vector[ i ].eacc_y;
-        original_eaz[ i ] = original_sensor_data_vector[ i ].eacc_z;
-        //
-        original_evx[ i ] = original_sensor_data_vector[ i ].vel_x;
-        original_evy[ i ] = original_sensor_data_vector[ i ].vel_y;
-        original_evz[ i ] = original_sensor_data_vector[ i ].vel_z;
-        //
-        original_px[ i ] = original_sensor_data_vector[ i ].pos_x;
-        original_py[ i ] = original_sensor_data_vector[ i ].pos_y;
-        original_pz[ i ] = original_sensor_data_vector[ i ].pos_z;
-    }
-};
+// void CommonApplication::v2a()
+// {
+//     int count = sensor_data_vector.size();
+//     for ( int i = 0; i < count; i++ )
+//     {
+//         roll[ i ]  = sensor_data_vector[ i ].roll;
+//         pitch[ i ] = sensor_data_vector[ i ].pitch;
+//         yaw[ i ]   = sensor_data_vector[ i ].yaw;
+//         //
+//         magx[ i ] = sensor_data_vector[ i ].mag_x;
+//         magy[ i ] = sensor_data_vector[ i ].mag_y;
+//         magz[ i ] = sensor_data_vector[ i ].mag_z;
+//         //
+//         gyrx[ i ] = sensor_data_vector[ i ].gyro_x;
+//         gyry[ i ] = sensor_data_vector[ i ].gyro_y;
+//         gyrz[ i ] = sensor_data_vector[ i ].gyro_z;
+//         //
+//         accx[ i ] = sensor_data_vector[ i ].acc_x;
+//         accy[ i ] = sensor_data_vector[ i ].acc_y;
+//         accz[ i ] = sensor_data_vector[ i ].acc_z;
+//         //
+//         eax[ i ] = sensor_data_vector[ i ].eacc_x;
+//         eay[ i ] = sensor_data_vector[ i ].eacc_y;
+//         eaz[ i ] = sensor_data_vector[ i ].eacc_z;
+//         //
+//         evx[ i ] = sensor_data_vector[ i ].vel_x;
+//         evy[ i ] = sensor_data_vector[ i ].vel_y;
+//         evz[ i ] = sensor_data_vector[ i ].vel_z;
+//         //
+//         px[ i ] = sensor_data_vector[ i ].pos_x;
+//         py[ i ] = sensor_data_vector[ i ].pos_y;
+//         pz[ i ] = sensor_data_vector[ i ].pos_z;
+//     }
+//     //
+//     int original_count = original_sensor_data_vector.size();
+//     //
+//     for ( int i = 0; i < original_count; i++ )
+//     {
+//         original_eax[ i ] = original_sensor_data_vector[ i ].eacc_x;
+//         original_eay[ i ] = original_sensor_data_vector[ i ].eacc_y;
+//         original_eaz[ i ] = original_sensor_data_vector[ i ].eacc_z;
+//         //
+//         original_evx[ i ] = original_sensor_data_vector[ i ].vel_x;
+//         original_evy[ i ] = original_sensor_data_vector[ i ].vel_y;
+//         original_evz[ i ] = original_sensor_data_vector[ i ].vel_z;
+//         //
+//         original_px[ i ] = original_sensor_data_vector[ i ].pos_x;
+//         original_py[ i ] = original_sensor_data_vector[ i ].pos_y;
+//         original_pz[ i ] = original_sensor_data_vector[ i ].pos_z;
+//     }
+// };
