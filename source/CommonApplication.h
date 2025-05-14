@@ -67,7 +67,8 @@ public:
     void WebsocketUi();
     void AxesNodeAttributeUi();
     void ChartUi();
-    void BigCharUi();
+    void BigCharUi( std::string str_title, float* befor_x, float* befor_y, float* befor_z, int befor_count, float* after_x, float* after_y, float* after_z, int after_count );
+    void BigCharUiChange();
     //
     void ToCtrlAxesNode();
     void DrawPoints();
