@@ -324,7 +324,11 @@ void CommonApplication::RenderUi()
 {
     WebsocketUi();
     AxesNodeAttributeUi();
+    //
+    v2a();
+    //
     ChartUi();
+    BigCharUi();
     //
     // ImPlot::ShowDemoWindow();
 }
@@ -605,81 +609,11 @@ void CommonApplication::AxesNodeAttributeUi()
 //
 void CommonApplication::ChartUi()
 {
-
+    int original_count = original_sensor_data_vector.size();
+    int count          = sensor_data_vector.size();
+    //
     float h = ( winSizeY_ - 20 - 7 * 2 ) / 7;
     //
-    //
-    static float time[ 1024 ], roll[ 1024 ], pitch[ 1024 ], yaw[ 1024 ], magx[ 1024 ], magy[ 1024 ], magz[ 1024 ], gyrx[ 1024 ], gyry[ 1024 ], gyrz[ 1024 ], accx[ 1024 ], accy[ 1024 ], accz[ 1024 ], eax[ 1024 ], eay[ 1024 ], eaz[ 1024 ], evx[ 1024 ], evy[ 1024 ], evz[ 1024 ], px[ 1024 ], py[ 1024 ],
-        pz[ 1024 ];
-    static float original_time[ 1024 ], original_eax[ 1024 ], original_eay[ 1024 ], original_eaz[ 1024 ], original_evx[ 1024 ], original_evy[ 1024 ], original_evz[ 1024 ], original_px[ 1024 ], original_py[ 1024 ], original_pz[ 1024 ];
-    //
-    int count = sensor_data_vector.size();
-    for ( int i = 0; i < count; i++ )
-    {
-        time[ i ] = i;
-        //
-        roll[ i ]  = sensor_data_vector[ i ].roll;
-        pitch[ i ] = sensor_data_vector[ i ].pitch;
-        yaw[ i ]   = sensor_data_vector[ i ].yaw;
-        //
-        magx[ i ] = sensor_data_vector[ i ].mag_x;
-        magy[ i ] = sensor_data_vector[ i ].mag_y;
-        magz[ i ] = sensor_data_vector[ i ].mag_z;
-        //
-        gyrx[ i ] = sensor_data_vector[ i ].gyro_x;
-        gyry[ i ] = sensor_data_vector[ i ].gyro_y;
-        gyrz[ i ] = sensor_data_vector[ i ].gyro_z;
-        //
-        accx[ i ] = sensor_data_vector[ i ].acc_x;
-        accy[ i ] = sensor_data_vector[ i ].acc_y;
-        accz[ i ] = sensor_data_vector[ i ].acc_z;
-        //
-        eax[ i ] = sensor_data_vector[ i ].eacc_x;
-        eay[ i ] = sensor_data_vector[ i ].eacc_y;
-        eaz[ i ] = sensor_data_vector[ i ].eacc_z;
-        //
-        evx[ i ] = sensor_data_vector[ i ].vel_x;
-        evy[ i ] = sensor_data_vector[ i ].vel_y;
-        evz[ i ] = sensor_data_vector[ i ].vel_z;
-        //
-        px[ i ] = sensor_data_vector[ i ].pos_x;
-        py[ i ] = sensor_data_vector[ i ].pos_y;
-        pz[ i ] = sensor_data_vector[ i ].pos_z;
-    }
-    //
-    int original_count = original_sensor_data_vector.size();
-    for ( int i = 0; i < original_count; i++ )
-    {
-        time[ i ] = i;
-        // //
-        // roll[ i ]  = sensor_data_vector[ i ].roll;
-        // pitch[ i ] = sensor_data_vector[ i ].pitch;
-        // yaw[ i ]   = sensor_data_vector[ i ].yaw;
-        // //
-        // magx[ i ] = sensor_data_vector[ i ].mag_x;
-        // magy[ i ] = sensor_data_vector[ i ].mag_y;
-        // magz[ i ] = sensor_data_vector[ i ].mag_z;
-        // //
-        // gyrx[ i ] = sensor_data_vector[ i ].gyro_x;
-        // gyry[ i ] = sensor_data_vector[ i ].gyro_y;
-        // gyrz[ i ] = sensor_data_vector[ i ].gyro_z;
-        // //
-        // accx[ i ] = sensor_data_vector[ i ].acc_x;
-        // accy[ i ] = sensor_data_vector[ i ].acc_y;
-        // accz[ i ] = sensor_data_vector[ i ].acc_z;
-        //
-        original_eax[ i ] = original_sensor_data_vector[ i ].eacc_x;
-        original_eay[ i ] = original_sensor_data_vector[ i ].eacc_y;
-        original_eaz[ i ] = original_sensor_data_vector[ i ].eacc_z;
-        //
-        original_evx[ i ] = original_sensor_data_vector[ i ].vel_x;
-        original_evy[ i ] = original_sensor_data_vector[ i ].vel_y;
-        original_evz[ i ] = original_sensor_data_vector[ i ].vel_z;
-        //
-        original_px[ i ] = original_sensor_data_vector[ i ].pos_x;
-        original_py[ i ] = original_sensor_data_vector[ i ].pos_y;
-        original_pz[ i ] = original_sensor_data_vector[ i ].pos_z;
-    }
     ui::SetNextWindowSize( ImVec2( 600, winSizeY_ ), ImGuiCond_FirstUseEver );
     ui::SetNextWindowPos( ImVec2( winSizeX_ - 600, 0 ), ImGuiCond_FirstUseEver );
     // 平面
@@ -755,7 +689,6 @@ void CommonApplication::ChartUi()
         if ( ImPlot::BeginPlot( "Estimated Accelerometer", ImVec2( w, h ) ) )
         {
             ImPlot::SetupAxes( "Index", "X/Y/Z", ImPlotAxisFlags_AutoFit | ImPlotAxisFlags_NoLabel | ImPlotAxisFlags_NoTickLabels, ImPlotAxisFlags_AutoFit | ImPlotAxisFlags_NoLabel | ImPlotAxisFlags_Opposite | ImPlotAxisFlags_NoTickLabels );
-
             //
             ImPlot::SetNextMarkerStyle( ImPlotMarker_Cross, 1, ImVec4( 255.0, 0.0, 0.0, 1.0 ), IMPLOT_AUTO, ImVec4( 255.0, 0.0, 0.0, 1.0 ) );
             ImPlot::SetNextLineStyle( ImVec4( 255.0, 0.0, 0.0, 1.0 ) );
@@ -766,17 +699,6 @@ void CommonApplication::ChartUi()
             ImPlot::SetNextLineStyle( ImVec4( 0.0, 0.0, 255.0, 1.0 ) );
             ImPlot::SetNextMarkerStyle( ImPlotMarker_Cross, 1, ImVec4( 0.0, 0.0, 255.0, 1.0 ), IMPLOT_AUTO, ImVec4( 0.0, 0.0, 255.0, 1.0 ) );
             ImPlot::PlotStairs( "Z", eaz, count, 1.0, 0 );
-            //
-            ImPlot::SetNextMarkerStyle( ImPlotMarker_Cross, 1, ImVec4( 255.0, 0.0, 0.0, 0.6 ), IMPLOT_AUTO, ImVec4( 255.0, 0.0, 0.0, 0.6 ) );
-            ImPlot::SetNextLineStyle( ImVec4( 255.0, 0.0, 0.0, 0.6 ) );
-            ImPlot::PlotStairs( "Original X", original_eax, original_count, 1.0, 0 );
-            ImPlot::SetNextLineStyle( ImVec4( 0.0, 255.0, 0.0, 0.60 ) );
-            ImPlot::SetNextMarkerStyle( ImPlotMarker_Cross, 1, ImVec4( 0.0, 255.0, 0.0, 0.6 ), IMPLOT_AUTO, ImVec4( 0.0, 255.0, 0.0, 0.6 ) );
-            ImPlot::PlotStairs( "Original Y", original_eay, original_count, 1.0, 0 );
-            ImPlot::SetNextLineStyle( ImVec4( 0.0, 0.0, 255.0, 0.6 ) );
-            ImPlot::SetNextMarkerStyle( ImPlotMarker_Cross, 1, ImVec4( 0.0, 0.0, 255.0, 0.6 ), IMPLOT_AUTO, ImVec4( 0.0, 0.0, 255.0, 0.6 ) );
-            ImPlot::PlotStairs( "Original Z", original_eaz, original_count, 1.0, 0 );
-            //
 
             ImPlot::EndPlot();
         }
@@ -816,63 +738,6 @@ void CommonApplication::ChartUi()
     }
     ui::End();
 
-    // //
-    // ui::SetNextWindowSize( ImVec2( 600, 3 * h + 6 ), ImGuiCond_FirstUseEver );
-    // ui::SetNextWindowPos( ImVec2( winSizeX_ - 1200, winSizeY_ - 3 * h - 6 ), ImGuiCond_FirstUseEver );
-    // // 原始平面
-    // if ( ui::Begin( "Original IMU Chart", NULL, ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoTitleBar ) )
-    // {
-    //     float w = ui::GetContentRegionAvail().x;
-    //     //  ------------------ ea
-    //     if ( ImPlot::BeginPlot( "Original Estimated Accelerometer", ImVec2( w, h ) ) )
-    //     {
-    //         ImPlot::SetupAxes( "Index", "X/Y/Z", ImPlotAxisFlags_AutoFit | ImPlotAxisFlags_NoLabel | ImPlotAxisFlags_NoTickLabels, ImPlotAxisFlags_AutoFit | ImPlotAxisFlags_NoLabel | ImPlotAxisFlags_Opposite | ImPlotAxisFlags_NoTickLabels );
-    //         ImPlot::SetNextMarkerStyle( ImPlotMarker_Cross, 1, ImVec4( 255.0, 0.0, 0.0, 1.0 ), IMPLOT_AUTO, ImVec4( 255.0, 0.0, 0.0, 1.0 ) );
-    //         ImPlot::SetNextLineStyle( ImVec4( 255.0, 0.0, 0.0, 1.0 ) );
-    //         ImPlot::PlotStairs( "X", original_eax, original_count, 1.0, 0 );
-    //         ImPlot::SetNextLineStyle( ImVec4( 0.0, 255.0, 0.0, 1.0 ) );
-    //         ImPlot::SetNextMarkerStyle( ImPlotMarker_Cross, 1, ImVec4( 0.0, 255.0, 0.0, 1.0 ), IMPLOT_AUTO, ImVec4( 0.0, 255.0, 0.0, 1.0 ) );
-    //         ImPlot::PlotStairs( "Y", original_eay, original_count, 1.0, 0 );
-    //         ImPlot::SetNextLineStyle( ImVec4( 0.0, 0.0, 255.0, 1.0 ) );
-    //         ImPlot::SetNextMarkerStyle( ImPlotMarker_Cross, 1, ImVec4( 0.0, 0.0, 255.0, 1.0 ), IMPLOT_AUTO, ImVec4( 0.0, 0.0, 255.0, 1.0 ) );
-    //         ImPlot::PlotStairs( "Z", original_eaz, original_count, 1.0, 0 );
-    //         ImPlot::EndPlot();
-    //     }
-    //     //  ------------------ ev
-    //     if ( ImPlot::BeginPlot( "Original Estimated Velocity", ImVec2( w, h ) ) )
-    //     {
-    //         ImPlot::SetupAxes( "Index", "X/Y/Z", ImPlotAxisFlags_AutoFit | ImPlotAxisFlags_NoLabel | ImPlotAxisFlags_NoTickLabels, ImPlotAxisFlags_AutoFit | ImPlotAxisFlags_NoLabel | ImPlotAxisFlags_Opposite | ImPlotAxisFlags_NoTickLabels );
-    //         ImPlot::SetNextMarkerStyle( ImPlotMarker_Cross, 1, ImVec4( 255.0, 0.0, 0.0, 1.0 ), IMPLOT_AUTO, ImVec4( 255.0, 0.0, 0.0, 1.0 ) );
-    //         ImPlot::SetNextLineStyle( ImVec4( 255.0, 0.0, 0.0, 1.0 ) );
-    //         ImPlot::PlotStairs( "X", original_evx, original_count, 1.0, 0 );
-    //         ImPlot::SetNextLineStyle( ImVec4( 0.0, 255.0, 0.0, 1.0 ) );
-    //         ImPlot::SetNextMarkerStyle( ImPlotMarker_Cross, 1, ImVec4( 0.0, 255.0, 0.0, 1.0 ), IMPLOT_AUTO, ImVec4( 0.0, 255.0, 0.0, 1.0 ) );
-    //         ImPlot::PlotStairs( "Y", original_evy, original_count, 1.0, 0 );
-    //         ImPlot::SetNextLineStyle( ImVec4( 0.0, 0.0, 255.0, 1.0 ) );
-    //         ImPlot::SetNextMarkerStyle( ImPlotMarker_Cross, 1, ImVec4( 0.0, 0.0, 255.0, 1.0 ), IMPLOT_AUTO, ImVec4( 0.0, 0.0, 255.0, 1.0 ) );
-    //         ImPlot::PlotStairs( "Z", original_evz, original_count, 1.0, 0 );
-
-    //         ImPlot::EndPlot();
-    //     }
-
-    //     // --------- pos
-    //     if ( ImPlot::BeginPlot( "Original Position", ImVec2( w, h ) ) )
-    //     {
-    //         ImPlot::SetupAxes( "Index", "X/Y/Z", ImPlotAxisFlags_AutoFit | ImPlotAxisFlags_NoLabel | ImPlotAxisFlags_NoTickLabels, ImPlotAxisFlags_AutoFit | ImPlotAxisFlags_NoLabel | ImPlotAxisFlags_Opposite | ImPlotAxisFlags_NoTickLabels );
-    //         ImPlot::SetNextMarkerStyle( ImPlotMarker_Cross, 1, ImVec4( 255.0, 0.0, 0.0, 1.0 ), IMPLOT_AUTO, ImVec4( 255.0, 0.0, 0.0, 1.0 ) );
-    //         ImPlot::SetNextLineStyle( ImVec4( 255.0, 0.0, 0.0, 1.0 ) );
-    //         ImPlot::PlotStairs( "X", original_px, original_count, 1.0, 0 );
-    //         ImPlot::SetNextLineStyle( ImVec4( 0.0, 255.0, 0.0, 1.0 ) );
-    //         ImPlot::SetNextMarkerStyle( ImPlotMarker_Cross, 1, ImVec4( 0.0, 255.0, 0.0, 1.0 ), IMPLOT_AUTO, ImVec4( 0.0, 255.0, 0.0, 1.0 ) );
-    //         ImPlot::PlotStairs( "Y", original_py, original_count, 1.0, 0 );
-    //         ImPlot::SetNextLineStyle( ImVec4( 0.0, 0.0, 255.0, 1.0 ) );
-    //         ImPlot::SetNextMarkerStyle( ImPlotMarker_Cross, 1, ImVec4( 0.0, 0.0, 255.0, 1.0 ), IMPLOT_AUTO, ImVec4( 0.0, 0.0, 255.0, 1.0 ) );
-    //         ImPlot::PlotStairs( "Z", original_pz, original_count, 1.0, 0 );
-
-    //         ImPlot::EndPlot();
-    //     }
-    // }
-    // ui::End();
     // 3d
     ui::SetNextWindowSize( ImVec2( 450, 450 ), ImGuiCond_FirstUseEver );
     ui::SetNextWindowPos( ImVec2( 2, winSizeY_ - 1304 ), ImGuiCond_FirstUseEver );
@@ -922,3 +787,99 @@ void CommonApplication::HandlePostRenderUpdate( StringHash eventType, VariantMap
 {
     DrawPoints();
 }
+//
+void CommonApplication::BigCharUi()
+{
+    int original_count = original_sensor_data_vector.size();
+    int count          = sensor_data_vector.size();
+
+    ui::SetNextWindowSize( ImVec2( 600, 600 ), ImGuiCond_FirstUseEver );
+    ui::SetNextWindowPos( ImVec2( winSizeX_ - 1202, winSizeY_ - 602 ), ImGuiCond_FirstUseEver );
+    //
+    if ( ui::Begin( "Big IMU Chart", NULL, ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoTitleBar ) )
+    {
+        float w_t = ui::GetContentRegionAvail().x;
+        float h_t = ui::GetContentRegionAvail().y;
+        //
+        if ( ImPlot::BeginPlot( "Estimated Accelerometer##1", ImVec2( w_t, h_t ) ) )
+        {
+            ImPlot::SetupAxes( "Index", "X/Y/Z", ImPlotAxisFlags_AutoFit | ImPlotAxisFlags_NoLabel | ImPlotAxisFlags_NoTickLabels, ImPlotAxisFlags_AutoFit | ImPlotAxisFlags_NoLabel | ImPlotAxisFlags_Opposite | ImPlotAxisFlags_NoTickLabels );
+            //
+            ImPlot::SetNextMarkerStyle( ImPlotMarker_Cross, 1, ImVec4( 255.0, 0.0, 0.0, 1.0 ), IMPLOT_AUTO, ImVec4( 255.0, 0.0, 0.0, 1.0 ) );
+            ImPlot::SetNextLineStyle( ImVec4( 255.0, 0.0, 0.0, 1.0 ) );
+            ImPlot::PlotStairs( "X", eax, count, 1.0, 0 );
+            ImPlot::SetNextLineStyle( ImVec4( 0.0, 255.0, 0.0, 1.0 ) );
+            ImPlot::SetNextMarkerStyle( ImPlotMarker_Cross, 1, ImVec4( 0.0, 255.0, 0.0, 1.0 ), IMPLOT_AUTO, ImVec4( 0.0, 255.0, 0.0, 1.0 ) );
+            ImPlot::PlotStairs( "Y", eay, count, 1.0, 0 );
+            ImPlot::SetNextLineStyle( ImVec4( 0.0, 0.0, 255.0, 1.0 ) );
+            ImPlot::SetNextMarkerStyle( ImPlotMarker_Cross, 1, ImVec4( 0.0, 0.0, 255.0, 1.0 ), IMPLOT_AUTO, ImVec4( 0.0, 0.0, 255.0, 1.0 ) );
+            ImPlot::PlotStairs( "Z", eaz, count, 1.0, 0 );
+            //
+            ImPlot::SetNextMarkerStyle( ImPlotMarker_Cross, 1, ImVec4( 255.0, 125.0, 0.0, 0.6 ), IMPLOT_AUTO, ImVec4( 255.0, 125.0, 0.0, 0.6 ) );
+            ImPlot::SetNextLineStyle( ImVec4( 255.0, 125.0, 0.0, 0.6 ) );
+            ImPlot::PlotStairs( "Original X", original_eax, original_count, 1.0, 0 );
+            ImPlot::SetNextLineStyle( ImVec4( 0.0, 255.0, 0.0, 0.6 ) );
+            ImPlot::SetNextMarkerStyle( ImPlotMarker_Cross, 1, ImVec4( 125.0, 255.0, 0.0, 0.6 ), IMPLOT_AUTO, ImVec4( 125.0, 255.0, 0.0, 0.6 ) );
+            ImPlot::PlotStairs( "Original Y", original_eay, original_count, 1.0, 0 );
+            ImPlot::SetNextLineStyle( ImVec4( 125.0, 0.0, 255.0, 0.6 ) );
+            ImPlot::SetNextMarkerStyle( ImPlotMarker_Cross, 1, ImVec4( 125.0, 0.0, 255.0, 0.6 ), IMPLOT_AUTO, ImVec4( 125.0, 0.0, 255.0, 0.6 ) );
+            ImPlot::PlotStairs( "Original Z", original_eaz, original_count, 1.0, 0 );
+            //
+
+            ImPlot::EndPlot();
+        }
+    }
+    ui::End();
+};
+//
+void CommonApplication::v2a()
+{
+    int count = sensor_data_vector.size();
+    for ( int i = 0; i < count; i++ )
+    {
+        roll[ i ]  = sensor_data_vector[ i ].roll;
+        pitch[ i ] = sensor_data_vector[ i ].pitch;
+        yaw[ i ]   = sensor_data_vector[ i ].yaw;
+        //
+        magx[ i ] = sensor_data_vector[ i ].mag_x;
+        magy[ i ] = sensor_data_vector[ i ].mag_y;
+        magz[ i ] = sensor_data_vector[ i ].mag_z;
+        //
+        gyrx[ i ] = sensor_data_vector[ i ].gyro_x;
+        gyry[ i ] = sensor_data_vector[ i ].gyro_y;
+        gyrz[ i ] = sensor_data_vector[ i ].gyro_z;
+        //
+        accx[ i ] = sensor_data_vector[ i ].acc_x;
+        accy[ i ] = sensor_data_vector[ i ].acc_y;
+        accz[ i ] = sensor_data_vector[ i ].acc_z;
+        //
+        eax[ i ] = sensor_data_vector[ i ].eacc_x;
+        eay[ i ] = sensor_data_vector[ i ].eacc_y;
+        eaz[ i ] = sensor_data_vector[ i ].eacc_z;
+        //
+        evx[ i ] = sensor_data_vector[ i ].vel_x;
+        evy[ i ] = sensor_data_vector[ i ].vel_y;
+        evz[ i ] = sensor_data_vector[ i ].vel_z;
+        //
+        px[ i ] = sensor_data_vector[ i ].pos_x;
+        py[ i ] = sensor_data_vector[ i ].pos_y;
+        pz[ i ] = sensor_data_vector[ i ].pos_z;
+    }
+    //
+    int original_count = original_sensor_data_vector.size();
+    //
+    for ( int i = 0; i < original_count; i++ )
+    {
+        original_eax[ i ] = original_sensor_data_vector[ i ].eacc_x;
+        original_eay[ i ] = original_sensor_data_vector[ i ].eacc_y;
+        original_eaz[ i ] = original_sensor_data_vector[ i ].eacc_z;
+        //
+        original_evx[ i ] = original_sensor_data_vector[ i ].vel_x;
+        original_evy[ i ] = original_sensor_data_vector[ i ].vel_y;
+        original_evz[ i ] = original_sensor_data_vector[ i ].vel_z;
+        //
+        original_px[ i ] = original_sensor_data_vector[ i ].pos_x;
+        original_py[ i ] = original_sensor_data_vector[ i ].pos_y;
+        original_pz[ i ] = original_sensor_data_vector[ i ].pos_z;
+    }
+};

@@ -67,7 +67,7 @@ public:
     void WebsocketUi();
     void AxesNodeAttributeUi();
     void ChartUi();
-
+    void BigCharUi();
     //
     void ToCtrlAxesNode();
     void DrawPoints();
@@ -75,4 +75,9 @@ public:
     void HandleMouseDown( StringHash eventType, VariantMap& eventData );
     void HandleKeyDown( StringHash /*eventType*/, VariantMap& eventData );
     void HandlePostRenderUpdate( StringHash eventType, VariantMap& eventData );
+private:
+    void v2a();
+    //
+    float roll[ 1024 ], pitch[ 1024 ], yaw[ 1024 ], magx[ 1024 ], magy[ 1024 ], magz[ 1024 ], gyrx[ 1024 ], gyry[ 1024 ], gyrz[ 1024 ], accx[ 1024 ], accy[ 1024 ], accz[ 1024 ], eax[ 1024 ], eay[ 1024 ], eaz[ 1024 ], evx[ 1024 ], evy[ 1024 ], evz[ 1024 ], px[ 1024 ], py[ 1024 ], pz[ 1024 ];
+    float original_eax[ 1024 ], original_eay[ 1024 ], original_eaz[ 1024 ], original_evx[ 1024 ], original_evy[ 1024 ], original_evz[ 1024 ], original_px[ 1024 ], original_py[ 1024 ], original_pz[ 1024 ];
 };
