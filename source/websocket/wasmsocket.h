@@ -25,6 +25,7 @@ static eastl::string websocket_receive_message_original = "";
 //
 static std::queue< SENSOR_DB >  sensor_data_queue;
 static std::vector< SENSOR_DB > sensor_data_vector;
+static std::vector< SENSOR_DB > original_sensor_data_vector;
 static std::mutex               queue_mutex;
 static int64_t                  start_time;
 static int                      Microsecond = 1000000;
@@ -232,18 +233,20 @@ static EM_BOOL WebSocketMessage( int eventType, const EmscriptenWebSocketMessage
         {
             websocket_receive_message = websocket_receive_message_original;
         }
-        else
+        else if ( startsWith( websocket_receive_message_original.c_str(), "AfterCalculation:" ) )
         {
+            // printf( "%s\n", websocket_receive_message_original.c_str() );
+            std::string receive_message = websocket_receive_message_original.c_str();
+            receive_message             = removePrefix( receive_message, "AfterCalculation:" );
+            // printf( "%s\n", receive_message.c_str() );
+            //
             std::lock_guard< std::mutex > lock( queue_mutex );
             //
             SENSOR_DB new_sensor_db;
-            new_sensor_db.getValueFromString( websocket_receive_message_original.c_str() );
+            new_sensor_db.getValueFromString( receive_message );
             //
             sensor_data_queue.push( new_sensor_db );
-            // 1s存一个
-            // int64_t cur_time = getMicrosecondTimestamp();
-            // if ( ( cur_time - start_time ) > Microsecond * 5 )
-            // {
+            //
             if ( sensor_data_vector.size() < item_count )
             {
                 sensor_data_vector.push_back( new_sensor_db );
@@ -253,9 +256,32 @@ static EM_BOOL WebSocketMessage( int eventType, const EmscriptenWebSocketMessage
                 sensor_data_vector.erase( sensor_data_vector.begin() );
                 sensor_data_vector.push_back( new_sensor_db );
             }
-            // }
             //
-            websocket_receive_message = new_sensor_db.to_info().c_str();
+            websocket_receive_message = ( "After Calculation:" + new_sensor_db.to_info() ).c_str();
+        }
+        else if ( startsWith( websocket_receive_message_original.c_str(), "BeforCalculation:" ) )
+        {
+            // printf( "%s\n", websocket_receive_message_original.c_str() );
+
+            std::string receive_message = websocket_receive_message_original.c_str();
+            receive_message             = removePrefix( receive_message, "BeforCalculation:" );
+            //
+            std::lock_guard< std::mutex > lock( queue_mutex );
+            //
+            SENSOR_DB new_sensor_db;
+            new_sensor_db.getValueFromString( receive_message );
+            //
+            if ( original_sensor_data_vector.size() < item_count )
+            {
+                original_sensor_data_vector.push_back( new_sensor_db );
+            }
+            else
+            {
+                original_sensor_data_vector.erase( sensor_data_vector.begin() );
+                original_sensor_data_vector.push_back( new_sensor_db );
+            }
+            //
+            // websocket_receive_message = ( "Befor Calculation:" + new_sensor_db.to_info() ).c_str();
         }
     }
     else
