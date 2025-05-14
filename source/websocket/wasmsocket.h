@@ -277,7 +277,7 @@ static EM_BOOL WebSocketMessage( int eventType, const EmscriptenWebSocketMessage
             }
             else
             {
-                original_sensor_data_vector.erase( sensor_data_vector.begin() );
+                original_sensor_data_vector.erase( original_sensor_data_vector.begin() );
                 original_sensor_data_vector.push_back( new_sensor_db );
             }
             //
