@@ -805,21 +805,21 @@ void CommonApplication::BigCharUiChange()
         //
         if ( item_current == 0 )
         {
-            BigCharUi( "Estimated Accelerometer##Char", eax, eay, eaz, count, original_eax, original_eay, original_eaz, original_count );
+            BigCharUi(  eax, eay, eaz, count, original_eax, original_eay, original_eaz, original_count );
         }
         else if ( item_current == 1 )
         {
-            BigCharUi( "Estimated Velocity##Char", evx, evy, evz, count, original_evx, original_evy, original_evz, original_count );
+            BigCharUi(  evx, evy, evz, count, original_evx, original_evy, original_evz, original_count );
         }
         else if ( item_current == 2 )
         {
-            BigCharUi( "Position##Char", px, py, pz, count, original_px, original_py, original_pz, original_count );
+            BigCharUi(  px, py, pz, count, original_px, original_py, original_pz, original_count );
         }
     }
     ui::End();
 };
 //
-void CommonApplication::BigCharUi( std::string str_title, float* befor_x, float* befor_y, float* befor_z, int befor_count, float* after_x, float* after_y, float* after_z, int after_count )
+void CommonApplication::BigCharUi(  float* befor_x, float* befor_y, float* befor_z, int befor_count, float* after_x, float* after_y, float* after_z, int after_count )
 {
     float w_t = ui::GetContentRegionAvail().x;
     float h_t = ui::GetContentRegionAvail().y;
@@ -828,24 +828,18 @@ void CommonApplication::BigCharUi( std::string str_title, float* befor_x, float*
     {
         ImPlot::SetupAxes( "Index##Calculate", "X/Y/Z##Calculate", ImPlotAxisFlags_AutoFit | ImPlotAxisFlags_NoLabel | ImPlotAxisFlags_NoTickLabels, ImPlotAxisFlags_AutoFit | ImPlotAxisFlags_NoLabel | ImPlotAxisFlags_Opposite | ImPlotAxisFlags_NoTickLabels );
         //
-        ImPlot::SetNextMarkerStyle( ImPlotMarker_Cross, 1, ImVec4( 255.0, 0.0, 0.0, 1.0 ), IMPLOT_AUTO, ImVec4( 255.0, 0.0, 0.0, 1.0 ) );
         ImPlot::SetNextLineStyle( ImVec4( 255.0, 0.0, 0.0, 1.0 ) );
         ImPlot::PlotStairs( "Calculate X", befor_x, befor_count, 1.0, 0 );
         ImPlot::SetNextLineStyle( ImVec4( 0.0, 255.0, 0.0, 1.0 ) );
-        ImPlot::SetNextMarkerStyle( ImPlotMarker_Cross, 1, ImVec4( 0.0, 255.0, 0.0, 1.0 ), IMPLOT_AUTO, ImVec4( 0.0, 255.0, 0.0, 1.0 ) );
         ImPlot::PlotStairs( "Calculate Y", befor_y, befor_count, 1.0, 0 );
         ImPlot::SetNextLineStyle( ImVec4( 0.0, 0.0, 255.0, 1.0 ) );
-        ImPlot::SetNextMarkerStyle( ImPlotMarker_Cross, 1, ImVec4( 0.0, 0.0, 255.0, 1.0 ), IMPLOT_AUTO, ImVec4( 0.0, 0.0, 255.0, 1.0 ) );
         ImPlot::PlotStairs( "Calculate Z", befor_z, befor_count, 1.0, 0 );
         //
-        ImPlot::SetNextMarkerStyle( ImPlotMarker_Cross, 1, ImVec4( 255.0, 125.0, 0.0, 0.6 ), IMPLOT_AUTO, ImVec4( 255.0, 125.0, 0.0, 0.6 ) );
         ImPlot::SetNextLineStyle( ImVec4( 255.0, 125.0, 0.0, 0.6 ) );
         ImPlot::PlotStairs( "Original X", after_x, after_count, 1.0, 0 );
         ImPlot::SetNextLineStyle( ImVec4( 0.0, 255.0, 0.0, 0.6 ) );
-        ImPlot::SetNextMarkerStyle( ImPlotMarker_Cross, 1, ImVec4( 125.0, 255.0, 0.0, 0.6 ), IMPLOT_AUTO, ImVec4( 125.0, 255.0, 0.0, 0.6 ) );
         ImPlot::PlotStairs( "Original Y", after_y, after_count, 1.0, 0 );
         ImPlot::SetNextLineStyle( ImVec4( 125.0, 0.0, 255.0, 0.6 ) );
-        ImPlot::SetNextMarkerStyle( ImPlotMarker_Cross, 1, ImVec4( 125.0, 0.0, 255.0, 0.6 ), IMPLOT_AUTO, ImVec4( 125.0, 0.0, 255.0, 0.6 ) );
         ImPlot::PlotStairs( "Original Z", after_z, after_count, 1.0, 0 );
         //
 
