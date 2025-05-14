@@ -338,7 +338,7 @@ void CommonApplication::WebsocketUi()
         return;
     }
     //
-    ui::SetNextWindowSize( ImVec2( 450, 708 ), ImGuiCond_FirstUseEver );
+    ui::SetNextWindowSize( ImVec2( 450, 690 ), ImGuiCond_FirstUseEver );
     ui::SetNextWindowPos( ImVec2( 2, winSizeY_ - 868 ), ImGuiCond_FirstUseEver );
     //
     if ( ui::Begin( "WebSocket", &is_show_websocket, ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoResize ) )
@@ -607,7 +607,7 @@ void CommonApplication::AxesNodeAttributeUi()
         }
         ui::Separator();
         //
-        int btn_w = ImGui::GetContentRegionAvail().x / 4 - 8;
+        int btn_w = ( ImGui::GetContentRegionAvail().x - 8 ) / 4;
         if ( ui::Button( "Show Big Char", ImVec2( btn_w, 16 ) ) )
         {
             //
@@ -631,7 +631,7 @@ void CommonApplication::AxesNodeAttributeUi()
             //
             is_show_websocket = ! is_show_websocket;
         }
-
+        //
         ui::Separator();
     }
     ui::End();
