@@ -557,6 +557,7 @@ void CommonApplication::AxesNodeAttributeUi()
         if ( ui::Button( "Clear##ClearVector", ImVec2( 50, 16 ) ) )
         {
             sensor_data_vector.clear();
+            original_sensor_data_vector.clear();
         }
         ui::Separator();
         //
@@ -754,6 +755,8 @@ void CommonApplication::ChartUi()
         if ( ImPlot::BeginPlot( "Estimated Accelerometer", ImVec2( w, h ) ) )
         {
             ImPlot::SetupAxes( "Index", "X/Y/Z", ImPlotAxisFlags_AutoFit | ImPlotAxisFlags_NoLabel | ImPlotAxisFlags_NoTickLabels, ImPlotAxisFlags_AutoFit | ImPlotAxisFlags_NoLabel | ImPlotAxisFlags_Opposite | ImPlotAxisFlags_NoTickLabels );
+
+            //
             ImPlot::SetNextMarkerStyle( ImPlotMarker_Cross, 1, ImVec4( 255.0, 0.0, 0.0, 1.0 ), IMPLOT_AUTO, ImVec4( 255.0, 0.0, 0.0, 1.0 ) );
             ImPlot::SetNextLineStyle( ImVec4( 255.0, 0.0, 0.0, 1.0 ) );
             ImPlot::PlotStairs( "X", eax, count, 1.0, 0 );
@@ -763,6 +766,18 @@ void CommonApplication::ChartUi()
             ImPlot::SetNextLineStyle( ImVec4( 0.0, 0.0, 255.0, 1.0 ) );
             ImPlot::SetNextMarkerStyle( ImPlotMarker_Cross, 1, ImVec4( 0.0, 0.0, 255.0, 1.0 ), IMPLOT_AUTO, ImVec4( 0.0, 0.0, 255.0, 1.0 ) );
             ImPlot::PlotStairs( "Z", eaz, count, 1.0, 0 );
+            //
+            ImPlot::SetNextMarkerStyle( ImPlotMarker_Cross, 1, ImVec4( 255.0, 0.0, 0.0, 0.6 ), IMPLOT_AUTO, ImVec4( 255.0, 0.0, 0.0, 0.6 ) );
+            ImPlot::SetNextLineStyle( ImVec4( 255.0, 0.0, 0.0, 0.6 ) );
+            ImPlot::PlotStairs( "Original X", original_eax, original_count, 1.0, 0 );
+            ImPlot::SetNextLineStyle( ImVec4( 0.0, 255.0, 0.0, 0.60 ) );
+            ImPlot::SetNextMarkerStyle( ImPlotMarker_Cross, 1, ImVec4( 0.0, 255.0, 0.0, 0.6 ), IMPLOT_AUTO, ImVec4( 0.0, 255.0, 0.0, 0.6 ) );
+            ImPlot::PlotStairs( "Original Y", original_eay, original_count, 1.0, 0 );
+            ImPlot::SetNextLineStyle( ImVec4( 0.0, 0.0, 255.0, 0.6 ) );
+            ImPlot::SetNextMarkerStyle( ImPlotMarker_Cross, 1, ImVec4( 0.0, 0.0, 255.0, 0.6 ), IMPLOT_AUTO, ImVec4( 0.0, 0.0, 255.0, 0.6 ) );
+            ImPlot::PlotStairs( "Original Z", original_eaz, original_count, 1.0, 0 );
+            //
+
             ImPlot::EndPlot();
         }
         //  ------------------ ev
@@ -801,64 +816,63 @@ void CommonApplication::ChartUi()
     }
     ui::End();
 
-    //
+    // //
+    // ui::SetNextWindowSize( ImVec2( 600, 3 * h + 6 ), ImGuiCond_FirstUseEver );
+    // ui::SetNextWindowPos( ImVec2( winSizeX_ - 1200, winSizeY_ - 3 * h - 6 ), ImGuiCond_FirstUseEver );
+    // // 原始平面
+    // if ( ui::Begin( "Original IMU Chart", NULL, ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoTitleBar ) )
+    // {
+    //     float w = ui::GetContentRegionAvail().x;
+    //     //  ------------------ ea
+    //     if ( ImPlot::BeginPlot( "Original Estimated Accelerometer", ImVec2( w, h ) ) )
+    //     {
+    //         ImPlot::SetupAxes( "Index", "X/Y/Z", ImPlotAxisFlags_AutoFit | ImPlotAxisFlags_NoLabel | ImPlotAxisFlags_NoTickLabels, ImPlotAxisFlags_AutoFit | ImPlotAxisFlags_NoLabel | ImPlotAxisFlags_Opposite | ImPlotAxisFlags_NoTickLabels );
+    //         ImPlot::SetNextMarkerStyle( ImPlotMarker_Cross, 1, ImVec4( 255.0, 0.0, 0.0, 1.0 ), IMPLOT_AUTO, ImVec4( 255.0, 0.0, 0.0, 1.0 ) );
+    //         ImPlot::SetNextLineStyle( ImVec4( 255.0, 0.0, 0.0, 1.0 ) );
+    //         ImPlot::PlotStairs( "X", original_eax, original_count, 1.0, 0 );
+    //         ImPlot::SetNextLineStyle( ImVec4( 0.0, 255.0, 0.0, 1.0 ) );
+    //         ImPlot::SetNextMarkerStyle( ImPlotMarker_Cross, 1, ImVec4( 0.0, 255.0, 0.0, 1.0 ), IMPLOT_AUTO, ImVec4( 0.0, 255.0, 0.0, 1.0 ) );
+    //         ImPlot::PlotStairs( "Y", original_eay, original_count, 1.0, 0 );
+    //         ImPlot::SetNextLineStyle( ImVec4( 0.0, 0.0, 255.0, 1.0 ) );
+    //         ImPlot::SetNextMarkerStyle( ImPlotMarker_Cross, 1, ImVec4( 0.0, 0.0, 255.0, 1.0 ), IMPLOT_AUTO, ImVec4( 0.0, 0.0, 255.0, 1.0 ) );
+    //         ImPlot::PlotStairs( "Z", original_eaz, original_count, 1.0, 0 );
+    //         ImPlot::EndPlot();
+    //     }
+    //     //  ------------------ ev
+    //     if ( ImPlot::BeginPlot( "Original Estimated Velocity", ImVec2( w, h ) ) )
+    //     {
+    //         ImPlot::SetupAxes( "Index", "X/Y/Z", ImPlotAxisFlags_AutoFit | ImPlotAxisFlags_NoLabel | ImPlotAxisFlags_NoTickLabels, ImPlotAxisFlags_AutoFit | ImPlotAxisFlags_NoLabel | ImPlotAxisFlags_Opposite | ImPlotAxisFlags_NoTickLabels );
+    //         ImPlot::SetNextMarkerStyle( ImPlotMarker_Cross, 1, ImVec4( 255.0, 0.0, 0.0, 1.0 ), IMPLOT_AUTO, ImVec4( 255.0, 0.0, 0.0, 1.0 ) );
+    //         ImPlot::SetNextLineStyle( ImVec4( 255.0, 0.0, 0.0, 1.0 ) );
+    //         ImPlot::PlotStairs( "X", original_evx, original_count, 1.0, 0 );
+    //         ImPlot::SetNextLineStyle( ImVec4( 0.0, 255.0, 0.0, 1.0 ) );
+    //         ImPlot::SetNextMarkerStyle( ImPlotMarker_Cross, 1, ImVec4( 0.0, 255.0, 0.0, 1.0 ), IMPLOT_AUTO, ImVec4( 0.0, 255.0, 0.0, 1.0 ) );
+    //         ImPlot::PlotStairs( "Y", original_evy, original_count, 1.0, 0 );
+    //         ImPlot::SetNextLineStyle( ImVec4( 0.0, 0.0, 255.0, 1.0 ) );
+    //         ImPlot::SetNextMarkerStyle( ImPlotMarker_Cross, 1, ImVec4( 0.0, 0.0, 255.0, 1.0 ), IMPLOT_AUTO, ImVec4( 0.0, 0.0, 255.0, 1.0 ) );
+    //         ImPlot::PlotStairs( "Z", original_evz, original_count, 1.0, 0 );
 
-    ui::SetNextWindowSize( ImVec2( 600, 3 * h + 6 ), ImGuiCond_FirstUseEver );
-    ui::SetNextWindowPos( ImVec2( winSizeX_ - 1200, winSizeX_ - 3 * h - 6 ), ImGuiCond_FirstUseEver );
-    // 原始平面
-    if ( ui::Begin( "Original IMU Chart", NULL, ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoTitleBar ) )
-    {
-        float w = ui::GetContentRegionAvail().x;
-        //  ------------------ ea
-        if ( ImPlot::BeginPlot( "Original Estimated Accelerometer", ImVec2( w, h ) ) )
-        {
-            ImPlot::SetupAxes( "Index", "X/Y/Z", ImPlotAxisFlags_AutoFit | ImPlotAxisFlags_NoLabel | ImPlotAxisFlags_NoTickLabels, ImPlotAxisFlags_AutoFit | ImPlotAxisFlags_NoLabel | ImPlotAxisFlags_Opposite | ImPlotAxisFlags_NoTickLabels );
-            ImPlot::SetNextMarkerStyle( ImPlotMarker_Cross, 1, ImVec4( 255.0, 0.0, 0.0, 1.0 ), IMPLOT_AUTO, ImVec4( 255.0, 0.0, 0.0, 1.0 ) );
-            ImPlot::SetNextLineStyle( ImVec4( 255.0, 0.0, 0.0, 1.0 ) );
-            ImPlot::PlotStairs( "X", original_eax, original_count, 1.0, 0 );
-            ImPlot::SetNextLineStyle( ImVec4( 0.0, 255.0, 0.0, 1.0 ) );
-            ImPlot::SetNextMarkerStyle( ImPlotMarker_Cross, 1, ImVec4( 0.0, 255.0, 0.0, 1.0 ), IMPLOT_AUTO, ImVec4( 0.0, 255.0, 0.0, 1.0 ) );
-            ImPlot::PlotStairs( "Y", original_eay, original_count, 1.0, 0 );
-            ImPlot::SetNextLineStyle( ImVec4( 0.0, 0.0, 255.0, 1.0 ) );
-            ImPlot::SetNextMarkerStyle( ImPlotMarker_Cross, 1, ImVec4( 0.0, 0.0, 255.0, 1.0 ), IMPLOT_AUTO, ImVec4( 0.0, 0.0, 255.0, 1.0 ) );
-            ImPlot::PlotStairs( "Z", original_eaz, original_count, 1.0, 0 );
-            ImPlot::EndPlot();
-        }
-        //  ------------------ ev
-        if ( ImPlot::BeginPlot( "Original Estimated Velocity", ImVec2( w, h ) ) )
-        {
-            ImPlot::SetupAxes( "Index", "X/Y/Z", ImPlotAxisFlags_AutoFit | ImPlotAxisFlags_NoLabel | ImPlotAxisFlags_NoTickLabels, ImPlotAxisFlags_AutoFit | ImPlotAxisFlags_NoLabel | ImPlotAxisFlags_Opposite | ImPlotAxisFlags_NoTickLabels );
-            ImPlot::SetNextMarkerStyle( ImPlotMarker_Cross, 1, ImVec4( 255.0, 0.0, 0.0, 1.0 ), IMPLOT_AUTO, ImVec4( 255.0, 0.0, 0.0, 1.0 ) );
-            ImPlot::SetNextLineStyle( ImVec4( 255.0, 0.0, 0.0, 1.0 ) );
-            ImPlot::PlotStairs( "X", original_evx, original_count, 1.0, 0 );
-            ImPlot::SetNextLineStyle( ImVec4( 0.0, 255.0, 0.0, 1.0 ) );
-            ImPlot::SetNextMarkerStyle( ImPlotMarker_Cross, 1, ImVec4( 0.0, 255.0, 0.0, 1.0 ), IMPLOT_AUTO, ImVec4( 0.0, 255.0, 0.0, 1.0 ) );
-            ImPlot::PlotStairs( "Y", original_evy, original_count, 1.0, 0 );
-            ImPlot::SetNextLineStyle( ImVec4( 0.0, 0.0, 255.0, 1.0 ) );
-            ImPlot::SetNextMarkerStyle( ImPlotMarker_Cross, 1, ImVec4( 0.0, 0.0, 255.0, 1.0 ), IMPLOT_AUTO, ImVec4( 0.0, 0.0, 255.0, 1.0 ) );
-            ImPlot::PlotStairs( "Z", original_evz, original_count, 1.0, 0 );
+    //         ImPlot::EndPlot();
+    //     }
 
-            ImPlot::EndPlot();
-        }
+    //     // --------- pos
+    //     if ( ImPlot::BeginPlot( "Original Position", ImVec2( w, h ) ) )
+    //     {
+    //         ImPlot::SetupAxes( "Index", "X/Y/Z", ImPlotAxisFlags_AutoFit | ImPlotAxisFlags_NoLabel | ImPlotAxisFlags_NoTickLabels, ImPlotAxisFlags_AutoFit | ImPlotAxisFlags_NoLabel | ImPlotAxisFlags_Opposite | ImPlotAxisFlags_NoTickLabels );
+    //         ImPlot::SetNextMarkerStyle( ImPlotMarker_Cross, 1, ImVec4( 255.0, 0.0, 0.0, 1.0 ), IMPLOT_AUTO, ImVec4( 255.0, 0.0, 0.0, 1.0 ) );
+    //         ImPlot::SetNextLineStyle( ImVec4( 255.0, 0.0, 0.0, 1.0 ) );
+    //         ImPlot::PlotStairs( "X", original_px, original_count, 1.0, 0 );
+    //         ImPlot::SetNextLineStyle( ImVec4( 0.0, 255.0, 0.0, 1.0 ) );
+    //         ImPlot::SetNextMarkerStyle( ImPlotMarker_Cross, 1, ImVec4( 0.0, 255.0, 0.0, 1.0 ), IMPLOT_AUTO, ImVec4( 0.0, 255.0, 0.0, 1.0 ) );
+    //         ImPlot::PlotStairs( "Y", original_py, original_count, 1.0, 0 );
+    //         ImPlot::SetNextLineStyle( ImVec4( 0.0, 0.0, 255.0, 1.0 ) );
+    //         ImPlot::SetNextMarkerStyle( ImPlotMarker_Cross, 1, ImVec4( 0.0, 0.0, 255.0, 1.0 ), IMPLOT_AUTO, ImVec4( 0.0, 0.0, 255.0, 1.0 ) );
+    //         ImPlot::PlotStairs( "Z", original_pz, original_count, 1.0, 0 );
 
-        // --------- pos
-        if ( ImPlot::BeginPlot( "Original Position", ImVec2( w, h ) ) )
-        {
-            ImPlot::SetupAxes( "Index", "X/Y/Z", ImPlotAxisFlags_AutoFit | ImPlotAxisFlags_NoLabel | ImPlotAxisFlags_NoTickLabels, ImPlotAxisFlags_AutoFit | ImPlotAxisFlags_NoLabel | ImPlotAxisFlags_Opposite | ImPlotAxisFlags_NoTickLabels );
-            ImPlot::SetNextMarkerStyle( ImPlotMarker_Cross, 1, ImVec4( 255.0, 0.0, 0.0, 1.0 ), IMPLOT_AUTO, ImVec4( 255.0, 0.0, 0.0, 1.0 ) );
-            ImPlot::SetNextLineStyle( ImVec4( 255.0, 0.0, 0.0, 1.0 ) );
-            ImPlot::PlotStairs( "X", original_px, original_count, 1.0, 0 );
-            ImPlot::SetNextLineStyle( ImVec4( 0.0, 255.0, 0.0, 1.0 ) );
-            ImPlot::SetNextMarkerStyle( ImPlotMarker_Cross, 1, ImVec4( 0.0, 255.0, 0.0, 1.0 ), IMPLOT_AUTO, ImVec4( 0.0, 255.0, 0.0, 1.0 ) );
-            ImPlot::PlotStairs( "Y", original_py, original_count, 1.0, 0 );
-            ImPlot::SetNextLineStyle( ImVec4( 0.0, 0.0, 255.0, 1.0 ) );
-            ImPlot::SetNextMarkerStyle( ImPlotMarker_Cross, 1, ImVec4( 0.0, 0.0, 255.0, 1.0 ), IMPLOT_AUTO, ImVec4( 0.0, 0.0, 255.0, 1.0 ) );
-            ImPlot::PlotStairs( "Z", original_pz, original_count, 1.0, 0 );
-
-            ImPlot::EndPlot();
-        }
-    }
-    ui::End();
+    //         ImPlot::EndPlot();
+    //     }
+    // }
+    // ui::End();
     // 3d
     ui::SetNextWindowSize( ImVec2( 450, 450 ), ImGuiCond_FirstUseEver );
     ui::SetNextWindowPos( ImVec2( 2, winSizeY_ - 1304 ), ImGuiCond_FirstUseEver );
