@@ -375,10 +375,14 @@ void CommonApplication::WebsocketUi()
         };
         ui::Separator();
         //
-        ImGui::BeginChild( "ChildL", ImVec2( ImGui::GetContentRegionAvail().x, 160 ) );
+        ImGui::BeginChild( "ChildL", ImVec2( ImGui::GetContentRegionAvail().x, 140 ) );
         ui::TextWrapped( websocket_receive_message.c_str() );
         ImGui::EndChild();
-        // ui::InputTextMultiline( "##RMSG", &websocket_receive_message, ImVec2( ImGui::GetContentRegionAvail().x, 200 ) );
+        ui::Separator();
+        //
+        ui::Text( "Elapsed time:" );
+        ui::SameLine( segmentation_w );
+        ui::Text( " %.3f S", elapsed_time );
         ui::Separator();
         //
         float btn_w = ( ImGui::GetContentRegionAvail().x - 6 * 2 ) / 6;
@@ -504,7 +508,6 @@ void CommonApplication::WebsocketUi()
             std::string content_str = GetConfigString();
             //
             emscripten_websocket_send_utf8_text( socket, content_str.c_str() );
-            start_time = getMicrosecondTimestamp();
         };
         ui::SameLine();
         if ( ui::Button( "Send Start", ImVec2( btn_w, 16 ) ) )
@@ -516,12 +519,13 @@ void CommonApplication::WebsocketUi()
         if ( ui::Button( "Send Pause", ImVec2( btn_w, 16 ) ) )
         {
             emscripten_websocket_send_utf8_text( socket, "Pause" );
-            start_time = getMicrosecondTimestamp();
+            elapsed_time = ( float )( getMicrosecondTimestamp() - start_time ) / ( float )CLOCKS_PER_SEC;
         };
         ui::SameLine();
         if ( ui::Button( "Send Clear", ImVec2( btn_w, 16 ) ) )
         {
             emscripten_websocket_send_utf8_text( socket, "Clear" );
+            start_time = getMicrosecondTimestamp();
         };
         ui::SameLine();
         if ( ui::Button( "Send Reset", ImVec2( btn_w, 16 ) ) )
@@ -894,11 +898,11 @@ void CommonApplication::BigCharUi( float* befor_x, float* befor_y, float* befor_
         ImPlot::SetNextLineStyle( ImVec4( 0.0, 0.0, 255.0, 1.0 ) );
         ImPlot::PlotStairs( "Calculate Z", befor_z, befor_count, 1.0, 0 );
         //
-        ImPlot::SetNextLineStyle( ImVec4( 255.0, 125.0, 0.0, 0.6 ) );
+        ImPlot::SetNextLineStyle( ImVec4( 225.0, 0.0, 0.0, 0.6 ) );
         ImPlot::PlotStairs( "Original X", after_x, after_count, 1.0, 0 );
-        ImPlot::SetNextLineStyle( ImVec4( 0.0, 255.0, 0.0, 0.6 ) );
+        ImPlot::SetNextLineStyle( ImVec4( 0.0, 225.0, 0.0, 0.6 ) );
         ImPlot::PlotStairs( "Original Y", after_y, after_count, 1.0, 0 );
-        ImPlot::SetNextLineStyle( ImVec4( 125.0, 0.0, 255.0, 0.6 ) );
+        ImPlot::SetNextLineStyle( ImVec4( 0.0, 0.0, 225.0, 0.6 ) );
         ImPlot::PlotStairs( "Original Z", after_z, after_count, 1.0, 0 );
         //
 

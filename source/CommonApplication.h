@@ -81,4 +81,5 @@ private:
     bool is_show_char      = true;
     bool is_show_websocket = true;
     bool is_show_3d_char   = true;
+
 };

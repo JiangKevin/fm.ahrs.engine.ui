@@ -27,9 +27,10 @@ static std::queue< SENSOR_DB >  sensor_data_queue;
 static std::vector< SENSOR_DB > sensor_data_vector;
 static std::vector< SENSOR_DB > original_sensor_data_vector;
 static std::mutex               queue_mutex;
-static int64_t                  start_time;
-static int                      Microsecond = 1000000;
-static int                      item_count  = 1024;
+static int64_t                  start_time   = 0;
+static float                    elapsed_time = 0;
+static int                      Microsecond  = 1000000;
+static int                      item_count   = 1024;
 //
 static float GyrMisalignment_1[ 3 ]    = { 1.0f, 0.0f, 0.0f };
 static float GyrMisalignment_2[ 3 ]    = { 0.0f, 1.0f, 0.0f };
@@ -333,6 +334,8 @@ static EM_BOOL WebSocketMessage( int eventType, const EmscriptenWebSocketMessage
             v2a();
             //
             websocket_receive_message = ( "After Calculation:" + new_sensor_db.to_info() ).c_str();
+            //
+            elapsed_time = ( float )( getMicrosecondTimestamp() - start_time ) / ( float )CLOCKS_PER_SEC;
         }
         else if ( startsWith( websocket_receive_message_original.c_str(), "BeforCalculation:" ) )
         {
@@ -359,6 +362,7 @@ static EM_BOOL WebSocketMessage( int eventType, const EmscriptenWebSocketMessage
             v2a();
             //
             // websocket_receive_message = ( "Befor Calculation:" + new_sensor_db.to_info() ).c_str();
+            elapsed_time = ( float )( getMicrosecondTimestamp() - start_time ) / ( float )CLOCKS_PER_SEC;
         }
     }
     else
