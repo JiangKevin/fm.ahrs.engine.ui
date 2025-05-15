@@ -827,7 +827,8 @@ void CommonApplication::DrawPoints()
     int   count = sensor_data_vector.size();
     for ( int i = 0; i < count; i++ )
     {
-        debug->AddSphere( Sphere( Vector3( sensor_data_vector[ i ].pos_x, sensor_data_vector[ i ].pos_y + 10.0f, sensor_data_vector[ i ].pos_z ), 0.1f ), Color( 1.0f, 1.0f, 1.0f ) );
+        // debug->AddSphere( Sphere( Vector3( sensor_data_vector[ i ].pos_x, sensor_data_vector[ i ].pos_y + 10.0f, sensor_data_vector[ i ].pos_z ), 0.1f ), Color( 1.0f, 1.0f, 1.0f ) );
+        debug->AddCross( Vector3( sensor_data_vector[ i ].pos_x, sensor_data_vector[ i ].pos_y + 10.0f, sensor_data_vector[ i ].pos_z ), 0.1f, Color( 1.0f, 1.0f, 1.0f ) );
     }
 }
 //
