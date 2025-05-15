@@ -838,7 +838,7 @@ void CommonApplication::BigCharUiChange()
     //
     if ( ui::Begin( "Big IMU Chart", &is_show_big_char, ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoTitleBar ) )
     {
-        static const char* items[]      = { "Estimated Accelerometer", "Estimated Velocity", "Position" };
+        static const char* items[]      = { "Estimated Accelerometer", "Estimated Velocity", "Position", "Accelerometer", "Gyroscope", "Magnetometer", "Euler" };
         static int         item_current = 0;
         ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
         ImGui::Combo( "combo", &item_current, items, IM_ARRAYSIZE( items ) );
@@ -857,6 +857,22 @@ void CommonApplication::BigCharUiChange()
         else if ( item_current == 2 )
         {
             BigCharUi( px, py, pz, count, original_px, original_py, original_pz, original_count );
+        }
+        else if ( item_current == 3 )
+        {
+            BigCharUi( accx, accy, accz, count, original_accx, original_accy, original_accz, original_count );
+        }
+        else if ( item_current == 4 )
+        {
+            BigCharUi( gyrx, gyry, gyrz, count, original_gyrx, original_gyry, original_gyrz, original_count );
+        }
+        else if ( item_current == 5 )
+        {
+            BigCharUi( magx, magy, magz, count, original_magx, original_magy, original_magz, original_count );
+        }
+        else if ( item_current == 6 )
+        {
+            BigCharUi( roll, pitch, yaw, count, original_roll, original_pitch, original_yaw, original_count );
         }
     }
     ui::End();

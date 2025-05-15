@@ -57,7 +57,8 @@ static int   ahrs_recoveryTriggerPeriod = 500;
 //
 //
 static float roll[ 1024 ], pitch[ 1024 ], yaw[ 1024 ], magx[ 1024 ], magy[ 1024 ], magz[ 1024 ], gyrx[ 1024 ], gyry[ 1024 ], gyrz[ 1024 ], accx[ 1024 ], accy[ 1024 ], accz[ 1024 ], eax[ 1024 ], eay[ 1024 ], eaz[ 1024 ], evx[ 1024 ], evy[ 1024 ], evz[ 1024 ], px[ 1024 ], py[ 1024 ], pz[ 1024 ];
-static float original_eax[ 1024 ], original_eay[ 1024 ], original_eaz[ 1024 ], original_evx[ 1024 ], original_evy[ 1024 ], original_evz[ 1024 ], original_px[ 1024 ], original_py[ 1024 ], original_pz[ 1024 ];
+static float original_roll[ 1024 ], original_pitch[ 1024 ], original_yaw[ 1024 ], original_magx[ 1024 ], original_magy[ 1024 ], original_magz[ 1024 ], original_gyrx[ 1024 ], original_gyry[ 1024 ], original_gyrz[ 1024 ], original_accx[ 1024 ], original_accy[ 1024 ], original_accz[ 1024 ],
+    original_eax[ 1024 ], original_eay[ 1024 ], original_eaz[ 1024 ], original_evx[ 1024 ], original_evy[ 1024 ], original_evz[ 1024 ], original_px[ 1024 ], original_py[ 1024 ], original_pz[ 1024 ];
 //
 //
 static std::string GetConfigString()
@@ -219,6 +220,22 @@ static void v2a()
     //
     for ( int i = 0; i < original_count; i++ )
     {
+        original_roll[ i ]  = original_sensor_data_vector[ i ].roll;
+        original_pitch[ i ] = original_sensor_data_vector[ i ].pitch;
+        original_yaw[ i ]   = original_sensor_data_vector[ i ].yaw;
+
+        original_magx[ i ] = original_sensor_data_vector[ i ].mag_x;
+        original_magy[ i ] = original_sensor_data_vector[ i ].mag_y;
+        original_magz[ i ] = original_sensor_data_vector[ i ].mag_z;
+
+        original_gyrx[ i ] = original_sensor_data_vector[ i ].gyro_x;
+        original_gyry[ i ] = original_sensor_data_vector[ i ].gyro_y;
+        original_gyrz[ i ] = original_sensor_data_vector[ i ].gyro_z;
+
+        original_accx[ i ] = original_sensor_data_vector[ i ].acc_x;
+        original_accy[ i ] = original_sensor_data_vector[ i ].acc_y;
+        original_accz[ i ] = original_sensor_data_vector[ i ].acc_z;
+
         original_eax[ i ] = original_sensor_data_vector[ i ].eacc_x;
         original_eay[ i ] = original_sensor_data_vector[ i ].eacc_y;
         original_eaz[ i ] = original_sensor_data_vector[ i ].eacc_z;
