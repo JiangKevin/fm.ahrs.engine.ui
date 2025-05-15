@@ -54,6 +54,7 @@ public:
     SharedPtr< Node > mainCameraNode_;
     //
     Node*                  axes_node_;
+    bool                   is_axes_node_enble_ = true;
     int                    winSizeX_;
     int                    winSizeY_;
     EMSCRIPTEN_WEBSOCKET_T socket;
@@ -81,5 +82,4 @@ private:
     bool is_show_char      = true;
     bool is_show_websocket = true;
     bool is_show_3d_char   = true;
-
 };

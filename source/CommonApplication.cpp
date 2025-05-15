@@ -562,10 +562,10 @@ void CommonApplication::AxesNodeAttributeUi()
         //
         ui::Text( "Vector Size" );
         ui::SameLine( segmentation_w );
-        ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x - 50 );
+        ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x - 30 );
         ui::Text( "%d", sensor_data_vector.size() );
-        ui::SameLine( ImGui::GetContentRegionAvail().x - 50 );
-        if ( ui::Button( "Clear##ClearVector", ImVec2( 50, 16 ) ) )
+        ui::SameLine( ImGui::GetContentRegionAvail().x - 30 );
+        if ( ui::Button( "CLR##ClearVector", ImVec2( 30, 16 ) ) )
         {
             sensor_data_vector.clear();
             original_sensor_data_vector.clear();
@@ -574,8 +574,14 @@ void CommonApplication::AxesNodeAttributeUi()
         //
         ui::Text( "AxesNode Position" );
         ui::SameLine( segmentation_w );
-        ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
+        ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x - 30 );
         ui::Text( "%f,%f,%f", axes_node_->GetPosition().x_, axes_node_->GetPosition().y_, axes_node_->GetPosition().z_ );
+        ui::SameLine( ImGui::GetContentRegionAvail().x - 30 );
+        if ( ui::Button( ICON_MDI_EYE "##ShowAxesNode", ImVec2( 30, 16 ) ) )
+        {
+            is_axes_node_enble_ = ! is_axes_node_enble_;
+            axes_node_->SetEnabled( is_axes_node_enble_ );
+        }
         ui::Separator();
         //
         ui::Text( "AxesNode Direction" );
