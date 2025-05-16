@@ -789,7 +789,7 @@ void CommonApplication::ChartUi()
         ui::SetNextWindowSize( ImVec2( 450, 450 ), ImGuiCond_FirstUseEver );
         ui::SetNextWindowPos( ImVec2( 2, winSizeY_ - 1322 ), ImGuiCond_FirstUseEver );
         //
-        if ( ImGui::Begin( "IMU Trajectory" ) )
+        if ( ImGui::Begin( "IMU Trajectory", &is_show_3d_char ) )
         {
             float w_t = ui::GetContentRegionAvail().x;
             float h_t = ui::GetContentRegionAvail().y;
@@ -847,7 +847,7 @@ void CommonApplication::BigCharUiChange()
     ui::SetNextWindowSize( ImVec2( 600, 620 ), ImGuiCond_FirstUseEver );
     ui::SetNextWindowPos( ImVec2( winSizeX_ - 1202, winSizeY_ - 622 ), ImGuiCond_FirstUseEver );
     //
-    if ( ui::Begin( "Big IMU Chart", &is_show_big_char, ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoTitleBar ) )
+    if ( ui::Begin( "Big IMU Chart", &is_show_big_char, ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoScrollbar ) )
     {
         static const char* items[]      = { "Estimated Accelerometer", "Estimated Velocity", "Position", "Accelerometer", "Gyroscope", "Magnetometer", "Euler" };
         static int         item_current = 0;
