@@ -887,7 +887,7 @@ void CommonApplication::BigCharUiChange()
         }
         else if ( item_current == 7 )
         {
-            BigCharUiQuate( quate_x, quate_y, quate_z, quate_w, count, original_quate_x, original_quate_y, original_quate_z, original_quate_w, original_count );
+            BigCharUiQuate( quate_x, quate_y, quate_z, quate_w, count );
         }
     }
     ui::End();
@@ -923,7 +923,7 @@ void CommonApplication::BigCharUi( float* befor_x, float* befor_y, float* befor_
     }
 };
 //
-void CommonApplication::BigCharUiQuate( float* befor_x, float* befor_y, float* befor_z, float* befor_w, int befor_count, float* after_x, float* after_y, float* after_z, float* after_w, int after_count )
+void CommonApplication::BigCharUiQuate( float* after_x, float* after_y, float* after_z, float* after_w, int after_count )
 {
     float w_t = ui::GetContentRegionAvail().x;
     float h_t = ui::GetContentRegionAvail().y;
@@ -932,15 +932,6 @@ void CommonApplication::BigCharUiQuate( float* befor_x, float* befor_y, float* b
     {
         ImPlot::SetupAxes( "Index##Calculate", "X/Y/Z##Calculate", ImPlotAxisFlags_AutoFit | ImPlotAxisFlags_NoLabel | ImPlotAxisFlags_NoTickLabels, ImPlotAxisFlags_AutoFit | ImPlotAxisFlags_NoLabel | ImPlotAxisFlags_Opposite | ImPlotAxisFlags_NoTickLabels );
         //
-        ImPlot::SetNextLineStyle( ImVec4( 255.0, 0.0, 0.0, 1.0 ) );
-        ImPlot::PlotStairs( "Calculate X", befor_x, befor_count, 1.0, 0 );
-        ImPlot::SetNextLineStyle( ImVec4( 0.0, 255.0, 0.0, 1.0 ) );
-        ImPlot::PlotStairs( "Calculate Y", befor_y, befor_count, 1.0, 0 );
-        ImPlot::SetNextLineStyle( ImVec4( 0.0, 0.0, 255.0, 1.0 ) );
-        ImPlot::PlotStairs( "Calculate Z", befor_z, befor_count, 1.0, 0 );
-        ImPlot::SetNextLineStyle( ImVec4( 125.0, 125.0, 125.0, 1.0 ) );
-        ImPlot::PlotStairs( "Calculate W", befor_w, befor_count, 1.0, 0 );
-        //
         ImPlot::SetNextLineStyle( ImVec4( 0.0, 225.0, 255.0, 0.6 ) );
         ImPlot::PlotStairs( "Original X", after_x, after_count, 1.0, 0 );
         ImPlot::SetNextLineStyle( ImVec4( 255.0, 0.0, 255.0, 0.6 ) );
@@ -948,7 +939,7 @@ void CommonApplication::BigCharUiQuate( float* befor_x, float* befor_y, float* b
         ImPlot::SetNextLineStyle( ImVec4( 255.0, 255.0, 0.0, 0.6 ) );
         ImPlot::PlotStairs( "Original Z", after_z, after_count, 1.0, 0 );
         ImPlot::SetNextLineStyle( ImVec4( 125.0, 125.0, 125.0, 0.6 ) );
-        ImPlot::PlotStairs( "Calculate W", after_w, befor_count, 1.0, 0 );
+        ImPlot::PlotStairs( "Calculate W", after_w, after_count, 1.0, 0 );
         //
 
         ImPlot::EndPlot();
