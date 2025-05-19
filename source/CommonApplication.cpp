@@ -849,7 +849,7 @@ void CommonApplication::BigCharUiChange()
     //
     if ( ui::Begin( "Big IMU Chart", &is_show_big_char, ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoScrollbar ) )
     {
-        static const char* items[]      = { "Estimated Accelerometer", "Estimated Velocity", "Position", "Accelerometer", "Gyroscope", "Magnetometer", "Euler" };
+        static const char* items[]      = { "Estimated Accelerometer", "Estimated Velocity", "Position", "Accelerometer", "Gyroscope", "Magnetometer", "Euler", "Quate" };
         static int         item_current = 0;
         ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
         ImGui::Combo( "##charSwitch", &item_current, items, IM_ARRAYSIZE( items ) );
