@@ -852,7 +852,7 @@ void CommonApplication::BigCharUiChange()
         static const char* items[]      = { "Estimated Accelerometer", "Estimated Velocity", "Position", "Accelerometer", "Gyroscope", "Magnetometer", "Euler" };
         static int         item_current = 0;
         ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
-        ImGui::Combo( "combo", &item_current, items, IM_ARRAYSIZE( items ) );
+        ImGui::Combo( "##charSwitch", &item_current, items, IM_ARRAYSIZE( items ) );
         //
         int count          = sensor_data_vector.size();
         int original_count = original_sensor_data_vector.size();
@@ -885,6 +885,10 @@ void CommonApplication::BigCharUiChange()
         {
             BigCharUi( roll, pitch, yaw, count, original_roll, original_pitch, original_yaw, original_count );
         }
+        else if ( item_current == 7 )
+        {
+            BigCharUiQuate( quate_x, quate_y, quate_z, quate_w, count, original_quate_x, original_quate_y, original_quate_z, original_quate_w, original_count );
+        }
     }
     ui::End();
 };
@@ -904,13 +908,47 @@ void CommonApplication::BigCharUi( float* befor_x, float* befor_y, float* befor_
         ImPlot::PlotStairs( "Calculate Y", befor_y, befor_count, 1.0, 0 );
         ImPlot::SetNextLineStyle( ImVec4( 0.0, 0.0, 255.0, 1.0 ) );
         ImPlot::PlotStairs( "Calculate Z", befor_z, befor_count, 1.0, 0 );
+
         //
-        ImPlot::SetNextLineStyle( ImVec4( 225.0, 0.0, 0.0, 0.6 ) );
+        ImPlot::SetNextLineStyle( ImVec4( 0.0, 225.0, 255.0, 0.6 ) );
         ImPlot::PlotStairs( "Original X", after_x, after_count, 1.0, 0 );
-        ImPlot::SetNextLineStyle( ImVec4( 0.0, 225.0, 0.0, 0.6 ) );
+        ImPlot::SetNextLineStyle( ImVec4( 255.0, 0.0, 255.0, 0.6 ) );
         ImPlot::PlotStairs( "Original Y", after_y, after_count, 1.0, 0 );
-        ImPlot::SetNextLineStyle( ImVec4( 0.0, 0.0, 225.0, 0.6 ) );
+        ImPlot::SetNextLineStyle( ImVec4( 255.0, 255.0, 0.0, 0.6 ) );
         ImPlot::PlotStairs( "Original Z", after_z, after_count, 1.0, 0 );
+
+        //
+
+        ImPlot::EndPlot();
+    }
+};
+//
+void CommonApplication::BigCharUiQuate( float* befor_x, float* befor_y, float* befor_z, float* befor_w, int befor_count, float* after_x, float* after_y, float* after_z, float* after_w, int after_count )
+{
+    float w_t = ui::GetContentRegionAvail().x;
+    float h_t = ui::GetContentRegionAvail().y;
+    //
+    if ( ImPlot::BeginPlot( "Big Char UI##BigCharUiQuate", ImVec2( w_t, h_t ), ImPlotFlags_NoTitle ) )
+    {
+        ImPlot::SetupAxes( "Index##Calculate", "X/Y/Z##Calculate", ImPlotAxisFlags_AutoFit | ImPlotAxisFlags_NoLabel | ImPlotAxisFlags_NoTickLabels, ImPlotAxisFlags_AutoFit | ImPlotAxisFlags_NoLabel | ImPlotAxisFlags_Opposite | ImPlotAxisFlags_NoTickLabels );
+        //
+        ImPlot::SetNextLineStyle( ImVec4( 255.0, 0.0, 0.0, 1.0 ) );
+        ImPlot::PlotStairs( "Calculate X", befor_x, befor_count, 1.0, 0 );
+        ImPlot::SetNextLineStyle( ImVec4( 0.0, 255.0, 0.0, 1.0 ) );
+        ImPlot::PlotStairs( "Calculate Y", befor_y, befor_count, 1.0, 0 );
+        ImPlot::SetNextLineStyle( ImVec4( 0.0, 0.0, 255.0, 1.0 ) );
+        ImPlot::PlotStairs( "Calculate Z", befor_z, befor_count, 1.0, 0 );
+        ImPlot::SetNextLineStyle( ImVec4( 125.0, 125.0, 125.0, 1.0 ) );
+        ImPlot::PlotStairs( "Calculate W", befor_w, befor_count, 1.0, 0 );
+        //
+        ImPlot::SetNextLineStyle( ImVec4( 0.0, 225.0, 255.0, 0.6 ) );
+        ImPlot::PlotStairs( "Original X", after_x, after_count, 1.0, 0 );
+        ImPlot::SetNextLineStyle( ImVec4( 255.0, 0.0, 255.0, 0.6 ) );
+        ImPlot::PlotStairs( "Original Y", after_y, after_count, 1.0, 0 );
+        ImPlot::SetNextLineStyle( ImVec4( 255.0, 255.0, 0.0, 0.6 ) );
+        ImPlot::PlotStairs( "Original Z", after_z, after_count, 1.0, 0 );
+        ImPlot::SetNextLineStyle( ImVec4( 125.0, 125.0, 125.0, 0.6 ) );
+        ImPlot::PlotStairs( "Calculate W", after_w, befor_count, 1.0, 0 );
         //
 
         ImPlot::EndPlot();
