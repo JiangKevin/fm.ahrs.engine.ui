@@ -385,7 +385,7 @@ void CommonApplication::WebsocketUi()
         ui::Text( " %.3f S", elapsed_time );
         ui::Separator();
         //
-        float btn_w = ( ImGui::GetContentRegionAvail().x - 6 * 2 ) / 6;
+        float btn_w = ( ImGui::GetContentRegionAvail().x - 7 * 2 ) / 7;
         //
         ui::Text( "Gyroscope Misalignment 1" );
         ui::SameLine( segmentation_w );
@@ -503,38 +503,45 @@ void CommonApplication::WebsocketUi()
         //
         ui::Separator();
         //
-        if ( ui::Button( "Send Setup", ImVec2( btn_w, 16 ) ) )
+        if ( ui::Button( "ReadCsv##Send", ImVec2( btn_w, 16 ) ) )
+        {
+            emscripten_websocket_send_utf8_text( socket, "ReadCsv" );
+            start_time = getMicrosecondTimestamp();
+        };
+        ui::SameLine();
+        //
+        if ( ui::Button( "Setup##Send", ImVec2( btn_w, 16 ) ) )
         {
             std::string content_str = GetConfigString();
             //
             emscripten_websocket_send_utf8_text( socket, content_str.c_str() );
         };
         ui::SameLine();
-        if ( ui::Button( "Send Start", ImVec2( btn_w, 16 ) ) )
+        if ( ui::Button( "Start##Send", ImVec2( btn_w, 16 ) ) )
         {
             emscripten_websocket_send_utf8_text( socket, "Start" );
             start_time = getMicrosecondTimestamp();
         };
         ui::SameLine();
-        if ( ui::Button( "Send Pause", ImVec2( btn_w, 16 ) ) )
+        if ( ui::Button( "Pause##Send", ImVec2( btn_w, 16 ) ) )
         {
             emscripten_websocket_send_utf8_text( socket, "Pause" );
             elapsed_time = ( float )( getMicrosecondTimestamp() - start_time ) / ( float )CLOCKS_PER_SEC;
         };
         ui::SameLine();
-        if ( ui::Button( "Send Clear", ImVec2( btn_w, 16 ) ) )
+        if ( ui::Button( "Clear##Send", ImVec2( btn_w, 16 ) ) )
         {
             emscripten_websocket_send_utf8_text( socket, "Clear" );
             start_time = getMicrosecondTimestamp();
         };
         ui::SameLine();
-        if ( ui::Button( "Send Reset", ImVec2( btn_w, 16 ) ) )
+        if ( ui::Button( "Reset##Send", ImVec2( btn_w, 16 ) ) )
         {
             emscripten_websocket_send_utf8_text( socket, "Reset" );
             start_time = getMicrosecondTimestamp();
         };
         ui::SameLine();
-        if ( ui::Button( "Send Stop", ImVec2( btn_w, 16 ) ) )
+        if ( ui::Button( "Stop##Send", ImVec2( btn_w, 16 ) ) )
         {
             emscripten_websocket_send_utf8_text( socket, "Stop" );
         };
