@@ -52,7 +52,7 @@ static int   ahrs_recoveryTriggerPeriod = 500;
 //
 //
 static float roll[ 1024 ], pitch[ 1024 ], yaw[ 1024 ], magx[ 1024 ], magy[ 1024 ], magz[ 1024 ], gyrx[ 1024 ], gyry[ 1024 ], gyrz[ 1024 ], accx[ 1024 ], accy[ 1024 ], accz[ 1024 ], eax[ 1024 ], eay[ 1024 ], eaz[ 1024 ], evx[ 1024 ], evy[ 1024 ], evz[ 1024 ], px[ 1024 ], py[ 1024 ], pz[ 1024 ],
-    quate_x[ 1024 ], quate_y[ 1024 ], quate_z[ 1024 ], quate_w[ 1024 ];
+    quate_x[ 1024 ], quate_y[ 1024 ], quate_z[ 1024 ], quate_w[ 1024 ], totalAcc[ 1024 ];
 
 static float original_roll[ 1024 ], original_pitch[ 1024 ], original_yaw[ 1024 ], original_magx[ 1024 ], original_magy[ 1024 ], original_magz[ 1024 ], original_gyrx[ 1024 ], original_gyry[ 1024 ], original_gyrz[ 1024 ], original_accx[ 1024 ], original_accy[ 1024 ], original_accz[ 1024 ],
     original_eax[ 1024 ], original_eay[ 1024 ], original_eaz[ 1024 ], original_evx[ 1024 ], original_evy[ 1024 ], original_evz[ 1024 ], original_px[ 1024 ], original_py[ 1024 ], original_pz[ 1024 ], original_quate_x[ 1024 ], original_quate_y[ 1024 ], original_quate_z[ 1024 ],
@@ -205,18 +205,20 @@ static void v2a()
         eay[ i ] = sensor_data_vector[ i ].eacc[ 1 ];
         eaz[ i ] = sensor_data_vector[ i ].eacc[ 2 ];
         //
-        evx[ i ] = sensor_data_vector[ i ].vel[0];
-        evy[ i ] = sensor_data_vector[ i ].vel[1];
-        evz[ i ] = sensor_data_vector[ i ].vel[1];
+        evx[ i ] = sensor_data_vector[ i ].vel[ 0 ];
+        evy[ i ] = sensor_data_vector[ i ].vel[ 1 ];
+        evz[ i ] = sensor_data_vector[ i ].vel[ 1 ];
         //
-        px[ i ] = sensor_data_vector[ i ].pos[0];
-        py[ i ] = sensor_data_vector[ i ].pos[1];
-        pz[ i ] = sensor_data_vector[ i ].pos[2];
+        px[ i ] = sensor_data_vector[ i ].pos[ 0 ];
+        py[ i ] = sensor_data_vector[ i ].pos[ 1 ];
+        pz[ i ] = sensor_data_vector[ i ].pos[ 2 ];
         //
-        quate_x[ i ] = sensor_data_vector[ i ].qua[0];
-        quate_y[ i ] = sensor_data_vector[ i ].qua[1];
-        quate_z[ i ] = sensor_data_vector[ i ].qua[2];
-        quate_w[ i ] = sensor_data_vector[ i ].qua[3];
+        quate_x[ i ] = sensor_data_vector[ i ].qua[ 0 ];
+        quate_y[ i ] = sensor_data_vector[ i ].qua[ 1 ];
+        quate_z[ i ] = sensor_data_vector[ i ].qua[ 2 ];
+        quate_w[ i ] = sensor_data_vector[ i ].qua[ 3 ];
+        //
+        totalAcc[ i ] = sensor_data_vector[ i ].totalAcc;
     }
     //
     int original_count = original_sensor_data_vector.size();
@@ -243,18 +245,18 @@ static void v2a()
         original_eay[ i ] = original_sensor_data_vector[ i ].eacc[ 1 ];
         original_eaz[ i ] = original_sensor_data_vector[ i ].eacc[ 2 ];
         //
-        original_evx[ i ] = original_sensor_data_vector[ i ].vel[0];
-        original_evy[ i ] = original_sensor_data_vector[ i ].vel[1];
-        original_evz[ i ] = original_sensor_data_vector[ i ].vel[1];
+        original_evx[ i ] = original_sensor_data_vector[ i ].vel[ 0 ];
+        original_evy[ i ] = original_sensor_data_vector[ i ].vel[ 1 ];
+        original_evz[ i ] = original_sensor_data_vector[ i ].vel[ 1 ];
         //
-        original_px[ i ] = original_sensor_data_vector[ i ].pos[0];
-        original_py[ i ] = original_sensor_data_vector[ i ].pos[1];
-        original_pz[ i ] = original_sensor_data_vector[ i ].pos[2];
+        original_px[ i ] = original_sensor_data_vector[ i ].pos[ 0 ];
+        original_py[ i ] = original_sensor_data_vector[ i ].pos[ 1 ];
+        original_pz[ i ] = original_sensor_data_vector[ i ].pos[ 2 ];
         //
-        original_quate_x[ i ] = sensor_data_vector[ i ].qua[0];
-        original_quate_y[ i ] = sensor_data_vector[ i ].qua[1];
-        original_quate_z[ i ] = sensor_data_vector[ i ].qua[2];
-        original_quate_w[ i ] = sensor_data_vector[ i ].qua[3];
+        original_quate_x[ i ] = sensor_data_vector[ i ].qua[ 0 ];
+        original_quate_y[ i ] = sensor_data_vector[ i ].qua[ 1 ];
+        original_quate_z[ i ] = sensor_data_vector[ i ].qua[ 2 ];
+        original_quate_w[ i ] = sensor_data_vector[ i ].qua[ 3 ];
     }
 }
 //

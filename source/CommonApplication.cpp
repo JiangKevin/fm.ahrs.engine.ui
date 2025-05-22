@@ -856,7 +856,7 @@ void CommonApplication::BigCharUiChange()
     //
     if ( ui::Begin( "Big IMU Chart", &is_show_big_char, ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoScrollbar ) )
     {
-        static const char* items[]      = { "Estimated Accelerometer", "Estimated Velocity", "Position", "Accelerometer", "Gyroscope", "Magnetometer", "Euler", "Quate" };
+        static const char* items[]      = { "Estimated Accelerometer", "Estimated Velocity", "Position", "Accelerometer", "Gyroscope", "Magnetometer", "Euler", "Quate", "Total EAcc" };
         static int         item_current = 0;
         ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
         ImGui::Combo( "##charSwitch", &item_current, items, IM_ARRAYSIZE( items ) );
@@ -895,6 +895,10 @@ void CommonApplication::BigCharUiChange()
         else if ( item_current == 7 )
         {
             BigCharUiQuate( quate_x, quate_y, quate_z, quate_w, count );
+        }
+        else if ( item_current == 8 )
+        {
+            BigCharUiTotalAcc( totalAcc, count );
         }
     }
     ui::End();
@@ -940,13 +944,31 @@ void CommonApplication::BigCharUiQuate( float* after_x, float* after_y, float* a
         ImPlot::SetupAxes( "Index##Calculate", "X/Y/Z##Calculate", ImPlotAxisFlags_AutoFit | ImPlotAxisFlags_NoLabel | ImPlotAxisFlags_NoTickLabels, ImPlotAxisFlags_AutoFit | ImPlotAxisFlags_NoLabel | ImPlotAxisFlags_Opposite | ImPlotAxisFlags_NoTickLabels );
         //
         ImPlot::SetNextLineStyle( ImVec4( 0.0, 225.0, 255.0, 0.6 ) );
-        ImPlot::PlotStairs( "Original X", after_x, after_count, 1.0, 0 );
+        ImPlot::PlotStairs( "Quate X", after_x, after_count, 1.0, 0 );
         ImPlot::SetNextLineStyle( ImVec4( 255.0, 0.0, 255.0, 0.6 ) );
-        ImPlot::PlotStairs( "Original Y", after_y, after_count, 1.0, 0 );
+        ImPlot::PlotStairs( "Quate Y", after_y, after_count, 1.0, 0 );
         ImPlot::SetNextLineStyle( ImVec4( 255.0, 255.0, 0.0, 0.6 ) );
-        ImPlot::PlotStairs( "Original Z", after_z, after_count, 1.0, 0 );
+        ImPlot::PlotStairs( "Quate Z", after_z, after_count, 1.0, 0 );
         ImPlot::SetNextLineStyle( ImVec4( 125.0, 125.0, 125.0, 0.6 ) );
-        ImPlot::PlotStairs( "Calculate W", after_w, after_count, 1.0, 0 );
+        ImPlot::PlotStairs( "Quate W", after_w, after_count, 1.0, 0 );
+        //
+
+        ImPlot::EndPlot();
+    }
+};
+//
+void CommonApplication::BigCharUiTotalAcc( float* after_x,int after_count )
+{
+    float w_t = ui::GetContentRegionAvail().x;
+    float h_t = ui::GetContentRegionAvail().y;
+    //
+    if ( ImPlot::BeginPlot( "Big Char UI##BigCharUiTotalAcc", ImVec2( w_t, h_t ), ImPlotFlags_NoTitle ) )
+    {
+        ImPlot::SetupAxes( "Index##Calculate", "X/Y/Z##Calculate", ImPlotAxisFlags_AutoFit | ImPlotAxisFlags_NoLabel | ImPlotAxisFlags_NoTickLabels, ImPlotAxisFlags_AutoFit | ImPlotAxisFlags_NoLabel | ImPlotAxisFlags_Opposite | ImPlotAxisFlags_NoTickLabels );
+        //
+        ImPlot::SetNextLineStyle( ImVec4( 0.0, 225.0, 255.0, 0.6 ) );
+        ImPlot::PlotStairs( "Original X", after_x, after_count, 1.0, 0 );
+
         //
 
         ImPlot::EndPlot();
