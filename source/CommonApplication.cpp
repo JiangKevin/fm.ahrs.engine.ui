@@ -957,7 +957,7 @@ void CommonApplication::BigCharUiQuate( float* after_x, float* after_y, float* a
     }
 };
 //
-void CommonApplication::BigCharUiTotalAcc( float* after_x,int after_count )
+void CommonApplication::BigCharUiTotalAcc( float* after_x, int after_count )
 {
     float w_t = ui::GetContentRegionAvail().x;
     float h_t = ui::GetContentRegionAvail().y;
@@ -966,8 +966,8 @@ void CommonApplication::BigCharUiTotalAcc( float* after_x,int after_count )
     {
         ImPlot::SetupAxes( "Index##Calculate", "X/Y/Z##Calculate", ImPlotAxisFlags_AutoFit | ImPlotAxisFlags_NoLabel | ImPlotAxisFlags_NoTickLabels, ImPlotAxisFlags_AutoFit | ImPlotAxisFlags_NoLabel | ImPlotAxisFlags_Opposite | ImPlotAxisFlags_NoTickLabels );
         //
-        ImPlot::SetNextLineStyle( ImVec4( 0.0, 225.0, 255.0, 0.6 ) );
-        ImPlot::PlotStairs( "Original X", after_x, after_count, 1.0, 0 );
+        ImPlot::SetNextLineStyle( ImVec4( 125.0, 125.0, 125.0, 0.6 ) );
+        ImPlot::PlotStairs( "Total E Acc", after_x, after_count, 1.0, 0 );
 
         //
 
