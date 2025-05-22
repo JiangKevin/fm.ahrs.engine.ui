@@ -6,6 +6,7 @@
 #include <string>
 #include <sys/time.h>
 #include <vector>
+#include <Eigen/Dense>
 //
 static std::string removePrefix( const std::string& str, const std::string& prefix )
 {
