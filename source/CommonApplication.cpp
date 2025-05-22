@@ -819,10 +819,10 @@ void CommonApplication::ToCtrlAxesNode()
     std::lock_guard< std::mutex > lock( queue_mutex );
     if ( ! sensor_data_queue.empty() )
     {
-        SENSOR_DB new_sensor_db = sensor_data_queue.front();
+        EIGEN_SENSOR_DATA new_sensor_db = sensor_data_queue.front();
         //
-        axes_node_->SetRotation( Quaternion( new_sensor_db.roll, new_sensor_db.yaw, new_sensor_db.pitch ) );
-        axes_node_->SetPosition( Vector3( new_sensor_db.pos_x, new_sensor_db.pos_y + 10.0f, new_sensor_db.pos_z ) );
+        axes_node_->SetRotation( Quaternion( new_sensor_db.eul[ 0 ], new_sensor_db.eul[ 2 ], new_sensor_db.eul[ 1 ] ) );
+        axes_node_->SetPosition( Vector3( new_sensor_db.pos[ 0 ], new_sensor_db.pos[ 1 ] + 10.0f, new_sensor_db.pos[ 2 ] ) );
         //
         sensor_data_queue.pop();
     }
@@ -835,7 +835,7 @@ void CommonApplication::DrawPoints()
     for ( int i = 0; i < count; i++ )
     {
         // debug->AddSphere( Sphere( Vector3( sensor_data_vector[ i ].pos_x, sensor_data_vector[ i ].pos_y + 10.0f, sensor_data_vector[ i ].pos_z ), 0.1f ), Color( 1.0f, 1.0f, 1.0f ) );
-        debug->AddCross( Vector3( sensor_data_vector[ i ].pos_x, sensor_data_vector[ i ].pos_y + 10.0f, sensor_data_vector[ i ].pos_z ), 1.0f, Color( 1.0f, 1.0f, 1.0f ) );
+        debug->AddCross( Vector3( sensor_data_vector[ i ].pos[ 0 ], sensor_data_vector[ i ].pos[ 1 ] + 10.0f, sensor_data_vector[ i ].pos[ 2 ] ), 1.0f, Color( 1.0f, 1.0f, 1.0f ) );
     }
 }
 //

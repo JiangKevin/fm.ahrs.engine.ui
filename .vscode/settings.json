@@ -68,6 +68,7 @@
         "variant": "cpp",
         "vector": "cpp",
         "algorithm": "cpp",
-        "cstddef": "cpp"
+        "cstddef": "cpp",
+        "valarray": "cpp"
     }
 }

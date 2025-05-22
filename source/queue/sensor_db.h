@@ -1,12 +1,13 @@
 #pragma once
 //
+#include <Eigen/Dense>
+#include <Eigen/Geometry>
 #include <cmath>
 #include <iostream>
 #include <sstream>
 #include <string>
 #include <sys/time.h>
 #include <vector>
-#include <Eigen/Dense>
 //
 static std::string removePrefix( const std::string& str, const std::string& prefix )
 {
@@ -93,63 +94,47 @@ static std::string int64_transaction_to_string( int64_t value )
     return out;
 }
 //
-struct SENSOR_DB
+struct EIGEN_SENSOR_DATA
 {
-    int64_t time;
-    float   acc_x     = 0.0f;
-    float   acc_y     = 0.0f;
-    float   acc_z     = 0.0f;
-    float   gyro_x    = 0.0f;
-    float   gyro_y    = 0.0f;
-    float   gyro_z    = 0.0f;
-    float   mag_x     = 0.0f;
-    float   mag_y     = 0.0f;
-    float   mag_z     = 0.0f;
-    float   quate_x   = 0.0f;
-    float   quate_y   = 0.0f;
-    float   quate_z   = 0.0f;
-    float   quate_w   = 0.0f;
-    float   roll      = 0.0f;
-    float   pitch     = 0.0f;
-    float   yaw       = 0.0f;
-    float   eacc_x    = 0.0f;
-    float   eacc_y    = 0.0f;
-    float   eacc_z    = 0.0f;
-    float   vel_x     = 0.0f;
-    float   vel_y     = 0.0f;
-    float   vel_z     = 0.0f;
-    float   pos_x     = 0.0f;
-    float   pos_y     = 0.0f;
-    float   pos_z     = 0.0f;
-    float   deltaTime = 0.0f;
+    int64_t         time      = 0;
+    Eigen::VectorXf acc       = Eigen::VectorXf::Zero( 3 );
+    Eigen::VectorXf gyr       = Eigen::VectorXf::Zero( 3 );
+    Eigen::VectorXf mag       = Eigen::VectorXf::Zero( 3 );
+    Eigen::VectorXf qua       = Eigen::VectorXf::Zero( 4 );
+    Eigen::VectorXf eul       = Eigen::VectorXf::Zero( 3 );
+    Eigen::VectorXf eacc      = Eigen::VectorXf::Zero( 3 );
+    Eigen::VectorXf vel       = Eigen::VectorXf::Zero( 3 );
+    Eigen::VectorXf pos       = Eigen::VectorXf::Zero( 3 );
+    float           deltaTime = 0.0f;
+
     //
     std::string to_string()
     {
         std::string str = int64_transaction_to_string( time ) + ",";
-        str += transaction_to_string( acc_x ) + "," + transaction_to_string( acc_y ) + "," + transaction_to_string( acc_z ) + ",";
-        str += transaction_to_string( gyro_x ) + "," + transaction_to_string( gyro_y ) + "," + transaction_to_string( gyro_z ) + ",";
-        str += transaction_to_string( mag_x ) + "," + transaction_to_string( mag_y ) + "," + transaction_to_string( mag_z ) + ",";
-        str += transaction_to_string( quate_x ) + "," + transaction_to_string( quate_y ) + "," + transaction_to_string( quate_z ) + "," + transaction_to_string( quate_w ) + ",";
-        str += transaction_to_string( roll ) + "," + transaction_to_string( pitch ) + "," + transaction_to_string( yaw ) + ",";
-        str += transaction_to_string( eacc_x ) + "," + transaction_to_string( eacc_y ) + "," + transaction_to_string( eacc_z ) + ",";
-        str += transaction_to_string( vel_x ) + "," + transaction_to_string( vel_y ) + "," + transaction_to_string( vel_z ) + ",";
-        str += transaction_to_string( pos_x ) + "," + transaction_to_string( pos_y ) + "," + transaction_to_string( pos_z ) + ",";
+        str += transaction_to_string( acc[ 0 ] ) + "," + transaction_to_string( acc[ 1 ] ) + "," + transaction_to_string( acc[ 2 ] ) + ",";
+        str += transaction_to_string( gyr[ 0 ] ) + "," + transaction_to_string( gyr[ 1 ] ) + "," + transaction_to_string( gyr[ 2 ] ) + ",";
+        str += transaction_to_string( mag[ 0 ] ) + "," + transaction_to_string( mag[ 1 ] ) + "," + transaction_to_string( mag[ 2 ] ) + ",";
+        str += transaction_to_string( qua[ 0 ] ) + "," + transaction_to_string( qua[ 1 ] ) + "," + transaction_to_string( qua[ 2 ] ) + "," + transaction_to_string( qua[ 3 ] ) + ",";
+        str += transaction_to_string( eul[ 0 ] ) + "," + transaction_to_string( eul[ 0 ] ) + "," + transaction_to_string( eul[ 2 ] ) + ",";
+        str += transaction_to_string( eacc[ 0 ] ) + "," + transaction_to_string( eacc[ 1 ] ) + "," + transaction_to_string( eacc[ 2 ] ) + ",";
+        str += transaction_to_string( vel[ 0 ] ) + "," + transaction_to_string( vel[ 1 ] ) + "," + transaction_to_string( vel[ 2 ] ) + ",";
+        str += transaction_to_string( pos[ 0 ] ) + "," + transaction_to_string( pos[ 1 ] ) + "," + transaction_to_string( pos[ 2 ] ) + ",";
         str += transaction_to_string( deltaTime );
-
+        //
         return str;
-    };
+    }
     //
     std::string to_info()
     {
         std::string info = "Time: " + int64_transaction_to_string( time ) + "\n";
-        info += "Accelerometer: (" + transaction_to_string( acc_x ) + ", " + transaction_to_string( acc_y ) + ", " + transaction_to_string( acc_z ) + ")\n";
-        info += "Gyroscope: (" + transaction_to_string( gyro_x ) + ", " + transaction_to_string( gyro_y ) + ", " + transaction_to_string( gyro_z ) + ")\n";
-        info += "Magnetometer: (" + transaction_to_string( mag_x ) + ", " + transaction_to_string( mag_y ) + ", " + transaction_to_string( mag_z ) + ")\n";
-        info += "Quaternion: (" + transaction_to_string( quate_x ) + ", " + transaction_to_string( quate_y ) + ", " + transaction_to_string( quate_z ) + ", " + transaction_to_string( quate_w ) + ")\n";
-        info += "Roll: " + transaction_to_string( roll ) + " pitch: " + transaction_to_string( pitch ) + " yaw: " + transaction_to_string( yaw ) + "\n";
-        info += "Estimated Accelerometer: (" + transaction_to_string( eacc_x ) + ", " + transaction_to_string( eacc_y ) + ", " + transaction_to_string( eacc_z ) + ")\n";
-        info += "Estimated Velocity: (" + transaction_to_string( vel_x ) + ", " + transaction_to_string( vel_y ) + ", " + transaction_to_string( vel_z ) + ")\n";
-        info += "Position: (" + transaction_to_string( pos_x ) + ", " + transaction_to_string( pos_y ) + ", " + transaction_to_string( pos_z ) + ")\n";
+        info += "Accelerometer: (" + transaction_to_string( acc[ 0 ] ) + ", " + transaction_to_string( acc[ 1 ] ) + ", " + transaction_to_string( acc[ 2 ] ) + ")\n";
+        info += "Gyroscope: (" + transaction_to_string( gyr[ 0 ] ) + ", " + transaction_to_string( gyr[ 1 ] ) + ", " + transaction_to_string( gyr[ 2 ] ) + ")\n";
+        info += "Magnetometer: (" + transaction_to_string( mag[ 0 ] ) + ", " + transaction_to_string( mag[ 1 ] ) + ", " + transaction_to_string( mag[ 2 ] ) + ")\n";
+        info += "Quaternion: (" + transaction_to_string( qua[ 0 ] ) + ", " + transaction_to_string( qua[ 1 ] ) + ", " + transaction_to_string( qua[ 2 ] ) + ", " + transaction_to_string( qua[ 3 ] ) + ")\n";
+        info += "Roll: " + transaction_to_string( eul[ 0 ] ) + " pitch: " + transaction_to_string( eul[ 1 ] ) + " yaw: " + transaction_to_string( eul[ 2 ] ) + "\n";
+        info += "Estimated Accelerometer: (" + transaction_to_string( eacc[ 0 ] ) + ", " + transaction_to_string( eacc[ 1 ] ) + ", " + transaction_to_string( eacc[ 2 ] ) + ")\n";
+        info += "Estimated Velocity: (" + transaction_to_string( vel[ 0 ] ) + ", " + transaction_to_string( vel[ 1 ] ) + ", " + transaction_to_string( vel[ 2 ] ) + ")\n";
+        info += "Position: (" + transaction_to_string( pos[ 0 ] ) + ", " + transaction_to_string( pos[ 1 ] ) + ", " + transaction_to_string( pos[ 2 ] ) + ")\n";
         info += "deltaTime: (" + transaction_to_string( deltaTime ) + ")\n";
 
         return info;
@@ -163,32 +148,63 @@ struct SENSOR_DB
         if ( values.size() == 27 )
         {
             time      = std::stoll( values[ 0 ] );
-            acc_x     = std::stof( values[ 1 ] );
-            acc_y     = std::stof( values[ 2 ] );
-            acc_z     = std::stof( values[ 3 ] );
-            gyro_x    = std::stof( values[ 4 ] );
-            gyro_y    = std::stof( values[ 5 ] );
-            gyro_z    = std::stof( values[ 6 ] );
-            mag_x     = std::stof( values[ 7 ] );
-            mag_y     = std::stof( values[ 8 ] );
-            mag_z     = std::stof( values[ 9 ] );
-            quate_x   = std::stof( values[ 10 ] );
-            quate_y   = std::stof( values[ 11 ] );
-            quate_z   = std::stof( values[ 12 ] );
-            quate_w   = std::stof( values[ 13 ] );
-            roll      = std::stof( values[ 14 ] );
-            pitch     = std::stof( values[ 15 ] );
-            yaw       = std::stof( values[ 16 ] );
-            eacc_x    = std::stof( values[ 17 ] );
-            eacc_y    = std::stof( values[ 18 ] );
-            eacc_z    = std::stof( values[ 19 ] );
-            vel_x     = std::stof( values[ 20 ] );
-            vel_y     = std::stof( values[ 21 ] );
-            vel_z     = std::stof( values[ 22 ] );
-            pos_x     = std::stof( values[ 23 ] );
-            pos_y     = std::stof( values[ 24 ] );
-            pos_z     = std::stof( values[ 25 ] );
+            acc[ 0 ]  = std::stof( values[ 1 ] );
+            acc[ 1 ]  = std::stof( values[ 2 ] );
+            acc[ 2 ]  = std::stof( values[ 3 ] );
+            gyr[ 0 ]  = std::stof( values[ 4 ] );
+            gyr[ 1 ]  = std::stof( values[ 5 ] );
+            gyr[ 2 ]  = std::stof( values[ 6 ] );
+            mag[ 0 ]  = std::stof( values[ 7 ] );
+            mag[ 1 ]  = std::stof( values[ 8 ] );
+            mag[ 2 ]  = std::stof( values[ 9 ] );
+            qua[ 0 ]  = std::stof( values[ 10 ] );
+            qua[ 1 ]  = std::stof( values[ 11 ] );
+            qua[ 2 ]  = std::stof( values[ 12 ] );
+            qua[ 3 ]  = std::stof( values[ 13 ] );
+            eul[ 0 ]  = std::stof( values[ 14 ] );
+            eul[ 1 ]  = std::stof( values[ 15 ] );
+            eul[ 2 ]  = std::stof( values[ 16 ] );
+            eacc[ 0 ] = std::stof( values[ 17 ] );
+            eacc[ 1 ] = std::stof( values[ 18 ] );
+            eacc[ 2 ] = std::stof( values[ 19 ] );
+            vel[ 0 ]  = std::stof( values[ 20 ] );
+            vel[ 1 ]  = std::stof( values[ 21 ] );
+            vel[ 2 ]  = std::stof( values[ 22 ] );
+            pos[ 0 ]  = std::stof( values[ 23 ] );
+            pos[ 1 ]  = std::stof( values[ 24 ] );
+            pos[ 2 ]  = std::stof( values[ 25 ] );
             deltaTime = std::stof( values[ 26 ] );
         }
+    }
+    //
+    void ToZero()
+    {
+        time      = 0.0f;
+        acc[ 0 ]  = 0.0f;
+        acc[ 1 ]  = 0.0f;
+        acc[ 2 ]  = 0.0f;
+        gyr[ 0 ]  = 0.0f;
+        gyr[ 1 ]  = 0.0f;
+        gyr[ 2 ]  = 0.0f;
+        mag[ 0 ]  = 0.0f;
+        mag[ 1 ]  = 0.0f;
+        mag[ 2 ]  = 0.0f;
+        qua[ 0 ]  = 0.0f;
+        qua[ 1 ]  = 0.0f;
+        qua[ 2 ]  = 0.0f;
+        qua[ 3 ]  = 0.0f;
+        eul[ 0 ]  = 0.0f;
+        eul[ 1 ]  = 0.0f;
+        eul[ 2 ]  = 0.0f;
+        eacc[ 0 ] = 0.0f;
+        eacc[ 1 ] = 0.0f;
+        eacc[ 2 ] = 0.0f;
+        vel[ 0 ]  = 0.0f;
+        vel[ 1 ]  = 0.0f;
+        vel[ 2 ]  = 0.0f;
+        pos[ 0 ]  = 0.0f;
+        pos[ 1 ]  = 0.0f;
+        pos[ 2 ]  = 0.0f;
+        deltaTime = 0.0f;
     }
 };

@@ -11,26 +11,20 @@
 #include <thread>
 #include <vector>
 //
-// struct WASM_SOCKET_DATA
-// {
-//     eastl::string                     websocket_staus           = "\xf3\xb1\x98\x96";
-//     eastl::string                     websocket_receive_message = "";
-//     LockFreeMessageQueue< SENSOR_DB > sensor_data_queue;
-// };
 // 全局的变量
 static eastl::string websocket_staus                    = "\xf3\xb1\x98\x96";
 static eastl::string websocket_receive_message          = "";
 static eastl::string websocket_receive_message_original = "";
 
 //
-static std::queue< SENSOR_DB >  sensor_data_queue;
-static std::vector< SENSOR_DB > sensor_data_vector;
-static std::vector< SENSOR_DB > original_sensor_data_vector;
-static std::mutex               queue_mutex;
-static int64_t                  start_time   = 0;
-static float                    elapsed_time = 0;
-static int                      Microsecond  = 1000000;
-static int                      item_count   = 1024;
+static std::queue< EIGEN_SENSOR_DATA >  sensor_data_queue;
+static std::vector< EIGEN_SENSOR_DATA > sensor_data_vector;
+static std::vector< EIGEN_SENSOR_DATA > original_sensor_data_vector;
+static std::mutex                       queue_mutex;
+static int64_t                          start_time   = 0;
+static float                            elapsed_time = 0;
+static int                              Microsecond  = 1000000;
+static int                              item_count   = 1024;
 //
 static float GyrMisalignment_1[ 3 ]    = { 1.0f, 0.0f, 0.0f };
 static float GyrMisalignment_2[ 3 ]    = { 0.0f, 1.0f, 0.0f };
@@ -191,76 +185,76 @@ static void v2a()
     int count = sensor_data_vector.size();
     for ( int i = 0; i < count; i++ )
     {
-        roll[ i ]  = sensor_data_vector[ i ].roll;
-        pitch[ i ] = sensor_data_vector[ i ].pitch;
-        yaw[ i ]   = sensor_data_vector[ i ].yaw;
+        roll[ i ]  = sensor_data_vector[ i ].eul[ 0 ];
+        pitch[ i ] = sensor_data_vector[ i ].eul[ 1 ];
+        yaw[ i ]   = sensor_data_vector[ i ].eul[ 2 ];
         //
-        magx[ i ] = sensor_data_vector[ i ].mag_x;
-        magy[ i ] = sensor_data_vector[ i ].mag_y;
-        magz[ i ] = sensor_data_vector[ i ].mag_z;
+        magx[ i ] = sensor_data_vector[ i ].mag[ 0 ];
+        magy[ i ] = sensor_data_vector[ i ].mag[ 1 ];
+        magz[ i ] = sensor_data_vector[ i ].mag[ 2 ];
         //
-        gyrx[ i ] = sensor_data_vector[ i ].gyro_x;
-        gyry[ i ] = sensor_data_vector[ i ].gyro_y;
-        gyrz[ i ] = sensor_data_vector[ i ].gyro_z;
+        gyrx[ i ] = sensor_data_vector[ i ].gyr[ 0 ];
+        gyry[ i ] = sensor_data_vector[ i ].gyr[ 1 ];
+        gyrz[ i ] = sensor_data_vector[ i ].gyr[ 2 ];
         //
-        accx[ i ] = sensor_data_vector[ i ].acc_x;
-        accy[ i ] = sensor_data_vector[ i ].acc_y;
-        accz[ i ] = sensor_data_vector[ i ].acc_z;
+        accx[ i ] = sensor_data_vector[ i ].acc[ 0 ];
+        accy[ i ] = sensor_data_vector[ i ].acc[ 1 ];
+        accz[ i ] = sensor_data_vector[ i ].acc[ 2 ];
         //
-        eax[ i ] = sensor_data_vector[ i ].eacc_x;
-        eay[ i ] = sensor_data_vector[ i ].eacc_y;
-        eaz[ i ] = sensor_data_vector[ i ].eacc_z;
+        eax[ i ] = sensor_data_vector[ i ].eacc[ 0 ];
+        eay[ i ] = sensor_data_vector[ i ].eacc[ 1 ];
+        eaz[ i ] = sensor_data_vector[ i ].eacc[ 2 ];
         //
-        evx[ i ] = sensor_data_vector[ i ].vel_x;
-        evy[ i ] = sensor_data_vector[ i ].vel_y;
-        evz[ i ] = sensor_data_vector[ i ].vel_z;
+        evx[ i ] = sensor_data_vector[ i ].vel[0];
+        evy[ i ] = sensor_data_vector[ i ].vel[1];
+        evz[ i ] = sensor_data_vector[ i ].vel[1];
         //
-        px[ i ] = sensor_data_vector[ i ].pos_x;
-        py[ i ] = sensor_data_vector[ i ].pos_y;
-        pz[ i ] = sensor_data_vector[ i ].pos_z;
+        px[ i ] = sensor_data_vector[ i ].pos[0];
+        py[ i ] = sensor_data_vector[ i ].pos[1];
+        pz[ i ] = sensor_data_vector[ i ].pos[2];
         //
-        quate_x[ i ] = sensor_data_vector[ i ].quate_x;
-        quate_y[ i ] = sensor_data_vector[ i ].quate_y;
-        quate_z[ i ] = sensor_data_vector[ i ].quate_z;
-        quate_w[ i ] = sensor_data_vector[ i ].quate_w;
+        quate_x[ i ] = sensor_data_vector[ i ].qua[0];
+        quate_y[ i ] = sensor_data_vector[ i ].qua[1];
+        quate_z[ i ] = sensor_data_vector[ i ].qua[2];
+        quate_w[ i ] = sensor_data_vector[ i ].qua[3];
     }
     //
     int original_count = original_sensor_data_vector.size();
     //
     for ( int i = 0; i < original_count; i++ )
     {
-        original_roll[ i ]  = original_sensor_data_vector[ i ].roll;
-        original_pitch[ i ] = original_sensor_data_vector[ i ].pitch;
-        original_yaw[ i ]   = original_sensor_data_vector[ i ].yaw;
+        original_roll[ i ]  = original_sensor_data_vector[ i ].eul[ 0 ];
+        original_pitch[ i ] = original_sensor_data_vector[ i ].eul[ 1 ];
+        original_yaw[ i ]   = original_sensor_data_vector[ i ].eul[ 2 ];
 
-        original_magx[ i ] = original_sensor_data_vector[ i ].mag_x;
-        original_magy[ i ] = original_sensor_data_vector[ i ].mag_y;
-        original_magz[ i ] = original_sensor_data_vector[ i ].mag_z;
+        original_magx[ i ] = original_sensor_data_vector[ i ].mag[ 0 ];
+        original_magy[ i ] = original_sensor_data_vector[ i ].mag[ 1 ];
+        original_magz[ i ] = original_sensor_data_vector[ i ].mag[ 2 ];
 
-        original_gyrx[ i ] = original_sensor_data_vector[ i ].gyro_x;
-        original_gyry[ i ] = original_sensor_data_vector[ i ].gyro_y;
-        original_gyrz[ i ] = original_sensor_data_vector[ i ].gyro_z;
+        original_gyrx[ i ] = original_sensor_data_vector[ i ].gyr[ 0 ];
+        original_gyry[ i ] = original_sensor_data_vector[ i ].gyr[ 1 ];
+        original_gyrz[ i ] = original_sensor_data_vector[ i ].gyr[ 2 ];
 
-        original_accx[ i ] = original_sensor_data_vector[ i ].acc_x;
-        original_accy[ i ] = original_sensor_data_vector[ i ].acc_y;
-        original_accz[ i ] = original_sensor_data_vector[ i ].acc_z;
+        original_accx[ i ] = original_sensor_data_vector[ i ].acc[ 0 ];
+        original_accy[ i ] = original_sensor_data_vector[ i ].acc[ 1 ];
+        original_accz[ i ] = original_sensor_data_vector[ i ].acc[ 2 ];
 
-        original_eax[ i ] = original_sensor_data_vector[ i ].eacc_x;
-        original_eay[ i ] = original_sensor_data_vector[ i ].eacc_y;
-        original_eaz[ i ] = original_sensor_data_vector[ i ].eacc_z;
+        original_eax[ i ] = original_sensor_data_vector[ i ].eacc[ 0 ];
+        original_eay[ i ] = original_sensor_data_vector[ i ].eacc[ 1 ];
+        original_eaz[ i ] = original_sensor_data_vector[ i ].eacc[ 2 ];
         //
-        original_evx[ i ] = original_sensor_data_vector[ i ].vel_x;
-        original_evy[ i ] = original_sensor_data_vector[ i ].vel_y;
-        original_evz[ i ] = original_sensor_data_vector[ i ].vel_z;
+        original_evx[ i ] = original_sensor_data_vector[ i ].vel[0];
+        original_evy[ i ] = original_sensor_data_vector[ i ].vel[1];
+        original_evz[ i ] = original_sensor_data_vector[ i ].vel[1];
         //
-        original_px[ i ] = original_sensor_data_vector[ i ].pos_x;
-        original_py[ i ] = original_sensor_data_vector[ i ].pos_y;
-        original_pz[ i ] = original_sensor_data_vector[ i ].pos_z;
+        original_px[ i ] = original_sensor_data_vector[ i ].pos[0];
+        original_py[ i ] = original_sensor_data_vector[ i ].pos[1];
+        original_pz[ i ] = original_sensor_data_vector[ i ].pos[2];
         //
-        original_quate_x[ i ] = sensor_data_vector[ i ].quate_x;
-        original_quate_y[ i ] = sensor_data_vector[ i ].quate_y;
-        original_quate_z[ i ] = sensor_data_vector[ i ].quate_z;
-        original_quate_w[ i ] = sensor_data_vector[ i ].quate_w;
+        original_quate_x[ i ] = sensor_data_vector[ i ].qua[0];
+        original_quate_y[ i ] = sensor_data_vector[ i ].qua[1];
+        original_quate_z[ i ] = sensor_data_vector[ i ].qua[2];
+        original_quate_w[ i ] = sensor_data_vector[ i ].qua[3];
     }
 }
 //
@@ -329,7 +323,7 @@ static EM_BOOL WebSocketMessage( int eventType, const EmscriptenWebSocketMessage
             //
             std::lock_guard< std::mutex > lock( queue_mutex );
             //
-            SENSOR_DB new_sensor_db;
+            EIGEN_SENSOR_DATA new_sensor_db;
             new_sensor_db.getValueFromString( receive_message );
             //
             sensor_data_queue.push( new_sensor_db );
@@ -359,7 +353,7 @@ static EM_BOOL WebSocketMessage( int eventType, const EmscriptenWebSocketMessage
             //
             std::lock_guard< std::mutex > lock( queue_mutex );
             //
-            SENSOR_DB new_sensor_db;
+            EIGEN_SENSOR_DATA new_sensor_db;
             new_sensor_db.getValueFromString( receive_message );
             //
             if ( original_sensor_data_vector.size() < item_count )
