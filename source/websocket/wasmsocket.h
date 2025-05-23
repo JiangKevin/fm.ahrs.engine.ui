@@ -207,7 +207,7 @@ static void v2a()
         //
         evx[ i ] = sensor_data_vector[ i ].vel[ 0 ];
         evy[ i ] = sensor_data_vector[ i ].vel[ 1 ];
-        evz[ i ] = sensor_data_vector[ i ].vel[ 1 ];
+        evz[ i ] = sensor_data_vector[ i ].vel[ 2 ];
         //
         px[ i ] = sensor_data_vector[ i ].pos[ 0 ];
         py[ i ] = sensor_data_vector[ i ].pos[ 1 ];
@@ -247,7 +247,7 @@ static void v2a()
         //
         original_evx[ i ] = original_sensor_data_vector[ i ].vel[ 0 ];
         original_evy[ i ] = original_sensor_data_vector[ i ].vel[ 1 ];
-        original_evz[ i ] = original_sensor_data_vector[ i ].vel[ 1 ];
+        original_evz[ i ] = original_sensor_data_vector[ i ].vel[ 2 ];
         //
         original_px[ i ] = original_sensor_data_vector[ i ].pos[ 0 ];
         original_py[ i ] = original_sensor_data_vector[ i ].pos[ 1 ];
