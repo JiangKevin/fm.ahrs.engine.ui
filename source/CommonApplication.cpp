@@ -832,10 +832,14 @@ void CommonApplication::DrawPoints()
 {
     auto* debug = scene_->GetComponent< DebugRenderer >();
     int   count = sensor_data_vector.size();
-    for ( int i = 0; i < count; i++ )
+    //
+    for ( int i = 1; i < count; i++ )
     {
+        debug->AddCross( Vector3( sensor_data_vector[ i - 1 ].pos[ 0 ], sensor_data_vector[ i - 1 ].pos[ 1 ] + 10.0f, sensor_data_vector[ i - 1 ].pos[ 2 ] ), 1.0f, Color( 1.0f, 1.0f, 1.0f ) );
+        debug->AddLine( Vector3( sensor_data_vector[ i - 1 ].pos[ 0 ], sensor_data_vector[ i - 1 ].pos[ 1 ] + 10.0f, sensor_data_vector[ i - 1 ].pos[ 2 ] ), Vector3( sensor_data_vector[ i ].pos[ 0 ], sensor_data_vector[ i ].pos[ 1 ] + 10.0f, sensor_data_vector[ i ].pos[ 2 ] ),
+                        Color( 1.0f, 1.0f, 1.0f ) );
         // debug->AddSphere( Sphere( Vector3( sensor_data_vector[ i ].pos_x, sensor_data_vector[ i ].pos_y + 10.0f, sensor_data_vector[ i ].pos_z ), 0.1f ), Color( 1.0f, 1.0f, 1.0f ) );
-        debug->AddCross( Vector3( sensor_data_vector[ i ].pos[ 0 ], sensor_data_vector[ i ].pos[ 1 ] + 10.0f, sensor_data_vector[ i ].pos[ 2 ] ), 1.0f, Color( 1.0f, 1.0f, 1.0f ) );
+        // debug->AddCross( Vector3( sensor_data_vector[ i ].pos[ 0 ], sensor_data_vector[ i ].pos[ 1 ] + 10.0f, sensor_data_vector[ i ].pos[ 2 ] ), 1.0f, Color( 1.0f, 1.0f, 1.0f ) );
     }
 }
 //
