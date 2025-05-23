@@ -125,14 +125,14 @@ void CommonApplication::CreateScene()
     planeObject->SetModel( cache->GetResource< Model >( "Models/Plane.mdl" ) );
     planeObject->SetMaterial( cache->GetResource< Material >( "Materials/StoneTiled.xml" ) );
 
-    // Create a Zone component for ambient lighting & fog control
-    Node* zoneNode = scene_->CreateChild( "Zone" );
-    auto* zone     = zoneNode->CreateComponent< Zone >();
-    zone->SetBoundingBox( BoundingBox( -10000.0f, 10000.0f ) );
-    zone->SetAmbientColor( Color( 0.15f, 0.15f, 0.15f ) );
-    zone->SetFogColor( Color( 0.5f, 0.5f, 0.7f ) );
-    zone->SetFogStart( 100.0f );
-    zone->SetFogEnd( 300.0f );
+    // // Create a Zone component for ambient lighting & fog control
+    // Node* zoneNode = scene_->CreateChild( "Zone" );
+    // auto* zone     = zoneNode->CreateComponent< Zone >();
+    // zone->SetBoundingBox( BoundingBox( -100000.0f, 100000.0f ) );
+    // zone->SetAmbientColor( Color( 0.15f, 0.15f, 0.15f ) );
+    // zone->SetFogColor( Color( 0.5f, 0.5f, 0.7f ) );
+    // zone->SetFogStart( 1000.0f );
+    // zone->SetFogEnd( 30000.0f );
 
     // Create a directional light to the world. Enable cascaded shadows on it
     Node* lightNode = scene_->CreateChild( "DirectionalLight" );
@@ -203,7 +203,7 @@ void CommonApplication::CreateScene()
     // we want it to be unaffected by scene load / save
 
     auto* camera = mainCameraNode_->CreateComponent< Camera >();
-    camera->SetFarClip( 300.0f );
+    camera->SetFarClip( 30000.0f );
 
     // Set an initial position for the camera scene node above the plane and looking down
     mainCameraNode_->SetPosition( Vector3( 0.0f, 50.0f, 0.0f ) );
