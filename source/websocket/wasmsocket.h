@@ -328,7 +328,16 @@ static EM_BOOL WebSocketMessage( int eventType, const EmscriptenWebSocketMessage
             EIGEN_SENSOR_DATA new_sensor_db;
             new_sensor_db.getValueFromString( receive_message );
             //
-            sensor_data_queue.push( new_sensor_db );
+            if ( sensor_data_queue.size() < item_count )
+            {
+                sensor_data_queue.push( new_sensor_db );
+            }
+            else
+            {
+                sensor_data_queue.pop();
+                sensor_data_queue.push( new_sensor_db );
+            }
+            //
             //
             if ( sensor_data_vector.size() < item_count )
             {
