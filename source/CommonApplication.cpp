@@ -390,79 +390,79 @@ void CommonApplication::WebsocketUi()
         ui::Text( "Gyroscope Misalignment 1" );
         ui::SameLine( segmentation_w );
         ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
-        ui::InputFloat3( "##GyrMisalignment_1", GyrMisalignment_1 );
+        ui::InputFloat3( "##GyrMisalignment_1", GyrMisalignment_1, "%.9f" );
         ui::Separator();
         ui::Text( "Gyroscope Misalignment 2" );
         ui::SameLine( segmentation_w );
         ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
-        ui::InputFloat3( "##GyrMisalignment_2", GyrMisalignment_2 );
+        ui::InputFloat3( "##GyrMisalignment_2", GyrMisalignment_2, "%.9f" );
         ui::Separator();
         ui::Text( "Gyroscope Misalignment 3" );
         ui::SameLine( segmentation_w );
         ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
-        ui::InputFloat3( "##GyrMisalignment_3", GyrMisalignment_3 );
+        ui::InputFloat3( "##GyrMisalignment_3", GyrMisalignment_3, "%.9f" );
         ui::Separator();
         //
         ui::Text( "Gyroscope Sensitivity" );
         ui::SameLine( segmentation_w );
         ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
-        ui::InputFloat3( "##GyroscopeSensitivity", GyroscopeSensitivity );
+        ui::InputFloat3( "##GyroscopeSensitivity", GyroscopeSensitivity, "%.9f" );
         ui::Separator();
         //
         ui::Text( "Gyroscope Offset" );
         ui::SameLine( segmentation_w );
         ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
-        ui::InputFloat3( "##GyroscopeOffset", GyroscopeOffset );
+        ui::InputFloat3( "##GyroscopeOffset", GyroscopeOffset, "%.9f" );
         ui::Separator();
         //
         ui::Text( "Accelerometer Misalignment 1" );
         ui::SameLine( segmentation_w );
         ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
-        ui::InputFloat3( "##AccelerometerMisalignment_1", AccelerometerMisalignment_1 );
+        ui::InputFloat3( "##AccelerometerMisalignment_1", AccelerometerMisalignment_1, "%.9f" );
         ui::Separator();
         ui::Text( "Accelerometer Misalignment 2" );
         ui::SameLine( segmentation_w );
         ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
-        ui::InputFloat3( "##AccelerometerMisalignment_2", AccelerometerMisalignment_2 );
+        ui::InputFloat3( "##AccelerometerMisalignment_2", AccelerometerMisalignment_2, "%.9f" );
         ui::Separator();
         ui::Text( "Accelerometer Misalignment 3" );
         ui::SameLine( segmentation_w );
         ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
-        ui::InputFloat3( "##AccelerometerMisalignment_3", AccelerometerMisalignment_3 );
+        ui::InputFloat3( "##AccelerometerMisalignment_3", AccelerometerMisalignment_3, "%.9f" );
         ui::Separator();
         //
         ui::Text( "Accelerometer Sensitivity" );
         ui::SameLine( segmentation_w );
         ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
-        ui::InputFloat3( "##AccelerometerSensitivity", AccelerometerSensitivity );
+        ui::InputFloat3( "##AccelerometerSensitivity", AccelerometerSensitivity, "%.9f" );
         ui::Separator();
         //
         ui::Text( "Accelerometer Offset" );
         ui::SameLine( segmentation_w );
         ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
-        ui::InputFloat3( "##AccelerometerOffset", AccelerometerOffset );
+        ui::InputFloat3( "##AccelerometerOffset", AccelerometerOffset, "%.9f" );
         ui::Separator();
         //
         ui::Text( "Soft Iron Matrix 1" );
         ui::SameLine( segmentation_w );
         ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
-        ui::InputFloat3( "##SoftIronMatrix_1", SoftIronMatrix_1 );
+        ui::InputFloat3( "##SoftIronMatrix_1", SoftIronMatrix_1, "%.9f" );
         ui::Separator();
         ui::Text( "Soft Iron Matrix 2" );
         ui::SameLine( segmentation_w );
         ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
-        ui::InputFloat3( "##SoftIronMatrix_2", SoftIronMatrix_2 );
+        ui::InputFloat3( "##SoftIronMatrix_2", SoftIronMatrix_2, "%.9f" );
         ui::Separator();
         ui::Text( "Soft Iron Matrix 3" );
         ui::SameLine( segmentation_w );
         ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
-        ui::InputFloat3( "##SoftIronMatrix_3", SoftIronMatrix_3 );
+        ui::InputFloat3( "##SoftIronMatrix_3", SoftIronMatrix_3, "%.9f" );
         ui::Separator();
         //
         ui::Text( "Hard Iron Offset" );
         ui::SameLine( segmentation_w );
         ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
-        ui::InputFloat3( "##HardIronOffset", HardIronOffset );
+        ui::InputFloat3( "##HardIronOffset", HardIronOffset, "%.9f" );
         ui::Separator();
         //
         ui::Text( "Convention" );
@@ -474,25 +474,25 @@ void CommonApplication::WebsocketUi()
         ui::Text( "Gain" );
         ui::SameLine( segmentation_w );
         ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
-        ui::InputFloat( "##ahrs_gain", &ahrs_gain );
+        ui::InputFloat( "##ahrs_gain", &ahrs_gain, 0.0f, 0.0f, "%.9f" );
         ui::Separator();
         //
         ui::Text( "GyroscopeRange" );
         ui::SameLine( segmentation_w );
         ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
-        ui::InputFloat( "##ahrs_gyroscopeRange", &ahrs_gyroscopeRange );
+        ui::InputFloat( "##ahrs_gyroscopeRange", &ahrs_gyroscopeRange, 0.0f, 0.0f, "%.9f" );
         ui::Separator();
         //
         ui::Text( "AccelerationRejection" );
         ui::SameLine( segmentation_w );
         ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
-        ui::InputFloat( "##ahrs_accelerationRejection", &ahrs_accelerationRejection );
+        ui::InputFloat( "##ahrs_accelerationRejection", &ahrs_accelerationRejection, 0.0f, 0.0f, "%.9f" );
         ui::Separator();
         //
         ui::Text( "MagneticRejection" );
         ui::SameLine( segmentation_w );
         ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
-        ui::InputFloat( "##ahrs_magneticRejection", &ahrs_magneticRejection );
+        ui::InputFloat( "##ahrs_magneticRejection", &ahrs_magneticRejection, 0.0f, 0.0f, "%.9f" );
         ui::Separator();
         //
         ui::Text( "RecoveryTriggerPeriod" );
