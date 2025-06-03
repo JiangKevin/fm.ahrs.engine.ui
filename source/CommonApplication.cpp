@@ -385,7 +385,7 @@ void CommonApplication::WebsocketUi()
         ui::Text( " %.3f S", elapsed_time );
         ui::Separator();
         //
-        float btn_w = ( ImGui::GetContentRegionAvail().x - 7 * 2 ) / 7;
+        float btn_w = ( ImGui::GetContentRegionAvail().x - 8 * 2 ) / 8;
         //
         ui::Text( "Gyroscope Misalignment 1" );
         ui::SameLine( segmentation_w );
@@ -520,6 +520,12 @@ void CommonApplication::WebsocketUi()
         if ( ui::Button( "Start##Send", ImVec2( btn_w, 16 ) ) )
         {
             emscripten_websocket_send_utf8_text( socket, "Start" );
+            start_time = getMicrosecondTimestamp();
+        };
+        ui::SameLine();
+        if ( ui::Button( "FIFO##Send", ImVec2( btn_w, 16 ) ) )
+        {
+            emscripten_websocket_send_utf8_text( socket, "FifoStart" );
             start_time = getMicrosecondTimestamp();
         };
         ui::SameLine();
