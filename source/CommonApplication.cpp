@@ -587,6 +587,48 @@ void CommonApplication::WebsocketUi()
                 ui::InputFloat( "##Current z coordinate", &mag_f_z, 0.0f, 0.0f, "%.9f" );
                 ui::Separator();
                 //
+                ui::Text( "Current zoon" );
+                ui::SameLine( segmentation_w );
+                ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
+                ui::InputText( "##Current zoon", &c_zoon );
+                ui::Separator();
+                //
+                ui::Text( "Top zoon" );
+                ui::SameLine( segmentation_w );
+                ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
+                ui::InputText( "##Top zoon", &top_zoon );
+                ui::Separator();
+                //
+                ui::Text( "Bottom zoon" );
+                ui::SameLine( segmentation_w );
+                ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
+                ui::InputText( "##Bottom zoon", &bottom_zoon );
+                ui::Separator();
+                //
+                ui::Text( "East zoon" );
+                ui::SameLine( segmentation_w );
+                ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
+                ui::InputText( "##East zoon", &e_zoon );
+                ui::Separator();
+                //
+                ui::Text( "South zoon" );
+                ui::SameLine( segmentation_w );
+                ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
+                ui::InputText( "##South zoon", &s_zoon );
+                ui::Separator();
+                //
+                ui::Text( "West zoon" );
+                ui::SameLine( segmentation_w );
+                ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
+                ui::InputText( "##West zoon", &w_zoon );
+                ui::Separator();
+                //
+                ui::Text( "North zoon" );
+                ui::SameLine( segmentation_w );
+                ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
+                ui::InputText( "##North zoon", &n_zoon );
+                ui::Separator();
+                //
                 ImGui::EndChild();
                 //
                 ImGui::BeginChild( "ChildL##Magnetic Button", ImVec2( ImGui::GetContentRegionAvail().x, 20 ) );
@@ -594,7 +636,8 @@ void CommonApplication::WebsocketUi()
                 int btn_w = ( ImGui::GetContentRegionAvail().x - 6 ) / 3;
                 if ( ui::Button( "Add Pos To DB##AddMagnetic", ImVec2( btn_w, 16 ) ) )
                 {
-                    std::string content_str = "Fingerprint," + std::to_string( mag_f_x ) + "," + std::to_string( mag_f_y ) + "," + std::to_string( mag_f_z );
+                    std::string content_str = "Fingerprint," + std::to_string( mag_f_x ) + "," + std::to_string( mag_f_y ) + "," + std::to_string( mag_f_z ) + "," + std::string( c_zoon.c_str() ) + "," + std::string( top_zoon.c_str() ) + "," + std::string( bottom_zoon.c_str() ) + ","
+                                              + std::string( e_zoon.c_str() ) + "," + std::string( s_zoon.c_str() ) + "," + std::string( w_zoon.c_str() ) + "," + std::string( n_zoon.c_str() );
                     //
                     emscripten_websocket_send_utf8_text( socket, content_str.c_str() );
                 }
