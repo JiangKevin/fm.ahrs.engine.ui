@@ -1023,7 +1023,7 @@ void CommonApplication::ToCtrlAxesNode()
         EIGEN_SENSOR_DATA new_sensor_db = sensor_data_queue.front();
         //
         axes_node_->SetRotation( Quaternion( new_sensor_db.eul[ 0 ], new_sensor_db.eul[ 2 ], new_sensor_db.eul[ 1 ] ) );
-        axes_node_->SetPosition( Vector3( new_sensor_db.pos[ 0 ], new_sensor_db.pos[ 1 ] + 10.0f, new_sensor_db.pos[ 2 ] ) );
+        axes_node_->SetPosition( Vector3( new_sensor_db.pos[ 0 ] * 10.0f, new_sensor_db.pos[ 1 ] * 10.0f + 10.0f, new_sensor_db.pos[ 2 ] * 10.0f ) );
         //
         sensor_data_queue.pop();
     }
