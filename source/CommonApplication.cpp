@@ -323,7 +323,7 @@ void CommonApplication::setup_style_of_imgui()
 void CommonApplication::RenderUi()
 {
     WebsocketUi();
-    AxesNodeAttributeUi();
+    // AxesNodeAttributeUi();
     //
     ChartUi();
     BigCharUiChange();
@@ -338,7 +338,7 @@ void CommonApplication::WebsocketUi()
         return;
     }
     //
-    ui::SetNextWindowSize( ImVec2( 450, 690 ), ImGuiCond_FirstUseEver );
+    ui::SetNextWindowSize( ImVec2( 450, 710 ), ImGuiCond_FirstUseEver );
     ui::SetNextWindowPos( ImVec2( 2, winSizeY_ - 868 ), ImGuiCond_FirstUseEver );
     //
     if ( ui::Begin( "WebSocket", &is_show_websocket, ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoResize ) )
@@ -380,286 +380,438 @@ void CommonApplication::WebsocketUi()
         ImGui::EndChild();
         ui::Separator();
         //
-        ui::Text( "Elapsed time:" );
-        ui::SameLine( segmentation_w );
-        ui::Text( " %.3f S", elapsed_time );
-        ui::Separator();
-        //
-        float btn_w = ( ImGui::GetContentRegionAvail().x - 8 * 2 ) / 8;
-        //
-        ui::Text( "Gyroscope Misalignment 1" );
-        ui::SameLine( segmentation_w );
-        ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
-        ui::InputFloat3( "##GyrMisalignment_1", GyrMisalignment_1, "%.9f" );
-        ui::Separator();
-        ui::Text( "Gyroscope Misalignment 2" );
-        ui::SameLine( segmentation_w );
-        ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
-        ui::InputFloat3( "##GyrMisalignment_2", GyrMisalignment_2, "%.9f" );
-        ui::Separator();
-        ui::Text( "Gyroscope Misalignment 3" );
-        ui::SameLine( segmentation_w );
-        ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
-        ui::InputFloat3( "##GyrMisalignment_3", GyrMisalignment_3, "%.9f" );
-        ui::Separator();
-        //
-        ui::Text( "Gyroscope Sensitivity" );
-        ui::SameLine( segmentation_w );
-        ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
-        ui::InputFloat3( "##GyroscopeSensitivity", GyroscopeSensitivity, "%.9f" );
-        ui::Separator();
-        //
-        ui::Text( "Gyroscope Offset" );
-        ui::SameLine( segmentation_w );
-        ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
-        ui::InputFloat3( "##GyroscopeOffset", GyroscopeOffset, "%.9f" );
-        ui::Separator();
-        //
-        ui::Text( "Accelerometer Misalignment 1" );
-        ui::SameLine( segmentation_w );
-        ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
-        ui::InputFloat3( "##AccelerometerMisalignment_1", AccelerometerMisalignment_1, "%.9f" );
-        ui::Separator();
-        ui::Text( "Accelerometer Misalignment 2" );
-        ui::SameLine( segmentation_w );
-        ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
-        ui::InputFloat3( "##AccelerometerMisalignment_2", AccelerometerMisalignment_2, "%.9f" );
-        ui::Separator();
-        ui::Text( "Accelerometer Misalignment 3" );
-        ui::SameLine( segmentation_w );
-        ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
-        ui::InputFloat3( "##AccelerometerMisalignment_3", AccelerometerMisalignment_3, "%.9f" );
-        ui::Separator();
-        //
-        ui::Text( "Accelerometer Sensitivity" );
-        ui::SameLine( segmentation_w );
-        ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
-        ui::InputFloat3( "##AccelerometerSensitivity", AccelerometerSensitivity, "%.9f" );
-        ui::Separator();
-        //
-        ui::Text( "Accelerometer Offset" );
-        ui::SameLine( segmentation_w );
-        ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
-        ui::InputFloat3( "##AccelerometerOffset", AccelerometerOffset, "%.9f" );
-        ui::Separator();
-        //
-        ui::Text( "Soft Iron Matrix 1" );
-        ui::SameLine( segmentation_w );
-        ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
-        ui::InputFloat3( "##SoftIronMatrix_1", SoftIronMatrix_1, "%.9f" );
-        ui::Separator();
-        ui::Text( "Soft Iron Matrix 2" );
-        ui::SameLine( segmentation_w );
-        ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
-        ui::InputFloat3( "##SoftIronMatrix_2", SoftIronMatrix_2, "%.9f" );
-        ui::Separator();
-        ui::Text( "Soft Iron Matrix 3" );
-        ui::SameLine( segmentation_w );
-        ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
-        ui::InputFloat3( "##SoftIronMatrix_3", SoftIronMatrix_3, "%.9f" );
-        ui::Separator();
-        //
-        ui::Text( "Hard Iron Offset" );
-        ui::SameLine( segmentation_w );
-        ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
-        ui::InputFloat3( "##HardIronOffset", HardIronOffset, "%.9f" );
-        ui::Separator();
-        //
-        ui::Text( "Convention" );
-        ui::SameLine( segmentation_w );
-        ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
-        ui::InputInt( "##ahrs_convention", &ahrs_convention );
-        ui::Separator();
-        //
-        ui::Text( "Gain" );
-        ui::SameLine( segmentation_w );
-        ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
-        ui::InputFloat( "##ahrs_gain", &ahrs_gain, 0.0f, 0.0f, "%.9f" );
-        ui::Separator();
-        //
-        ui::Text( "GyroscopeRange" );
-        ui::SameLine( segmentation_w );
-        ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
-        ui::InputFloat( "##ahrs_gyroscopeRange", &ahrs_gyroscopeRange, 0.0f, 0.0f, "%.9f" );
-        ui::Separator();
-        //
-        ui::Text( "AccelerationRejection" );
-        ui::SameLine( segmentation_w );
-        ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
-        ui::InputFloat( "##ahrs_accelerationRejection", &ahrs_accelerationRejection, 0.0f, 0.0f, "%.9f" );
-        ui::Separator();
-        //
-        ui::Text( "MagneticRejection" );
-        ui::SameLine( segmentation_w );
-        ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
-        ui::InputFloat( "##ahrs_magneticRejection", &ahrs_magneticRejection, 0.0f, 0.0f, "%.9f" );
-        ui::Separator();
-        //
-        ui::Text( "RecoveryTriggerPeriod" );
-        ui::SameLine( segmentation_w );
-        ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
-        ui::InputInt( "##ahrs_recoveryTriggerPeriod", &ahrs_recoveryTriggerPeriod );
-        ui::Separator();
-        //
-        ui::Separator();
-        //
-        if ( ui::Button( "ReadCsv##Send", ImVec2( btn_w, 16 ) ) )
+        float            btn_w         = ( ImGui::GetContentRegionAvail().x - 8 * 2 ) / 8;
+        ImGuiTabBarFlags tab_bar_flags = ImGuiTabBarFlags_None;
+        if ( ImGui::BeginTabBar( "SocketTabBar", tab_bar_flags ) )
         {
-            emscripten_websocket_send_utf8_text( socket, "ReadCsv" );
-            start_time = getMicrosecondTimestamp();
-        };
-        ui::SameLine();
-        //
-        if ( ui::Button( "Setup##Send", ImVec2( btn_w, 16 ) ) )
-        {
-            std::string content_str = GetConfigString();
-            //
-            emscripten_websocket_send_utf8_text( socket, content_str.c_str() );
-        };
-        ui::SameLine();
-        if ( ui::Button( "Start##Send", ImVec2( btn_w, 16 ) ) )
-        {
-            emscripten_websocket_send_utf8_text( socket, "Start" );
-            start_time = getMicrosecondTimestamp();
-        };
-        ui::SameLine();
-        if ( ui::Button( "FIFO##Send", ImVec2( btn_w, 16 ) ) )
-        {
-            emscripten_websocket_send_utf8_text( socket, "FifoStart" );
-            start_time = getMicrosecondTimestamp();
-        };
-        ui::SameLine();
-        if ( ui::Button( "Pause##Send", ImVec2( btn_w, 16 ) ) )
-        {
-            emscripten_websocket_send_utf8_text( socket, "Pause" );
-            elapsed_time = ( float )( getMicrosecondTimestamp() - start_time ) / ( float )CLOCKS_PER_SEC;
-        };
-        ui::SameLine();
-        if ( ui::Button( "Clear##Send", ImVec2( btn_w, 16 ) ) )
-        {
-            emscripten_websocket_send_utf8_text( socket, "Clear" );
-            start_time = getMicrosecondTimestamp();
-        };
-        ui::SameLine();
-        if ( ui::Button( "Reset##Send", ImVec2( btn_w, 16 ) ) )
-        {
-            emscripten_websocket_send_utf8_text( socket, "Reset" );
-            start_time = getMicrosecondTimestamp();
-        };
-        ui::SameLine();
-        if ( ui::Button( "Stop##Send", ImVec2( btn_w, 16 ) ) )
-        {
-            emscripten_websocket_send_utf8_text( socket, "Stop" );
-        };
+            if ( ImGui::BeginTabItem( "Confige" ) )
+            {
+                ImGui::BeginChild( "ChildL##basic", ImVec2( ImGui::GetContentRegionAvail().x, 440 ) );
+                //
+                ui::Text( "Elapsed time:" );
+                ui::SameLine( segmentation_w );
+                ui::Text( " %.3f S", elapsed_time );
+                ui::Separator();
+                //
+                ui::Text( "Gyroscope Misalignment 1" );
+                ui::SameLine( segmentation_w );
+                ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
+                ui::InputFloat3( "##GyrMisalignment_1", GyrMisalignment_1, "%.9f" );
+                ui::Separator();
+                ui::Text( "Gyroscope Misalignment 2" );
+                ui::SameLine( segmentation_w );
+                ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
+                ui::InputFloat3( "##GyrMisalignment_2", GyrMisalignment_2, "%.9f" );
+                ui::Separator();
+                ui::Text( "Gyroscope Misalignment 3" );
+                ui::SameLine( segmentation_w );
+                ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
+                ui::InputFloat3( "##GyrMisalignment_3", GyrMisalignment_3, "%.9f" );
+                ui::Separator();
+                //
+                ui::Text( "Gyroscope Sensitivity" );
+                ui::SameLine( segmentation_w );
+                ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
+                ui::InputFloat3( "##GyroscopeSensitivity", GyroscopeSensitivity, "%.9f" );
+                ui::Separator();
+                //
+                ui::Text( "Gyroscope Offset" );
+                ui::SameLine( segmentation_w );
+                ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
+                ui::InputFloat3( "##GyroscopeOffset", GyroscopeOffset, "%.9f" );
+                ui::Separator();
+                //
+                ui::Text( "Accelerometer Misalignment 1" );
+                ui::SameLine( segmentation_w );
+                ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
+                ui::InputFloat3( "##AccelerometerMisalignment_1", AccelerometerMisalignment_1, "%.9f" );
+                ui::Separator();
+                ui::Text( "Accelerometer Misalignment 2" );
+                ui::SameLine( segmentation_w );
+                ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
+                ui::InputFloat3( "##AccelerometerMisalignment_2", AccelerometerMisalignment_2, "%.9f" );
+                ui::Separator();
+                ui::Text( "Accelerometer Misalignment 3" );
+                ui::SameLine( segmentation_w );
+                ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
+                ui::InputFloat3( "##AccelerometerMisalignment_3", AccelerometerMisalignment_3, "%.9f" );
+                ui::Separator();
+                //
+                ui::Text( "Accelerometer Sensitivity" );
+                ui::SameLine( segmentation_w );
+                ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
+                ui::InputFloat3( "##AccelerometerSensitivity", AccelerometerSensitivity, "%.9f" );
+                ui::Separator();
+                //
+                ui::Text( "Accelerometer Offset" );
+                ui::SameLine( segmentation_w );
+                ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
+                ui::InputFloat3( "##AccelerometerOffset", AccelerometerOffset, "%.9f" );
+                ui::Separator();
+                //
+                ui::Text( "Soft Iron Matrix 1" );
+                ui::SameLine( segmentation_w );
+                ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
+                ui::InputFloat3( "##SoftIronMatrix_1", SoftIronMatrix_1, "%.9f" );
+                ui::Separator();
+                ui::Text( "Soft Iron Matrix 2" );
+                ui::SameLine( segmentation_w );
+                ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
+                ui::InputFloat3( "##SoftIronMatrix_2", SoftIronMatrix_2, "%.9f" );
+                ui::Separator();
+                ui::Text( "Soft Iron Matrix 3" );
+                ui::SameLine( segmentation_w );
+                ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
+                ui::InputFloat3( "##SoftIronMatrix_3", SoftIronMatrix_3, "%.9f" );
+                ui::Separator();
+                //
+                ui::Text( "Hard Iron Offset" );
+                ui::SameLine( segmentation_w );
+                ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
+                ui::InputFloat3( "##HardIronOffset", HardIronOffset, "%.9f" );
+                ui::Separator();
+                //
+                ui::Text( "Convention" );
+                ui::SameLine( segmentation_w );
+                ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
+                ui::InputInt( "##ahrs_convention", &ahrs_convention );
+                ui::Separator();
+                //
+                ui::Text( "Gain" );
+                ui::SameLine( segmentation_w );
+                ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
+                ui::InputFloat( "##ahrs_gain", &ahrs_gain, 0.0f, 0.0f, "%.9f" );
+                ui::Separator();
+                //
+                ui::Text( "GyroscopeRange" );
+                ui::SameLine( segmentation_w );
+                ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
+                ui::InputFloat( "##ahrs_gyroscopeRange", &ahrs_gyroscopeRange, 0.0f, 0.0f, "%.9f" );
+                ui::Separator();
+                //
+                ui::Text( "AccelerationRejection" );
+                ui::SameLine( segmentation_w );
+                ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
+                ui::InputFloat( "##ahrs_accelerationRejection", &ahrs_accelerationRejection, 0.0f, 0.0f, "%.9f" );
+                ui::Separator();
+                //
+                ui::Text( "MagneticRejection" );
+                ui::SameLine( segmentation_w );
+                ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
+                ui::InputFloat( "##ahrs_magneticRejection", &ahrs_magneticRejection, 0.0f, 0.0f, "%.9f" );
+                ui::Separator();
+                //
+                ui::Text( "RecoveryTriggerPeriod" );
+                ui::SameLine( segmentation_w );
+                ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
+                ui::InputInt( "##ahrs_recoveryTriggerPeriod", &ahrs_recoveryTriggerPeriod );
+                ui::Separator();
+                // button
+                ui::Spacing();
+                //
+                ImGui::EndChild();
+                ImGui::BeginChild( "ChildL##Basic button", ImVec2( ImGui::GetContentRegionAvail().x, 20 ) );
+
+                //
+                if ( ui::Button( "ReadCsv##Send", ImVec2( btn_w, 16 ) ) )
+                {
+                    emscripten_websocket_send_utf8_text( socket, "ReadCsv" );
+                    start_time = getMicrosecondTimestamp();
+                };
+                ui::SameLine();
+                //
+                if ( ui::Button( "Setup##Send", ImVec2( btn_w, 16 ) ) )
+                {
+                    std::string content_str = GetConfigString();
+                    //
+                    emscripten_websocket_send_utf8_text( socket, content_str.c_str() );
+                };
+                ui::SameLine();
+                if ( ui::Button( "Start##Send", ImVec2( btn_w, 16 ) ) )
+                {
+                    emscripten_websocket_send_utf8_text( socket, "Start" );
+                    start_time = getMicrosecondTimestamp();
+                };
+                ui::SameLine();
+                if ( ui::Button( "FIFO##Send", ImVec2( btn_w, 16 ) ) )
+                {
+                    emscripten_websocket_send_utf8_text( socket, "FifoStart" );
+                    start_time = getMicrosecondTimestamp();
+                };
+                ui::SameLine();
+                if ( ui::Button( "Pause##Send", ImVec2( btn_w, 16 ) ) )
+                {
+                    emscripten_websocket_send_utf8_text( socket, "Pause" );
+                    elapsed_time = ( float )( getMicrosecondTimestamp() - start_time ) / ( float )CLOCKS_PER_SEC;
+                };
+                ui::SameLine();
+                if ( ui::Button( "Clear##Send", ImVec2( btn_w, 16 ) ) )
+                {
+                    emscripten_websocket_send_utf8_text( socket, "Clear" );
+                    start_time = getMicrosecondTimestamp();
+                };
+                ui::SameLine();
+                if ( ui::Button( "Reset##Send", ImVec2( btn_w, 16 ) ) )
+                {
+                    emscripten_websocket_send_utf8_text( socket, "Reset" );
+                    start_time = getMicrosecondTimestamp();
+                };
+                ui::SameLine();
+                if ( ui::Button( "Stop##Send", ImVec2( btn_w, 16 ) ) )
+                {
+                    emscripten_websocket_send_utf8_text( socket, "Stop" );
+                };
+                //
+                ImGui::EndChild();
+                ImGui::EndTabItem();
+            }
+            if ( ImGui::BeginTabItem( "Magnetic Field Fingerprint" ) )
+            {
+                ImGui::BeginChild( "ChildL##Magnetic", ImVec2( ImGui::GetContentRegionAvail().x, 440 ) );
+                //
+                ui::Text( "X coordinate" );
+                ui::SameLine( segmentation_w );
+                ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
+                ui::InputFloat( "##Current x coordinate", &mag_f_x, 0.0f, 0.0f, "%.9f" );
+                ui::Separator();
+                //
+                ui::Text( "Y coordinate" );
+                ui::SameLine( segmentation_w );
+                ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
+                ui::InputFloat( "##Current y coordinate", &mag_f_y, 0.0f, 0.0f, "%.9f" );
+                ui::Separator();
+                //
+                ui::Text( "Z coordinate" );
+                ui::SameLine( segmentation_w );
+                ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
+                ui::InputFloat( "##Current z coordinate", &mag_f_z, 0.0f, 0.0f, "%.9f" );
+                ui::Separator();
+                //
+                ImGui::EndChild();
+                //
+                ImGui::BeginChild( "ChildL##Magnetic Button", ImVec2( ImGui::GetContentRegionAvail().x, 20 ) );
+                //
+                int btn_w = ( ImGui::GetContentRegionAvail().x - 6 ) / 3;
+                if ( ui::Button( "Add Pos To DB##AddMagnetic", ImVec2( btn_w, 16 ) ) )
+                {
+                    std::string content_str = "Fingerprint," + std::to_string( mag_f_x ) + "," + std::to_string( mag_f_y ) + "," + std::to_string( mag_f_z );
+                    //
+                    emscripten_websocket_send_utf8_text( socket, content_str.c_str() );
+                }
+                ImGui::EndChild();
+                //
+                ImGui::EndTabItem();
+            }
+            if ( ImGui::BeginTabItem( "Axes Node Attribute" ) )
+            {
+                ImGui::BeginChild( "ChildL##Expend", ImVec2( ImGui::GetContentRegionAvail().x, 440 ) );
+                auto win_size       = ImGui::GetContentRegionAvail();
+                int  segmentation_w = 220;
+                //
+                ui::Spacing();
+                //
+                ui::Text( "Queue Size" );
+                ui::SameLine( segmentation_w );
+                ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
+                ui::Text( "%d", sensor_data_queue.size() );
+                ui::Separator();
+                //
+                ui::Text( "Vector Size" );
+                ui::SameLine( segmentation_w );
+                ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x - 30 );
+                ui::Text( "%d", sensor_data_vector.size() );
+                ui::SameLine( ImGui::GetContentRegionAvail().x - 30 );
+                if ( ui::Button( "CLR##ClearVector", ImVec2( 30, 16 ) ) )
+                {
+                    sensor_data_vector.clear();
+                    original_sensor_data_vector.clear();
+                }
+                ui::Separator();
+                //
+                ui::Text( "AxesNode Position" );
+                ui::SameLine( segmentation_w );
+                ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x - 30 );
+                ui::Text( "%f,%f,%f", axes_node_->GetPosition().x_, axes_node_->GetPosition().y_, axes_node_->GetPosition().z_ );
+                ui::SameLine( ImGui::GetContentRegionAvail().x - 30 );
+                if ( ui::Button( ICON_MDI_EYE "##ShowAxesNode", ImVec2( 30, 16 ) ) )
+                {
+                    is_axes_node_enble_ = ! is_axes_node_enble_;
+                    axes_node_->SetEnabled( is_axes_node_enble_ );
+                }
+                ui::Separator();
+                //
+                ui::Text( "AxesNode Direction" );
+                ui::SameLine( segmentation_w );
+                ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
+                ui::Text( "%f,%f,%f", axes_node_->GetDirection().x_, axes_node_->GetDirection().y_, axes_node_->GetDirection().z_ );
+                ui::Separator();
+                //
+                static float camera_pos[ 3 ] = { 0.0f, 0.0f, 0.0f };
+                static float camera_dir[ 3 ] = { 0.0f, 0.0f, 0.0f };
+                camera_pos[ 0 ]              = mainCameraNode_->GetPosition().x_;
+                camera_pos[ 1 ]              = mainCameraNode_->GetPosition().y_;
+                camera_pos[ 2 ]              = mainCameraNode_->GetPosition().z_;
+                camera_dir[ 0 ]              = mainCameraNode_->GetDirection().x_;
+                camera_dir[ 1 ]              = mainCameraNode_->GetDirection().y_;
+                camera_dir[ 2 ]              = mainCameraNode_->GetDirection().z_;
+                //
+                ui::Text( "Camera Position" );
+                ui::SameLine( segmentation_w );
+                ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
+                if ( ui::InputFloat3( "##Camera Position", camera_pos ) )
+                {
+                    mainCameraNode_->SetPosition( Vector3( camera_pos[ 0 ], camera_pos[ 1 ], camera_pos[ 2 ] ) );
+                }
+                ui::Separator();
+                //
+                ui::Text( "Camera Direction" );
+                ui::SameLine( segmentation_w );
+                ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
+                if ( ui::InputFloat3( "##Camera Direction", camera_dir ) )
+                {
+                    mainCameraNode_->SetDirection( Vector3( camera_dir[ 0 ], camera_dir[ 1 ], camera_dir[ 2 ] ) );
+                }
+                ui::Separator();
+                ui::Spacing();
+
+                //
+                ImGui::EndChild();
+                //
+                ImGui::BeginChild( "ChildL##Expend button", ImVec2( ImGui::GetContentRegionAvail().x, 20 ) );
+                //
+                int btn_w = ( ImGui::GetContentRegionAvail().x - 6 ) / 3;
+                if ( ui::Button( "Show Big Char", ImVec2( btn_w, 16 ) ) )
+                {
+                    //
+                    is_show_big_char = ! is_show_big_char;
+                }
+                ui::SameLine();
+                if ( ui::Button( "Show Char", ImVec2( btn_w, 16 ) ) )
+                {
+                    //
+                    is_show_char = ! is_show_char;
+                }
+                ui::SameLine();
+                if ( ui::Button( "Show 3D Char", ImVec2( btn_w, 16 ) ) )
+                {
+                    //
+                    is_show_3d_char = ! is_show_3d_char;
+                }
+                //
+                ImGui::EndChild();
+                ImGui::EndTabItem();
+            }
+            ImGui::EndTabBar();
+        }
     }
     ui::End();
 }
 //
-void CommonApplication::AxesNodeAttributeUi()
-{
-    ui::SetNextWindowSize( ImVec2( 450, 154 ), ImGuiCond_FirstUseEver );
-    ui::SetNextWindowPos( ImVec2( 2, winSizeY_ - 176 ), ImGuiCond_FirstUseEver );
-    //
-    if ( ui::Begin( "Key Nodes", NULL, ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoResize ) )
-    {
-        auto win_size       = ImGui::GetContentRegionAvail();
-        int  segmentation_w = 220;
-        //
-        ui::Spacing();
-        //
-        ui::Text( "Queue Size" );
-        ui::SameLine( segmentation_w );
-        ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
-        ui::Text( "%d", sensor_data_queue.size() );
-        ui::Separator();
-        //
-        ui::Text( "Vector Size" );
-        ui::SameLine( segmentation_w );
-        ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x - 30 );
-        ui::Text( "%d", sensor_data_vector.size() );
-        ui::SameLine( ImGui::GetContentRegionAvail().x - 30 );
-        if ( ui::Button( "CLR##ClearVector", ImVec2( 30, 16 ) ) )
-        {
-            sensor_data_vector.clear();
-            original_sensor_data_vector.clear();
-        }
-        ui::Separator();
-        //
-        ui::Text( "AxesNode Position" );
-        ui::SameLine( segmentation_w );
-        ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x - 30 );
-        ui::Text( "%f,%f,%f", axes_node_->GetPosition().x_, axes_node_->GetPosition().y_, axes_node_->GetPosition().z_ );
-        ui::SameLine( ImGui::GetContentRegionAvail().x - 30 );
-        if ( ui::Button( ICON_MDI_EYE "##ShowAxesNode", ImVec2( 30, 16 ) ) )
-        {
-            is_axes_node_enble_ = ! is_axes_node_enble_;
-            axes_node_->SetEnabled( is_axes_node_enble_ );
-        }
-        ui::Separator();
-        //
-        ui::Text( "AxesNode Direction" );
-        ui::SameLine( segmentation_w );
-        ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
-        ui::Text( "%f,%f,%f", axes_node_->GetDirection().x_, axes_node_->GetDirection().y_, axes_node_->GetDirection().z_ );
-        ui::Separator();
-        //
-        static float camera_pos[ 3 ] = { 0.0f, 0.0f, 0.0f };
-        static float camera_dir[ 3 ] = { 0.0f, 0.0f, 0.0f };
-        camera_pos[ 0 ]              = mainCameraNode_->GetPosition().x_;
-        camera_pos[ 1 ]              = mainCameraNode_->GetPosition().y_;
-        camera_pos[ 2 ]              = mainCameraNode_->GetPosition().z_;
-        camera_dir[ 0 ]              = mainCameraNode_->GetDirection().x_;
-        camera_dir[ 1 ]              = mainCameraNode_->GetDirection().y_;
-        camera_dir[ 2 ]              = mainCameraNode_->GetDirection().z_;
-        //
-        ui::Text( "Camera Position" );
-        ui::SameLine( segmentation_w );
-        ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
-        if ( ui::InputFloat3( "##Camera Position", camera_pos ) )
-        {
-            mainCameraNode_->SetPosition( Vector3( camera_pos[ 0 ], camera_pos[ 1 ], camera_pos[ 2 ] ) );
-        }
-        ui::Separator();
-        //
-        ui::Text( "Camera Direction" );
-        ui::SameLine( segmentation_w );
-        ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
-        if ( ui::InputFloat3( "##Camera Direction", camera_dir ) )
-        {
-            mainCameraNode_->SetDirection( Vector3( camera_dir[ 0 ], camera_dir[ 1 ], camera_dir[ 2 ] ) );
-        }
-        ui::Separator();
-        //
-        int btn_w = ( ImGui::GetContentRegionAvail().x - 8 ) / 4;
-        if ( ui::Button( "Show Big Char", ImVec2( btn_w, 16 ) ) )
-        {
-            //
-            is_show_big_char = ! is_show_big_char;
-        }
-        ui::SameLine();
-        if ( ui::Button( "Show Char", ImVec2( btn_w, 16 ) ) )
-        {
-            //
-            is_show_char = ! is_show_char;
-        }
-        ui::SameLine();
-        if ( ui::Button( "Show 3D Char", ImVec2( btn_w, 16 ) ) )
-        {
-            //
-            is_show_3d_char = ! is_show_3d_char;
-        }
-        ui::SameLine();
-        if ( ui::Button( "Show Websocket Ui", ImVec2( btn_w, 16 ) ) )
-        {
-            //
-            is_show_websocket = ! is_show_websocket;
-        }
-        //
-        ui::Separator();
-    }
-    ui::End();
-}
-//
+// void CommonApplication::AxesNodeAttributeUi()
+// {
+//     ui::SetNextWindowSize( ImVec2( 450, 154 ), ImGuiCond_FirstUseEver );
+//     ui::SetNextWindowPos( ImVec2( 2, winSizeY_ - 176 ), ImGuiCond_FirstUseEver );
+//     //
+//     if ( ui::Begin( "Key Nodes", NULL, ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoResize ) )
+//     {
+//         auto win_size       = ImGui::GetContentRegionAvail();
+//         int  segmentation_w = 220;
+//         //
+//         ui::Spacing();
+//         //
+//         ui::Text( "Queue Size" );
+//         ui::SameLine( segmentation_w );
+//         ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
+//         ui::Text( "%d", sensor_data_queue.size() );
+//         ui::Separator();
+//         //
+//         ui::Text( "Vector Size" );
+//         ui::SameLine( segmentation_w );
+//         ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x - 30 );
+//         ui::Text( "%d", sensor_data_vector.size() );
+//         ui::SameLine( ImGui::GetContentRegionAvail().x - 30 );
+//         if ( ui::Button( "CLR##ClearVector", ImVec2( 30, 16 ) ) )
+//         {
+//             sensor_data_vector.clear();
+//             original_sensor_data_vector.clear();
+//         }
+//         ui::Separator();
+//         //
+//         ui::Text( "AxesNode Position" );
+//         ui::SameLine( segmentation_w );
+//         ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x - 30 );
+//         ui::Text( "%f,%f,%f", axes_node_->GetPosition().x_, axes_node_->GetPosition().y_, axes_node_->GetPosition().z_ );
+//         ui::SameLine( ImGui::GetContentRegionAvail().x - 30 );
+//         if ( ui::Button( ICON_MDI_EYE "##ShowAxesNode", ImVec2( 30, 16 ) ) )
+//         {
+//             is_axes_node_enble_ = ! is_axes_node_enble_;
+//             axes_node_->SetEnabled( is_axes_node_enble_ );
+//         }
+//         ui::Separator();
+//         //
+//         ui::Text( "AxesNode Direction" );
+//         ui::SameLine( segmentation_w );
+//         ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
+//         ui::Text( "%f,%f,%f", axes_node_->GetDirection().x_, axes_node_->GetDirection().y_, axes_node_->GetDirection().z_ );
+//         ui::Separator();
+//         //
+//         static float camera_pos[ 3 ] = { 0.0f, 0.0f, 0.0f };
+//         static float camera_dir[ 3 ] = { 0.0f, 0.0f, 0.0f };
+//         camera_pos[ 0 ]              = mainCameraNode_->GetPosition().x_;
+//         camera_pos[ 1 ]              = mainCameraNode_->GetPosition().y_;
+//         camera_pos[ 2 ]              = mainCameraNode_->GetPosition().z_;
+//         camera_dir[ 0 ]              = mainCameraNode_->GetDirection().x_;
+//         camera_dir[ 1 ]              = mainCameraNode_->GetDirection().y_;
+//         camera_dir[ 2 ]              = mainCameraNode_->GetDirection().z_;
+//         //
+//         ui::Text( "Camera Position" );
+//         ui::SameLine( segmentation_w );
+//         ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
+//         if ( ui::InputFloat3( "##Camera Position", camera_pos ) )
+//         {
+//             mainCameraNode_->SetPosition( Vector3( camera_pos[ 0 ], camera_pos[ 1 ], camera_pos[ 2 ] ) );
+//         }
+//         ui::Separator();
+//         //
+//         ui::Text( "Camera Direction" );
+//         ui::SameLine( segmentation_w );
+//         ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
+//         if ( ui::InputFloat3( "##Camera Direction", camera_dir ) )
+//         {
+//             mainCameraNode_->SetDirection( Vector3( camera_dir[ 0 ], camera_dir[ 1 ], camera_dir[ 2 ] ) );
+//         }
+//         ui::Separator();
+//         //
+//         int btn_w = ( ImGui::GetContentRegionAvail().x - 8 ) / 4;
+//         if ( ui::Button( "Show Big Char", ImVec2( btn_w, 16 ) ) )
+//         {
+//             //
+//             is_show_big_char = ! is_show_big_char;
+//         }
+//         ui::SameLine();
+//         if ( ui::Button( "Show Char", ImVec2( btn_w, 16 ) ) )
+//         {
+//             //
+//             is_show_char = ! is_show_char;
+//         }
+//         ui::SameLine();
+//         if ( ui::Button( "Show 3D Char", ImVec2( btn_w, 16 ) ) )
+//         {
+//             //
+//             is_show_3d_char = ! is_show_3d_char;
+//         }
+//         ui::SameLine();
+//         if ( ui::Button( "Show Websocket Ui", ImVec2( btn_w, 16 ) ) )
+//         {
+//             //
+//             is_show_websocket = ! is_show_websocket;
+//         }
+//         //
+//         ui::Separator();
+//     }
+//     ui::End();
+// }
+// //
 void CommonApplication::ChartUi()
 {
     //
@@ -800,7 +952,7 @@ void CommonApplication::ChartUi()
 
         // 3d
         ui::SetNextWindowSize( ImVec2( 450, 450 ), ImGuiCond_FirstUseEver );
-        ui::SetNextWindowPos( ImVec2( 2, winSizeY_ - 1322 ), ImGuiCond_FirstUseEver );
+        ui::SetNextWindowPos( ImVec2( 2, 40 ), ImGuiCond_FirstUseEver );
         //
         if ( ImGui::Begin( "IMU Trajectory", &is_show_3d_char ) )
         {

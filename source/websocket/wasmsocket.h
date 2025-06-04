@@ -50,6 +50,10 @@ static float ahrs_accelerationRejection = 10.0f;
 static float ahrs_magneticRejection     = 10.0f;
 static int   ahrs_recoveryTriggerPeriod = 500;
 //
+static float mag_f_x = 0.0f;
+static float mag_f_y = 0.0f;
+static float mag_f_z = 0.0f;
+//
 //
 static float roll[ 1024 ], pitch[ 1024 ], yaw[ 1024 ], magx[ 1024 ], magy[ 1024 ], magz[ 1024 ], gyrx[ 1024 ], gyry[ 1024 ], gyrz[ 1024 ], accx[ 1024 ], accy[ 1024 ], accz[ 1024 ], eax[ 1024 ], eay[ 1024 ], eaz[ 1024 ], evx[ 1024 ], evy[ 1024 ], evz[ 1024 ], px[ 1024 ], py[ 1024 ], pz[ 1024 ],
     quate_x[ 1024 ], quate_y[ 1024 ], quate_z[ 1024 ], quate_w[ 1024 ], totalAcc[ 1024 ];

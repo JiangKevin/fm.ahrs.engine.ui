@@ -66,7 +66,7 @@ public:
     void setup_style_of_imgui();
     void RenderUi();
     void WebsocketUi();
-    void AxesNodeAttributeUi();
+    // void AxesNodeAttributeUi();
     void ChartUi();
     void BigCharUi( float* befor_x, float* befor_y, float* befor_z, int befor_count, float* after_x, float* after_y, float* after_z, int after_count );
     void BigCharUiQuate( float* after_x, float* after_y, float* after_z, float* after_w, int after_count );
