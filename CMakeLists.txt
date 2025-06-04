@@ -25,7 +25,7 @@ include_directories($ENV{FmDev}/libs/core/include/Urho3D/ThirdParty/SDL)
 include_directories($ENV{FmDev}/libs/core/include/Urho3D/ThirdParty/ImGui)
 include_directories($ENV{FmDev}/libs/core/include/Urho3D/ThirdParty/ImGui/misc/cpp)
 include_directories($ENV{FmDev}/libs/eigen3)
-
+include_directories($ENV{FmDev}/libs)
 
 # 设置链接路径
 link_directories($ENV{FmDev}/libs/core/lib)
