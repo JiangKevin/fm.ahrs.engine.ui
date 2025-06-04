@@ -338,7 +338,7 @@ static EM_BOOL WebSocketMessage( int eventType, const EmscriptenWebSocketMessage
             std::lock_guard< std::mutex > lock( queue_mutex );
             //
             EIGEN_SENSOR_DATA new_sensor_db;
-            new_sensor_db.getValueFromString( receive_message );
+            new_sensor_db.getValueFromJsonString( receive_message );
             //
             if ( sensor_data_queue.size() < item_count )
             {
@@ -377,7 +377,7 @@ static EM_BOOL WebSocketMessage( int eventType, const EmscriptenWebSocketMessage
             std::lock_guard< std::mutex > lock( queue_mutex );
             //
             EIGEN_SENSOR_DATA new_sensor_db;
-            new_sensor_db.getValueFromString( receive_message );
+            new_sensor_db.getValueFromJsonString( receive_message );
             //
             if ( original_sensor_data_vector.size() < item_count )
             {

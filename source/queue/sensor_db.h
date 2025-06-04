@@ -169,8 +169,8 @@ struct EIGEN_SENSOR_DATA
         //
         if ( values.size() == 2 )
         {
-            nlohmann::json j;
-            j.parse( values[ 1 ] );
+            std::stringstream ss( values[ 1 ] );
+            nlohmann::json    j = nlohmann::json::parse( ss, nullptr, false );
             //
             time      = j[ "time" ].get< int64_t >();
             acc[ 0 ]  = j[ "acc" ][ 0 ].get< float >();
