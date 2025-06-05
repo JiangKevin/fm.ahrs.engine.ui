@@ -664,7 +664,7 @@ void CommonApplication::WebsocketUi()
                 ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x - 30 );
                 ui::Text( "%d", sensor_data_vector.size() );
                 ui::SameLine( ImGui::GetContentRegionAvail().x - 30 );
-                if ( ui::Button( ICON_MDI_BACKSPACE"##CLR##ClearVector", ImVec2( 30, 16 ) ) )
+                if ( ui::Button( ICON_MDI_BACKSPACE "##CLR##ClearVector", ImVec2( 30, 16 ) ) )
                 {
                     sensor_data_vector.clear();
                     original_sensor_data_vector.clear();
@@ -1103,7 +1103,7 @@ void CommonApplication::BigCharUiChange()
         }
         else if ( item_current == 8 )
         {
-            BigCharUiTotalAcc( totalAcc, count );
+            BigCharUiTotal( totalAcc, count, "Total EAcc" );
         }
         else if ( item_current == 9 )
         {
@@ -1111,7 +1111,7 @@ void CommonApplication::BigCharUiChange()
         }
         else if ( item_current == 10 )
         {
-            BigCharUiTotalAcc( totalMag, count );
+            BigCharUiTotal( totalMag, count, "Total Magnetometer" );
         }
     }
     ui::End();
@@ -1191,7 +1191,7 @@ void CommonApplication::BigCharUiQuate( float* after_x, float* after_y, float* a
     }
 };
 //
-void CommonApplication::BigCharUiTotalAcc( float* after_x, int after_count )
+void CommonApplication::BigCharUiTotal( float* after_x, int after_count, std::string title )
 {
     float w_t = ui::GetContentRegionAvail().x;
     float h_t = ui::GetContentRegionAvail().y;
@@ -1201,7 +1201,7 @@ void CommonApplication::BigCharUiTotalAcc( float* after_x, int after_count )
         ImPlot::SetupAxes( "Index##Calculate", "X/Y/Z##Calculate", ImPlotAxisFlags_AutoFit | ImPlotAxisFlags_NoLabel | ImPlotAxisFlags_NoTickLabels, ImPlotAxisFlags_AutoFit | ImPlotAxisFlags_NoLabel | ImPlotAxisFlags_Opposite | ImPlotAxisFlags_NoTickLabels );
         //
         ImPlot::SetNextLineStyle( ImVec4( 125.0, 125.0, 125.0, 0.6 ) );
-        ImPlot::PlotStairs( "Total E Acc", after_x, after_count, 1.0, 0 );
+        ImPlot::PlotStairs( title.c_str(), after_x, after_count, 1.0, 0 );
 
         //
 
