@@ -384,7 +384,7 @@ void CommonApplication::WebsocketUi()
         ImGuiTabBarFlags tab_bar_flags = ImGuiTabBarFlags_None;
         if ( ImGui::BeginTabBar( "SocketTabBar", tab_bar_flags ) )
         {
-            if ( ImGui::BeginTabItem( "Confige" ) )
+            if ( ImGui::BeginTabItem( ICON_MDI_TUNE_VERTICAL "##Confige" ) )
             {
                 ImGui::BeginChild( "ChildL##basic", ImVec2( ImGui::GetContentRegionAvail().x, 440 ) );
                 //
@@ -565,7 +565,7 @@ void CommonApplication::WebsocketUi()
                 ImGui::EndChild();
                 ImGui::EndTabItem();
             }
-            if ( ImGui::BeginTabItem( "Magnetic Field Fingerprint" ) )
+            if ( ImGui::BeginTabItem( ICON_MDI_MAP_MARKER_CHECK "##Magnetic Field Fingerprint" ) )
             {
                 ImGui::BeginChild( "ChildL##Magnetic", ImVec2( ImGui::GetContentRegionAvail().x, 440 ) );
                 //
@@ -645,7 +645,7 @@ void CommonApplication::WebsocketUi()
                 //
                 ImGui::EndTabItem();
             }
-            if ( ImGui::BeginTabItem( "Axes Node Attribute" ) )
+            if ( ImGui::BeginTabItem( ICON_MDI_AXIS_ARROW "##Axes Node Attribute" ) )
             {
                 ImGui::BeginChild( "ChildL##Expend", ImVec2( ImGui::GetContentRegionAvail().x, 440 ) );
                 auto win_size       = ImGui::GetContentRegionAvail();
@@ -664,7 +664,7 @@ void CommonApplication::WebsocketUi()
                 ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x - 30 );
                 ui::Text( "%d", sensor_data_vector.size() );
                 ui::SameLine( ImGui::GetContentRegionAvail().x - 30 );
-                if ( ui::Button( "CLR##ClearVector", ImVec2( 30, 16 ) ) )
+                if ( ui::Button( ICON_MDI_BACKSPACE"##CLR##ClearVector", ImVec2( 30, 16 ) ) )
                 {
                     sensor_data_vector.clear();
                     original_sensor_data_vector.clear();
@@ -1061,7 +1061,7 @@ void CommonApplication::BigCharUiChange()
     //
     if ( ui::Begin( "Big IMU Chart", &is_show_big_char, ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoScrollbar ) )
     {
-        static const char* items[]      = { "Estimated Accelerometer", "Estimated Velocity", "Position", "Accelerometer", "Gyroscope", "Magnetometer", "Euler", "Quate", "Total EAcc" };
+        static const char* items[]      = { "Estimated Accelerometer", "Estimated Velocity", "Position", "Accelerometer", "Gyroscope", "Magnetometer", "Euler", "Quate", "Total EAcc", "Normalization Magnetometer", "Total Magnetometer" };
         static int         item_current = 0;
         ui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
         ImGui::Combo( "##charSwitch", &item_current, items, IM_ARRAYSIZE( items ) );
@@ -1083,15 +1083,15 @@ void CommonApplication::BigCharUiChange()
         }
         else if ( item_current == 3 )
         {
-            BigCharUi( accx, accy, accz, count, original_accx, original_accy, original_accz, original_count );
+            BigCharUi_primitive( accx, accy, accz, count );
         }
         else if ( item_current == 4 )
         {
-            BigCharUi( gyrx, gyry, gyrz, count, original_gyrx, original_gyry, original_gyrz, original_count );
+            BigCharUi_primitive( gyrx, gyry, gyrz, count );
         }
         else if ( item_current == 5 )
         {
-            BigCharUi( magx, magy, magz, count, original_magx, original_magy, original_magz, original_count );
+            BigCharUi_primitive( magx, magy, magz, count );
         }
         else if ( item_current == 6 )
         {
@@ -1104,6 +1104,14 @@ void CommonApplication::BigCharUiChange()
         else if ( item_current == 8 )
         {
             BigCharUiTotalAcc( totalAcc, count );
+        }
+        else if ( item_current == 9 )
+        {
+            BigCharUi( std_mag_x, std_mag_y, std_mag_z, count, a_std_mag_x, a_std_mag_y, a_std_mag_z, count );
+        }
+        else if ( item_current == 10 )
+        {
+            BigCharUiTotalAcc( totalMag, count );
         }
     }
     ui::End();
@@ -1135,6 +1143,27 @@ void CommonApplication::BigCharUi( float* befor_x, float* befor_y, float* befor_
 
         //
 
+        ImPlot::EndPlot();
+    }
+};
+//
+void CommonApplication::BigCharUi_primitive( float* befor_x, float* befor_y, float* befor_z, int befor_count )
+{
+    float w_t = ui::GetContentRegionAvail().x;
+    float h_t = ui::GetContentRegionAvail().y;
+    //
+    if ( ImPlot::BeginPlot( "Big Char UI##BigCharPrimitive", ImVec2( w_t, h_t ), ImPlotFlags_NoTitle ) )
+    {
+        ImPlot::SetupAxes( "Index##primitive", "X/Y/Z##primitive", ImPlotAxisFlags_AutoFit | ImPlotAxisFlags_NoLabel | ImPlotAxisFlags_NoTickLabels, ImPlotAxisFlags_AutoFit | ImPlotAxisFlags_NoLabel | ImPlotAxisFlags_Opposite | ImPlotAxisFlags_NoTickLabels );
+        //
+        ImPlot::SetNextLineStyle( ImVec4( 255.0, 0.0, 0.0, 1.0 ) );
+        ImPlot::PlotStairs( "X", befor_x, befor_count, 1.0, 0 );
+        ImPlot::SetNextLineStyle( ImVec4( 0.0, 255.0, 0.0, 1.0 ) );
+        ImPlot::PlotStairs( "Y", befor_y, befor_count, 1.0, 0 );
+        ImPlot::SetNextLineStyle( ImVec4( 0.0, 0.0, 255.0, 1.0 ) );
+        ImPlot::PlotStairs( "Z", befor_z, befor_count, 1.0, 0 );
+
+        //
         ImPlot::EndPlot();
     }
 };

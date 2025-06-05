@@ -64,11 +64,10 @@ static static eastl::string s_zoon      = "";
 //
 //
 static float roll[ 1024 ], pitch[ 1024 ], yaw[ 1024 ], magx[ 1024 ], magy[ 1024 ], magz[ 1024 ], gyrx[ 1024 ], gyry[ 1024 ], gyrz[ 1024 ], accx[ 1024 ], accy[ 1024 ], accz[ 1024 ], eax[ 1024 ], eay[ 1024 ], eaz[ 1024 ], evx[ 1024 ], evy[ 1024 ], evz[ 1024 ], px[ 1024 ], py[ 1024 ], pz[ 1024 ],
-    quate_x[ 1024 ], quate_y[ 1024 ], quate_z[ 1024 ], quate_w[ 1024 ], totalAcc[ 1024 ];
+    quate_x[ 1024 ], quate_y[ 1024 ], quate_z[ 1024 ], quate_w[ 1024 ], totalAcc[ 1024 ], std_mag_x[ 1024 ], std_mag_y[ 1024 ], std_mag_z[ 1024 ], a_std_mag_x[ 1024 ], a_std_mag_y[ 1024 ], a_std_mag_z[ 1024 ], totalMag[ 1024 ];
 
-static float original_roll[ 1024 ], original_pitch[ 1024 ], original_yaw[ 1024 ], original_magx[ 1024 ], original_magy[ 1024 ], original_magz[ 1024 ], original_gyrx[ 1024 ], original_gyry[ 1024 ], original_gyrz[ 1024 ], original_accx[ 1024 ], original_accy[ 1024 ], original_accz[ 1024 ],
-    original_eax[ 1024 ], original_eay[ 1024 ], original_eaz[ 1024 ], original_evx[ 1024 ], original_evy[ 1024 ], original_evz[ 1024 ], original_px[ 1024 ], original_py[ 1024 ], original_pz[ 1024 ], original_quate_x[ 1024 ], original_quate_y[ 1024 ], original_quate_z[ 1024 ],
-    original_quate_w[ 1024 ];
+static float original_roll[ 1024 ], original_pitch[ 1024 ], original_yaw[ 1024 ], original_eax[ 1024 ], original_eay[ 1024 ], original_eaz[ 1024 ], original_evx[ 1024 ], original_evy[ 1024 ], original_evz[ 1024 ], original_px[ 1024 ], original_py[ 1024 ], original_pz[ 1024 ],
+    original_quate_x[ 1024 ], original_quate_y[ 1024 ], original_quate_z[ 1024 ], original_quate_w[ 1024 ];
 //
 //
 static std::string GetConfigString()
@@ -231,6 +230,16 @@ static void v2a()
         quate_w[ i ] = sensor_data_vector[ i ].qua[ 3 ];
         //
         totalAcc[ i ] = sensor_data_vector[ i ].totalAcc;
+        //
+        std_mag_x[ i ] = sensor_data_vector[ i ].std_mag[ 0 ];
+        std_mag_y[ i ] = sensor_data_vector[ i ].std_mag[ 1 ];
+        std_mag_z[ i ] = sensor_data_vector[ i ].std_mag[ 2 ];
+        //
+        a_std_mag_x[ i ] = sensor_data_vector[ i ].a_std_mag[ 0 ];
+        a_std_mag_y[ i ] = sensor_data_vector[ i ].a_std_mag[ 1 ];
+        a_std_mag_z[ i ] = sensor_data_vector[ i ].a_std_mag[ 2 ];
+        //
+        totalMag[ i ] = sensor_data_vector[ i ].totalMag;
     }
     //
     int original_count = original_sensor_data_vector.size();
@@ -240,18 +249,6 @@ static void v2a()
         original_roll[ i ]  = original_sensor_data_vector[ i ].eul[ 0 ];
         original_pitch[ i ] = original_sensor_data_vector[ i ].eul[ 1 ];
         original_yaw[ i ]   = original_sensor_data_vector[ i ].eul[ 2 ];
-
-        original_magx[ i ] = original_sensor_data_vector[ i ].mag[ 0 ];
-        original_magy[ i ] = original_sensor_data_vector[ i ].mag[ 1 ];
-        original_magz[ i ] = original_sensor_data_vector[ i ].mag[ 2 ];
-
-        original_gyrx[ i ] = original_sensor_data_vector[ i ].gyr[ 0 ];
-        original_gyry[ i ] = original_sensor_data_vector[ i ].gyr[ 1 ];
-        original_gyrz[ i ] = original_sensor_data_vector[ i ].gyr[ 2 ];
-
-        original_accx[ i ] = original_sensor_data_vector[ i ].acc[ 0 ];
-        original_accy[ i ] = original_sensor_data_vector[ i ].acc[ 1 ];
-        original_accz[ i ] = original_sensor_data_vector[ i ].acc[ 2 ];
 
         original_eax[ i ] = original_sensor_data_vector[ i ].eacc[ 0 ];
         original_eay[ i ] = original_sensor_data_vector[ i ].eacc[ 1 ];
