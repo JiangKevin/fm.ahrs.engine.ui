@@ -380,7 +380,7 @@ void CommonApplication::WebsocketUi()
         ImGui::EndChild();
         ui::Separator();
         //
-        float            btn_w         = ( ImGui::GetContentRegionAvail().x - 8 * 2 ) / 8;
+        float            btn_w         = ( ImGui::GetContentRegionAvail().x - 9 * 2 ) / 9;
         ImGuiTabBarFlags tab_bar_flags = ImGuiTabBarFlags_None;
         if ( ImGui::BeginTabBar( "SocketTabBar", tab_bar_flags ) )
         {
@@ -513,53 +513,66 @@ void CommonApplication::WebsocketUi()
                 ImGui::BeginChild( "ChildL##Basic button", ImVec2( ImGui::GetContentRegionAvail().x, 20 ) );
 
                 //
-                if ( ui::Button( "ReadCsv##Send", ImVec2( btn_w, 16 ) ) )
-                {
-                    emscripten_websocket_send_utf8_text( socket, "ReadCsv" );
-                    start_time = getMicrosecondTimestamp();
-                };
-                ui::SameLine();
-                //
-                if ( ui::Button( "Setup##Send", ImVec2( btn_w, 16 ) ) )
+                if ( ui::Button( ICON_MDI_COG_BOX "##Setup##Send" ) )
                 {
                     std::string content_str = GetConfigString();
                     //
                     emscripten_websocket_send_utf8_text( socket, content_str.c_str() );
                 };
                 ui::SameLine();
-                if ( ui::Button( "Start##Send", ImVec2( btn_w, 16 ) ) )
+
+                if ( ui::Button( ICON_MDI_PLAY "##Start##Send" ) )
                 {
                     emscripten_websocket_send_utf8_text( socket, "Start" );
                     start_time = getMicrosecondTimestamp();
                 };
                 ui::SameLine();
-                if ( ui::Button( "FIFO##Send", ImVec2( btn_w, 16 ) ) )
-                {
-                    emscripten_websocket_send_utf8_text( socket, "FifoStart" );
-                    start_time = getMicrosecondTimestamp();
-                };
-                ui::SameLine();
-                if ( ui::Button( "Pause##Send", ImVec2( btn_w, 16 ) ) )
+                if ( ui::Button( ICON_MDI_PAUSE "##Pause##Send" ) )
                 {
                     emscripten_websocket_send_utf8_text( socket, "Pause" );
                     elapsed_time = ( float )( getMicrosecondTimestamp() - start_time ) / ( float )CLOCKS_PER_SEC;
                 };
                 ui::SameLine();
-                if ( ui::Button( "Clear##Send", ImVec2( btn_w, 16 ) ) )
+                if ( ui::Button( ICON_MDI_CHECKBOX_BLANK_OFF_OUTLINE "##Blank##Sendblank" ) )
                 {
-                    emscripten_websocket_send_utf8_text( socket, "Clear" );
-                    start_time = getMicrosecondTimestamp();
+                    emscripten_websocket_send_utf8_text( socket, " " );
+                    elapsed_time = ( float )( getMicrosecondTimestamp() - start_time ) / ( float )CLOCKS_PER_SEC;
                 };
                 ui::SameLine();
-                if ( ui::Button( "Reset##Send", ImVec2( btn_w, 16 ) ) )
+                if ( ui::Button( ICON_MDI_STOP "##Stop##Send" ) )
+                {
+                    emscripten_websocket_send_utf8_text( socket, "Stop" );
+                };
+                ui::SameLine();
+                if ( ui::Button( ICON_MDI_REFRESH_CIRCLE "##Reset##Send" ) )
                 {
                     emscripten_websocket_send_utf8_text( socket, "Reset" );
                     start_time = getMicrosecondTimestamp();
                 };
                 ui::SameLine();
-                if ( ui::Button( "Stop##Send", ImVec2( btn_w, 16 ) ) )
+                if ( ui::Button( ICON_FA_FILE_CSV "##ReadCsv##Send" ) )
                 {
-                    emscripten_websocket_send_utf8_text( socket, "Stop" );
+                    emscripten_websocket_send_utf8_text( socket, "ReadCsv" );
+                    start_time = getMicrosecondTimestamp();
+                };
+                ui::SameLine();
+                if ( ui::Button( ICON_FA_BROOM "##Clear##Send" ) )
+                {
+                    emscripten_websocket_send_utf8_text( socket, "Clear" );
+                    start_time = getMicrosecondTimestamp();
+                };
+                ui::SameLine();
+                if ( ui::Button( "FIFO##Send" ) )
+                {
+                    emscripten_websocket_send_utf8_text( socket, "FifoStart" );
+                    start_time = getMicrosecondTimestamp();
+                };
+
+                ui::SameLine();
+                if ( ui::Button( "CalibrationData##Send" ) )
+                {
+                    emscripten_websocket_send_utf8_text( socket, "CalibrationData" );
+                    start_time = getMicrosecondTimestamp();
                 };
                 //
                 ImGui::EndChild();
